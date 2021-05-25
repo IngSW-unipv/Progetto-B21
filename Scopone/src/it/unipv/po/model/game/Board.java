@@ -79,10 +79,10 @@ public class Board {
 		one.setPlayerIndex(0);
 		one.setTeamIndex(0);
 		two.setPlayerIndex(1);
-		two.setTeamIndex(1);
+		two.setTeamIndex(0);
 		
 		three.setPlayerIndex(0);
-		three.setTeamIndex(0);
+		three.setTeamIndex(1);
 		four.setPlayerIndex(1);
 		four.setTeamIndex(1);
 		
@@ -159,13 +159,51 @@ public class Board {
 
 	public boolean playerActionMonitoring(Card card, Player player) {
 
-		if(cardsOnBoard.isEmpty()) {
+		if (cardsOnBoard.isEmpty()) {
 			
 			cardsOnBoard.add(card);
 			player.getDeck().remove(card);
 		}
 		
+		else if (!cardsOnBoard.isEmpty() && presaSingola(cardsOnBoard, card)) {
+				
+				ArrayList<Card> temp = new ArrayList<Card>();
+				
+				for (Card s : cardsOnBoard) {
+					
+					if (s.getValue() == card.getValue()) {
+						
+						temp.add(s);
+					}
+				}
+				
+				cardsOnBoard.remove(temp.get(0));
+				player.getDeck().remove(card);
+				teams.get(player.getTeamIndex()).getCardsCollected().add(card);
+				teams.get(player.getTeamIndex()).getCardsCollected().add(temp.get(0));
+			}
+			
+			else {
+			
+				cardsOnBoard.add(card);
+				player.getDeck().remove(card);
+			}		
+		
 		return true;
+	}
+	
+	
+	private boolean presaSingola(ArrayList<Card> cardsOnBoard, Card card) {
+		
+		for (Card s : cardsOnBoard) {
+			
+			if (s.getValue() == card.getValue()) {
+		
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
 

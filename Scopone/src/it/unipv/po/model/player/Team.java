@@ -12,7 +12,7 @@ public class Team {
 
 	private int totalPoints;
 	private ArrayList<Player> players;
-	private ArrayList<Card> cardsCollected;
+	private static ArrayList<Card> cardsCollected;
 	private int numScope;
 	
 	public Team() {
@@ -53,10 +53,10 @@ public class Team {
 	}
 
 	public void setCardsCollected(ArrayList<Card> cardsCollected) {
-		this.cardsCollected = cardsCollected;
+		Team.cardsCollected = cardsCollected;
 	}
 	
-	public static int finalScore(ArrayList<Card> cardsCollected, int numScope) {
+	public int finalScore(int numScope) {
 		
 		int score = 0;
 		int numDenari = 0;
