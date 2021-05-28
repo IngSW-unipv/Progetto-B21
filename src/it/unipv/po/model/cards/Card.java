@@ -22,6 +22,10 @@ public class Card implements Comparable<Card> {
 		this.suit = suit;
 		this.primieraValue = primieraValue;
 	}
+	
+	public String toString() {
+		return value+" di "+suit.toString();
+	}
 
 	public int getValue() {
 		return value;

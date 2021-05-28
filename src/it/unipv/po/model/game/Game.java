@@ -192,13 +192,7 @@ public class Game {
 
 	public boolean playerActionMonitoring(Card card, Player player) {
 
-		if (cardsOnBoard.isEmpty()) {
-
-			cardsOnBoard.add(card);
-			player.getDeck().remove(card);
-		}
-
-		else if (!cardsOnBoard.isEmpty() && presaSingola(cardsOnBoard, card)) {
+		if (!cardsOnBoard.isEmpty() && presaSingola(cardsOnBoard, card)) {
 
 			ArrayList<Card> temp = new ArrayList<Card>();
 
@@ -214,6 +208,10 @@ public class Game {
 			player.getDeck().remove(card);
 			teams.get(player.getTeamIndex()).getCardsCollected().add(card);
 			teams.get(player.getTeamIndex()).getCardsCollected().add(temp.get(0));
+			if(cardsOnBoard.size()==0) {
+				System.out.println(player+" HA FATTO SCOPA!");
+				player.incrementNumScope();
+			}
 		}
 
 		else {

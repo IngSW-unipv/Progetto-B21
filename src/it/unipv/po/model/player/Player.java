@@ -13,11 +13,27 @@ public abstract class Player implements Actions{
 	private ArrayList<Card> deck;
 	private int teamIndex;
 	private int playerIndex;
-	
+	private int numScope;
 	public Player(String name) {
 		super();
 		deck = new ArrayList<Card>();
 		this.name = name;
+		this.numScope=0;
+	}
+	
+	public int getNumScope() {
+		return numScope;
+	}
+
+	public void setNumScope(int numScope) {
+		this.numScope = numScope;
+	}
+	public void incrementNumScope() {
+		this.numScope++;
+	}
+
+	public String toString() {
+		return name;
 	}
 
 	public int getTeamIndex() {

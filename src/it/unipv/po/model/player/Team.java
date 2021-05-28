@@ -31,6 +31,9 @@ public class Team {
 	public void setNumScope(int numScope) {
 		this.numScope = numScope;
 	}
+	public void setNumScope() {
+		this.numScope=players.get(0).getNumScope()+players.get(1).getNumScope();
+	}
 
 
 	public ArrayList<Player> getPlayers() {
