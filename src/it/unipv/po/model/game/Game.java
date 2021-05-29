@@ -16,7 +16,7 @@ import it.unipv.po.model.player.Team;
  * @author Giuseppe Lentini
  */
 public class Game {
-
+	private int handNumber; //numero della mano
 	private ArrayList<Card> cardsOnBoard;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;
@@ -29,7 +29,7 @@ public class Game {
 
 	public Game(Player one, Player two, Player three, Player four) {
 		super();
-
+		handNumber=0;
 		teams = new ArrayList<>();
 		deck = new ArrayList<Card>();
 		shuffledDeck = new ArrayList<Card>();
@@ -39,6 +39,12 @@ public class Game {
 		createDeck();
 		start(one, two, three, four);
 	}
+
+	public void incrementHandNumber() {
+		this.handNumber++;
+	}
+
+
 
 	public ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -192,7 +198,7 @@ public class Game {
 
 	public boolean playerActionMonitoring(Card card, Player player) {
 
-		if (!cardsOnBoard.isEmpty() && presaSingola(cardsOnBoard, card)) {
+		if (!cardsOnBoard.isEmpty() && presaSingola(card)) {
 
 			ArrayList<Card> temp = new ArrayList<Card>();
 
@@ -206,24 +212,88 @@ public class Game {
 
 			cardsOnBoard.remove(temp.get(0));
 			player.getDeck().remove(card);
+			System.out.println(player+" HA PRESO "+temp.get(0));
+			System.out.println(cardsOnBoard);
 			teams.get(player.getTeamIndex()).getCardsCollected().add(card);
 			teams.get(player.getTeamIndex()).getCardsCollected().add(temp.get(0));
-			if(cardsOnBoard.size()==0) {
-				System.out.println(player+" HA FATTO SCOPA!");
-				player.incrementNumScope();
-			}
+			
+			checkScopa(player);
+			
 		}
+		else if(!cardsOnBoard.isEmpty() && presaMultipla(card)) {
+			ArrayList<Card> temp= player.chooseCards(this.getCardsOnBoard());
+			cardsOnBoard.removeAll(temp);
+			player.getDeck().remove(card);
+			System.out.println(player+" HA PRESO "+temp);
+			System.out.println(cardsOnBoard);
 
+			teams.get(player.getTeamIndex()).getCardsCollected().add(card);
+			teams.get(player.getTeamIndex()).getCardsCollected().addAll(temp);
+			
+			checkScopa(player);
+		}
 		else {
-
 			cardsOnBoard.add(card);
 			player.getDeck().remove(card);
 		}
 
 		return true;
 	}
+	
+	private void checkScopa(Player player) {
+		if(cardsOnBoard.size()==0 && !(handNumber==9 && player.getTeamIndex()==1 && player.getPlayerIndex()==1)) {
+			// Se un giocatore prende tutte le carte in tavola fa scopa
+			//ad eccezione che ciò avvenga nell'ultima giocata dell'ultima mano di una smazzata (in questo caso il mazziere non può fare scopa).
+			System.out.println(player+" HA FATTO SCOPA!");
+			player.incrementNumScope();
+		}
+	}
+	
+	private boolean presaMultipla(Card card) {
+		int indexes[], n=0;
+		ArrayList<Card> temp;
+		if(card.getValue()>2) { //sul tavolo non potranno mai esserci due carte aventi lo stesso value (dunque non potranno mai esserci due ASSI)
+			//controlla la presenza di carte sul tavolo con value strettamente minore di quello della carta giocata (quella passata come parametro di questo metodo)
+			indexes=new int[cardsOnBoard.size()];
+			for(int i=0;i<cardsOnBoard.size();i++)
+			if(getCardsOnBoard().get(i).getValue()<card.getValue()) {
+				indexes[n]=i;
+				n++;
+			}
+			if(n<2) 
+				return false;
+			else { // entra nel blocco se sono presenti sul tavolo almeno 2 carte che rispettano la condizione espressa nel commento precedente
+				temp=new ArrayList<Card>(n);
+				for(int j=0;j<n;j++)
+				temp.add(cardsOnBoard.get(indexes[j]).copy());
+				if(n==2 && ((temp.get(0).getValue()+temp.get(1).getValue())==card.getValue()))
+					return true;
+				if(n==3 && ((temp.get(0).getValue()+temp.get(1).getValue()+temp.get(2).getValue())==card.getValue()))
+					return true;
+				if(n==4 && ((temp.get(0).getValue()+temp.get(1).getValue()+temp.get(2).getValue()+temp.get(3).getValue())==card.getValue())) //10=4+3+2+1
+					return true;
+				
+				/* per gestire le altre prese multiple
+				// 3 <= n < 10
+				if(n>3 && card.getValue()>4) {
+					if(card.getValue()==5) {//massimo 2 addendi
+						
+					}
+					if(card.getValue()>5 && card.getValue()<10) {//massimo 3 addendi
+						
+					}
+					if(card.getValue()==10) {	//massimo 4 addendi
+						
+					}
+				}
+				*/
+			}
+				
+		}
+		return false;
+	}
 
-	private boolean presaSingola(ArrayList<Card> cardsOnBoard, Card card) {
+	private boolean presaSingola(Card card) {
 
 		for (Card s : cardsOnBoard) {
 

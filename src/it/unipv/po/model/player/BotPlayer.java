@@ -1,6 +1,8 @@
 package it.unipv.po.model.player;
 
 import it.unipv.po.model.cards.Card;
+
+import java.util.ArrayList;
 import java.util.Random;
 /**
  * Questa classe permette l'uso di intelligenza artificiale semplice, con il Bot che
@@ -29,5 +31,11 @@ public class BotPlayer extends Player{
 
 
 		return getDeck().get(i);		
+	}
+
+	@Override
+	public ArrayList<Card> chooseCards(ArrayList<Card> cardsOnBoard) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

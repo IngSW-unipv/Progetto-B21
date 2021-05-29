@@ -64,4 +64,17 @@ public class Card implements Comparable<Card> {
 
 		return 0;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Card x=(Card)obj;
+		if(value==x.getValue() && suit.equals(x.getSuit())) {
+			return true;
+		}
+		return false;
+	}
+	public Card copy() {
+		return new Card(value, suit, primieraValue);
+	}
 }
+
