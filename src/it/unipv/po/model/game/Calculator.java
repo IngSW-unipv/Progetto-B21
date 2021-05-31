@@ -46,7 +46,7 @@ public class Calculator {
 			// punto denari
 			scoreA += 1;
 		}
-		game.getTeams().get(0).setNumScope();
+
 		scoreA += game.getTeams().get(0).getNumScope();
 
 		for (Card card : game.getTeams().get(1).getCardsCollected()) {
@@ -69,10 +69,12 @@ public class Calculator {
 			// punto denari
 			scoreB += 1;
 		}
-		
-		game.getTeams().get(1).setNumScope();
+
 		scoreB += game.getTeams().get(1).getNumScope();
 
+		System.out.println("A: " + calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
+		System.out.println("B: " + calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
+		
 		if (calculatePrimiera(game.getTeams().get(0).getCardsCollected()) > calculatePrimiera(
 				game.getTeams().get(1).getCardsCollected())) {
 
@@ -112,6 +114,7 @@ public class Calculator {
 						denari++;
 						primiera += s.getPrimieraValue();
 						counter++;
+						break;
 					}
 
 					else {
@@ -122,6 +125,8 @@ public class Calculator {
 						bastoni++;
 						primiera += s.getPrimieraValue();
 						counter++;
+						break;
+
 					} else {
 						break;
 					}
@@ -130,6 +135,7 @@ public class Calculator {
 						coppe++;
 						primiera += s.getPrimieraValue();
 						counter++;
+						break;
 					} else {
 						break;
 					}
@@ -139,10 +145,10 @@ public class Calculator {
 						spade++;
 						primiera += s.getPrimieraValue();
 						counter++;
+						break;
 					} else {
 						break;
 					}
-					break;
 				}
 			}
 		}
