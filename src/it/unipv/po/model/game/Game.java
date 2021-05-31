@@ -199,30 +199,32 @@ public class Game {
 			cardsOnBoard.addAll(player.getTemp());
 			player.getDeck().removeAll(player.getTemp());
 			break;
-			
+
 		case 2:
-			
-			if(player.getTemp().get(0).getValue() == player.getTemp().get(1).getValue()) {
-				
+
+			if (player.getTemp().get(0).getValue() == player.getTemp().get(1).getValue()) {
+
 				cardsOnBoard.remove(player.getTemp().get(0));
 				player.getDeck().remove(player.getTemp().get(1));
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getTemp());
-				
-				if(cardsOnBoard.isEmpty()) {
-					
+
+				if (cardsOnBoard.isEmpty()) {
+
 					teams.get(player.getTeamIndex()).scopa();
+					System.out.println("|CROUPIER| SCOPA!");
 				}
-				
+
 				break;
 			}
-			
-			else { //questo else è da testare con intelligenza umana, è il caso in cui si scelgono carte sbagliate
-				
-				System.out.println("mossa non valida!");
+
+			else { // questo else è da testare con intelligenza umana, è il caso in cui si scelgono
+					// carte sbagliate
+
+				System.out.println("|CROUPIER| mossa non valida!");
 				playerActionMonitoring(player, cardsOnBoard);
 				break;
 			}
-			
+
 		default:
 
 			int count = 0;
@@ -231,20 +233,27 @@ public class Game {
 
 				count += player.getTemp().get(i).getValue();
 			}
-			
+
 			if (count == player.getTemp().get(player.getTemp().size() - 1).getValue()) {
 
-				System.out.println("|CROUPIER: mossa valida|");
+				System.out.println("|CROUPIER| mossa valida");
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getTemp());
 				cardsOnBoard.removeAll(player.getTemp());
+				player.getDeck().remove(player.getTemp().get(player.getTemp().size() - 1));
+
+				if (cardsOnBoard.isEmpty()) {
+
+					teams.get(player.getTeamIndex()).scopa();
+					System.out.println("|CROUPIER| SCOPA!");
+				}
 			}
 
 			else {
 
-				System.out.println("|CROUPIER: mossa non valida|");
+				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player, cardsOnBoard);
 			}
-			
+
 			break;
 		}
 	}

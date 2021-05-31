@@ -4,14 +4,15 @@ import it.unipv.po.model.game.Calculator;
 import it.unipv.po.model.game.Game;
 import it.unipv.po.model.player.BotPlayer1;
 import it.unipv.po.model.player.BotPlayer2;
+import it.unipv.po.model.player.HumanPlayer;
 
 public class Tester {
 
 	public static void main(String[] args) {
-
-		BotPlayer2 one = new BotPlayer2();
+		
+		HumanPlayer one = new HumanPlayer("Fabio Secci");
 		BotPlayer2 two = new BotPlayer2();
-		BotPlayer2 three = new BotPlayer2();
+		BotPlayer1 three = new BotPlayer1();
 		BotPlayer2 four = new BotPlayer2();
 		
 				

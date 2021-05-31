@@ -30,7 +30,7 @@ public class BotPlayer1 extends Player {
 
 			int i = 0;
 			
-			System.out.println(getName() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
+			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
 					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
 			getTemp().add(getDeck().get(i));
 			
@@ -46,7 +46,7 @@ public class BotPlayer1 extends Player {
 
 			int i = 0;
 
-			System.out.println(getName() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
+			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
 					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
 
 			getTemp().add(getDeck().get(i));
@@ -65,7 +65,7 @@ public class BotPlayer1 extends Player {
 						getTemp().add(table);
 						getTemp().add(deck);
 
-						System.out.println(getName() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta " + deck.getValue() + " di " + deck.getSuit());
+						System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta " + deck.getValue() + " di " + deck.getSuit());
 				
 						return 1;
 					}

@@ -9,17 +9,17 @@ import it.unipv.po.model.cards.Card;
  */
 public abstract class Player implements Actions{
 
-	private String name;
+	private String nickname;
 	private ArrayList<Card> deck;
 	private int teamIndex;
 	private int playerIndex;
 	private ArrayList<Card> temp;
 	
-	public Player(String name) {
+	public Player(String nickname) {
 		super();
 		deck = new ArrayList<Card>();
 		temp = new ArrayList<Card>();
-		this.name = name;
+		this.nickname = nickname;
 	}
 
 	public ArrayList<Card> getTemp() {
@@ -50,12 +50,12 @@ public abstract class Player implements Actions{
 		this.playerIndex = playerIndex;
 	}
 
-	public String getName() {
-		return name;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public ArrayList<Card> getDeck() {
