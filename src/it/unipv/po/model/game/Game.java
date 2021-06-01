@@ -20,23 +20,24 @@ public class Game {
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;
 	private ArrayList<Team> teams;
+	private ArrayList<Player> players;
 
 	/**
 	 * Gli ArrayList tengono conto delle carte sul tavolo, del deck usato in gioco,
 	 * del deck mescolato e dei teams.
 	 */
 
-	public Game(Player one, Player two, Player three, Player four) {
-		super();
-
-		teams = new ArrayList<>();
+	public Game(ArrayList<Player> players) {
+		
+		teams = new ArrayList<Team>();
 		deck = new ArrayList<Card>();
 		shuffledDeck = new ArrayList<Card>();
 		cardsOnBoard = new ArrayList<Card>();
+		this.players = players;
 
-		makeTeam(one, two, three, four);
+		makeTeam();
 		createDeck();
-		start(one, two, three, four);
+		start();
 	}
 
 	public ArrayList<Card> getCardsOnBoard() {
@@ -58,10 +59,14 @@ public class Game {
 	 * giocare, ed � resa di tipo public per permettere di ricominciare la partita
 	 * fin tanto che un team non vince l'incontro.
 	 */
-	public void start(Player one, Player two, Player three, Player four) {
+	public void start() {
 
 		shuffle();
-		giveCards(one, two, three, four);
+		giveCards();
+		for (int i = 0; i < 4; i++) {
+			// qua si iniziano i thread (da implementare)
+		}
+		
 	}
 
 	/**
@@ -72,26 +77,26 @@ public class Game {
 	 * @param three il terzo giocatore
 	 * @param four  il quarto giocatore
 	 */
-	private void makeTeam(Player one, Player two, Player three, Player four) {
+	private void makeTeam() {
 
 		Team a = new Team();
 		Team b = new Team();
 
-		one.setPlayerIndex(1);
-		one.setTeamIndex(0);
-		two.setPlayerIndex(2);
-		two.setTeamIndex(1);
+		players.get(0).setPlayerIndex(1);
+		players.get(0).setTeamIndex(0);
+		players.get(1).setPlayerIndex(2);
+		players.get(1).setTeamIndex(1);
 
-		three.setPlayerIndex(3);
-		three.setTeamIndex(0);
-		four.setPlayerIndex(4);
-		four.setTeamIndex(1);
+		players.get(2).setPlayerIndex(3);
+		players.get(2).setTeamIndex(0);
+		players.get(3).setPlayerIndex(4);
+		players.get(3).setTeamIndex(1);
 
-		a.getPlayers().add(one);
-		a.getPlayers().add(two);
+		a.getPlayers().add(players.get(0));
+		a.getPlayers().add(players.get(1));
 
-		b.getPlayers().add(three);
-		b.getPlayers().add(four);
+		b.getPlayers().add(players.get(2));
+		b.getPlayers().add(players.get(3));
 
 		teams.add(a);
 		teams.add(b);
@@ -164,27 +169,27 @@ public class Game {
 	 * Questa funzione da le carte ai players. si occupa di dividere il deck in 4
 	 * subdeck e di assegnarli.
 	 */
-	private void giveCards(Player one, Player two, Player three, Player four) {
+	private void giveCards() {
 
 		for (int i = 0; i <= 9; i++) {
 
-			one.getDeck().add(shuffledDeck.get(i));
+			players.get(0).getDeck().add(shuffledDeck.get(i));
 		}
 
 		for (int i = 10; i <= 19; i++) {
 
-			two.getDeck().add(shuffledDeck.get(i));
+			players.get(1).getDeck().add(shuffledDeck.get(i));
 
 		}
 
 		for (int i = 20; i <= 29; i++) {
 
-			three.getDeck().add(shuffledDeck.get(i));
+			players.get(2).getDeck().add(shuffledDeck.get(i));
 		}
 
 		for (int i = 30; i <= 39; i++) {
 
-			four.getDeck().add(shuffledDeck.get(i));
+			players.get(3).getDeck().add(shuffledDeck.get(i));
 		}
 
 	}

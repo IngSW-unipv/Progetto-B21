@@ -1,8 +1,9 @@
-package it.unipv.po.model.player;
+package it.unipv.po.model.player.types;
 
 import java.util.ArrayList;
 
 import it.unipv.po.model.cards.Card;
+import it.unipv.po.model.player.Player;
 
 /**
  * Questa classe permette l'uso di intelligenza artificiale semplice, con il Bot
@@ -10,10 +11,10 @@ import it.unipv.po.model.cards.Card;
  * 
  * @author Giuseppe Lentini
  */
-public class BotPlayer1 extends Player {
+public class BotPlayer2 extends Player {
 
-	public BotPlayer1() {
-		super("Bot presa singola ");
+	public BotPlayer2() {
+		super("Bot presa multipla");
 	}
 
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
@@ -29,11 +30,11 @@ public class BotPlayer1 extends Player {
 		case 0:
 
 			int i = 0;
-			
+
 			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
 					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
 			getTemp().add(getDeck().get(i));
-			
+
 			return getTemp();
 		}
 
@@ -58,32 +59,33 @@ public class BotPlayer1 extends Player {
 
 			for (Card deck : getDeck()) {
 
+				int counter = 0;
+				ArrayList<Card> cardList = new ArrayList<Card>();
+
 				for (Card table : cardsOnBoard) {
 
-					if (deck.getValue() == table.getValue()) {
+					counter += table.getValue();
+					cardList.add(table);
 
-						getTemp().add(table);
+					if (counter == deck.getValue() && cardList.size() != 1) {
+
+						getTemp().addAll(cardList);
 						getTemp().add(deck);
 
-						System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta " + deck.getValue() + " di " + deck.getSuit());
-				
+						System.out.println("PRESA MULTIPLA");
 						return 1;
 					}
 
 					else {
 
-						int counter = 0;
-						ArrayList<Card> cardList = new ArrayList<Card>();
+						if (deck.getValue() == table.getValue()) {
 
-						counter += table.getValue();
-						cardList.add(table);
-
-						if (counter == deck.getValue()) {
-
-							getTemp().addAll(cardList);
+							getTemp().add(table);
 							getTemp().add(deck);
 
-							System.out.println("PRESA MULTIPLA");
+							System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta "
+									+ deck.getValue() + " di " + deck.getSuit());
+
 							return 1;
 						}
 					}
