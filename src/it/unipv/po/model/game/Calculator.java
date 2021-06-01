@@ -13,13 +13,7 @@ import it.unipv.po.model.cards.Suit;
 
 public class Calculator {
 
-	private Game game;
-
-	public Calculator(Game game) {
-		this.game = game;
-	}
-
-	public void finalScore() {
+	static void finalScore(Game game) {
 
 		int scoreA = 0;
 		int scoreB = 0;
@@ -72,8 +66,8 @@ public class Calculator {
 
 		scoreB += game.getTeams().get(1).getNumScope();
 
-		System.out.println("A: " + calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
-		System.out.println("B: " + calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
+	//	System.out.println("Punti primiera A: " + calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
+	//	System.out.println("Punti primiera B: " + calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
 		
 		if (calculatePrimiera(game.getTeams().get(0).getCardsCollected()) > calculatePrimiera(
 				game.getTeams().get(1).getCardsCollected())) {
@@ -92,7 +86,7 @@ public class Calculator {
 
 	}
 
-	public int calculatePrimiera(ArrayList<Card> cards) {
+	static int calculatePrimiera(ArrayList<Card> cards) {
 
 		int denari = 0;
 		int bastoni = 0;
@@ -155,11 +149,4 @@ public class Calculator {
 		return primiera;
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
 }

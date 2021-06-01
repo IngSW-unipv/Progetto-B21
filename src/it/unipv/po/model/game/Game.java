@@ -1,10 +1,12 @@
 package it.unipv.po.model.game;
 
 import java.util.ArrayList;
+
 import java.util.Random;
 import it.unipv.po.model.cards.Card;
 import it.unipv.po.model.cards.Suit;
 import it.unipv.po.model.player.Player;
+import it.unipv.po.model.player.PlayerThread;
 import it.unipv.po.model.player.Team;
 
 /**
@@ -12,7 +14,7 @@ import it.unipv.po.model.player.Team;
  * al tavolo in quanto visto come l'ambiente di gioco e gestore della
  * distribuzione delle carte ai giocatori e dell'avvio della partita.
  * 
- * @author Giuseppe Lentini
+ * @author gruppo B
  */
 public class Game {
 
@@ -21,6 +23,7 @@ public class Game {
 	private ArrayList<Card> shuffledDeck;
 	private ArrayList<Team> teams;
 	private ArrayList<Player> players;
+	private int turn;
 
 	/**
 	 * Gli ArrayList tengono conto delle carte sul tavolo, del deck usato in gioco,
@@ -40,42 +43,22 @@ public class Game {
 		start();
 	}
 
-	public ArrayList<Card> getCardsOnBoard() {
+	synchronized public ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
 	}
 
-	public void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
+	synchronized public void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
 
 		this.cardsOnBoard = cardsOnBoard;
 	}
 
-	public ArrayList<Team> getTeams() {
+	synchronized public ArrayList<Team> getTeams() {
 		return teams;
 	}
-
-	/**
-	 * Questo metodo ha il compito di far iniziare la partita. ï¿½ inserita nel
-	 * costruttore in quanto una volta costruita la board si puï¿½ iniziare a
-	 * giocare, ed ï¿½ resa di tipo public per permettere di ricominciare la partita
-	 * fin tanto che un team non vince l'incontro.
-	 */
-	public void start() {
-
-		shuffle();
-		giveCards();
-		for (int i = 0; i < 4; i++) {
-			// qua si iniziano i thread (da implementare)
-		}
-		
-	}
-
+	
 	/**
 	 * Questo metodo crea i team e li memorizza.
 	 * 
-	 * @param one   il primo giocatore
-	 * @param two   il secondo giocatore
-	 * @param three il terzo giocatore
-	 * @param four  il quarto giocatore
 	 */
 	private void makeTeam() {
 
@@ -150,6 +133,23 @@ public class Game {
 		}
 	}
 
+	
+	/**
+	 * Questo metodo ha il compito di far iniziare la partita. 
+	 * Si mischiano le carte, si danno ai giocatori, si inizializza il turno, e si startano i thread dei giocatori.
+	 */
+	public void start() {
+		shuffle();
+		giveCards();
+		turn = 1;
+		for (int i = 0; i < 4; i++) {
+	    	PlayerThread tr = new PlayerThread(this, players.get(i));
+	        tr.start();
+		}
+
+	}
+
+
 	/**
 	 * Questo metodo mescola il deck.
 	 */
@@ -193,8 +193,14 @@ public class Game {
 		}
 
 	}
-
-	public void playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
+	
+	
+	/*
+	 * (Per thread)
+	 * Questo metodo fa fare un azione ad un giocatore bot o umano
+	 * 
+	 */
+	synchronized public void playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
 
 		player.playCard(cardsOnBoard);
 
@@ -262,4 +268,38 @@ public class Game {
 			break;
 		}
 	}
+	
+	/*
+	 * (Per thread)
+	 * Restituisce il valore del turno corrente.
+	 * 
+	 */
+	synchronized public int getTurn() {
+		return turn;
+	}
+	
+	/*
+	 * (Per thread)
+	 * Aggiorna il contatore del turno.
+	 * 
+	 */
+	synchronized public void nextTurn() {
+		turn++;
+		if (turn == 5) turn = 1;
+	} 
+	
+	/*
+	 * (Per thread)
+	 * La partita finisce. Vengono calcolati i punti finali e mostrati all'utente.
+	 * turn viene messo a zero così i thread non possono attivarsi finchè non inizia una nuova partita.
+	 * 
+	 */
+	synchronized public void endGame() {
+		Calculator.finalScore(this);
+		System.out.println("punti team A: " + getTeams().get(0).getTotalPoints());
+		System.out.println("punti team B: " + getTeams().get(1).getTotalPoints());
+		System.out.println("Fine partita!");
+		turn = 0;
+	}
+	
 }
