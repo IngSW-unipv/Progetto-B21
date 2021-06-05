@@ -13,23 +13,21 @@ public abstract class Player implements Actions{
 	private ArrayList<Card> deck;
 	private int teamIndex;
 	private int playerIndex;
-	private ArrayList<Card> temp;
+	private ArrayList<Card> cardsListTemp;
 	
 	public Player(String nickname) {
 		super();
 		deck = new ArrayList<Card>();
-		temp = new ArrayList<Card>();
+		cardsListTemp = new ArrayList<Card>();
 		this.nickname = nickname;
 	}
 
-	public ArrayList<Card> getTemp() {
-		return temp;
+	public ArrayList<Card> getCardsListTemp() {
+		return cardsListTemp;
 	}
 
-
-
-	public void setTemp(ArrayList<Card> temp) {
-		this.temp = temp;
+	public void setCardsListTemp(ArrayList<Card> temp) {
+		this.cardsListTemp = temp;
 	}
 
 

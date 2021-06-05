@@ -19,13 +19,13 @@ public class BotPlayer2 extends Player {
 
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
-		getTemp().clear();
+		getCardsListTemp().clear();
 
 		switch (makePresa(cardsOnBoard)) {
 
 		case 1:
 
-			return getTemp();
+			return getCardsListTemp();
 
 		case 0:
 
@@ -33,9 +33,9 @@ public class BotPlayer2 extends Player {
 
 			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
 					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-			getTemp().add(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(i));
 
-			return getTemp();
+			return getCardsListTemp();
 		}
 
 		return null;
@@ -50,7 +50,7 @@ public class BotPlayer2 extends Player {
 			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
 					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
 
-			getTemp().add(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(i));
 
 			return 1;
 		}
@@ -69,8 +69,8 @@ public class BotPlayer2 extends Player {
 
 					if (counter == deck.getValue() && cardList.size() != 1) {
 
-						getTemp().addAll(cardList);
-						getTemp().add(deck);
+						getCardsListTemp().addAll(cardList);
+						getCardsListTemp().add(deck);
 
 						System.out.println("PRESA MULTIPLA");
 						return 1;
@@ -80,8 +80,8 @@ public class BotPlayer2 extends Player {
 
 						if (deck.getValue() == table.getValue()) {
 
-							getTemp().add(table);
-							getTemp().add(deck);
+							getCardsListTemp().add(table);
+							getCardsListTemp().add(deck);
 
 							System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta "
 									+ deck.getValue() + " di " + deck.getSuit());

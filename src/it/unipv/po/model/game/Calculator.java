@@ -66,9 +66,11 @@ public class Calculator {
 
 		scoreB += game.getTeams().get(1).getNumScope();
 
-	//	System.out.println("Punti primiera A: " + calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
-	//	System.out.println("Punti primiera B: " + calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
-		
+		// System.out.println("Punti primiera A: " +
+		// calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
+		// System.out.println("Punti primiera B: " +
+		// calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
+
 		if (calculatePrimiera(game.getTeams().get(0).getCardsCollected()) > calculatePrimiera(
 				game.getTeams().get(1).getCardsCollected())) {
 
@@ -148,5 +150,4 @@ public class Calculator {
 		}
 		return primiera;
 	}
-
 }

@@ -24,6 +24,11 @@ public class Game {
 	private ArrayList<Team> teams;
 	private ArrayList<Player> players;
 	private int turn;
+	private int teamIndex;
+
+	public int getTeamIndex() {
+		return teamIndex;
+	}
 
 	/**
 	 * Gli ArrayList tengono conto delle carte sul tavolo, del deck usato in gioco,
@@ -37,6 +42,7 @@ public class Game {
 		shuffledDeck = new ArrayList<Card>();
 		cardsOnBoard = new ArrayList<Card>();
 		this.players = players;
+		setTeamIndex(0);
 
 		makeTeam();
 		createDeck();
@@ -139,9 +145,12 @@ public class Game {
 	 * Si mischiano le carte, si danno ai giocatori, si inizializza il turno, e si startano i thread dei giocatori.
 	 */
 	public void start() {
+		
 		shuffle();
 		giveCards();
+		
 		turn = 1;
+		
 		for (int i = 0; i < 4; i++) {
 	    	PlayerThread tr = new PlayerThread(this, players.get(i));
 	        tr.start();
@@ -202,56 +211,33 @@ public class Game {
 	 */
 	synchronized public void playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
 
-		player.playCard(cardsOnBoard);
 
-		switch (player.getTemp().size()) {
+		switch (player.playCard(cardsOnBoard).size()) {
 
 		case 1:
-			cardsOnBoard.addAll(player.getTemp());
-			player.getDeck().removeAll(player.getTemp());
+			cardsOnBoard.addAll(player.getCardsListTemp());
+			player.getDeck().removeAll(player.getCardsListTemp());
+			setTeamIndex(player.getTeamIndex());
+			
 			break;
-
-		case 2:
-
-			if (player.getTemp().get(0).getValue() == player.getTemp().get(1).getValue()) {
-
-				cardsOnBoard.remove(player.getTemp().get(0));
-				player.getDeck().remove(player.getTemp().get(1));
-				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getTemp());
-
-				if (cardsOnBoard.isEmpty()) {
-
-					teams.get(player.getTeamIndex()).scopa();
-					System.out.println("|CROUPIER| SCOPA!");
-				}
-
-				break;
-			}
-
-			else { // questo else è da testare con intelligenza umana, è il caso in cui si scelgono
-					// carte sbagliate
-
-				System.out.println("|CROUPIER| mossa non valida!");
-				playerActionMonitoring(player, cardsOnBoard);
-				break;
-			}
 
 		default:
 
-			int count = 0;
+			int temp = 0;
 
-			for (int i = 0; i < player.getTemp().size() - 1; i++) {
+			for (int i = 0; i < player.getCardsListTemp().size() - 1; i++) {
 
-				count += player.getTemp().get(i).getValue();
+				temp += player.getCardsListTemp().get(i).getValue();
 			}
 
-			if (count == player.getTemp().get(player.getTemp().size() - 1).getValue()) {
+			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size()-1).getValue()) {
 
 				System.out.println("|CROUPIER| mossa valida");
-				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getTemp());
-				cardsOnBoard.removeAll(player.getTemp());
-				player.getDeck().remove(player.getTemp().get(player.getTemp().size() - 1));
-
+				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
+				cardsOnBoard.removeAll(player.getCardsListTemp());
+				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
+				setTeamIndex(player.getTeamIndex());
+				
 				if (cardsOnBoard.isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
@@ -295,11 +281,17 @@ public class Game {
 	 * 
 	 */
 	synchronized public void endGame() {
+		
+		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
+		cardsOnBoard.clear();
 		Calculator.finalScore(this);
 		System.out.println("punti team A: " + getTeams().get(0).getTotalPoints());
 		System.out.println("punti team B: " + getTeams().get(1).getTotalPoints());
-		System.out.println("Fine partita!");
-		turn = 0;
+	}
+
+
+	public void setTeamIndex(int teamIndex) {
+		this.teamIndex = teamIndex;
 	}
 	
 }

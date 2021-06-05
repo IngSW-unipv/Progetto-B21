@@ -24,7 +24,7 @@ public class HumanPlayer extends Player {
 	@Override
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
-		getTemp().clear();
+		getCardsListTemp().clear();
 
 		int i;
 		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
@@ -54,9 +54,9 @@ public class HumanPlayer extends Player {
 		System.out.println(
 				getNickname() + " gioca la carta " + getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
 
-		getTemp().add(getDeck().get(i));
+		getCardsListTemp().add(getDeck().get(i));
 
-		return getTemp();
+		return getCardsListTemp();
 	}
 
 	public ArrayList<Card> chooseCards(ArrayList<Card> cardsOnBoard) {
@@ -71,13 +71,13 @@ public class HumanPlayer extends Player {
 		}
 		try {
 			while (((in = keyboard.readLine()).charAt(0) != 'x')) {
-				getTemp().add(cardsOnBoard.get(Integer.parseInt(in)));
+				getCardsListTemp().add(cardsOnBoard.get(Integer.parseInt(in)));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return getTemp();
+		return getCardsListTemp();
 	}
 
 }
