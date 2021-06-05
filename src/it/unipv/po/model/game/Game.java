@@ -26,15 +26,7 @@ public class Game {
 	private int turn;
 	private int teamIndex;
 
-	public int getTeamIndex() {
-		return teamIndex;
-	}
-
-	/**
-	 * Gli ArrayList tengono conto delle carte sul tavolo, del deck usato in gioco,
-	 * del deck mescolato e dei teams.
-	 */
-
+	/* ____________COSTRUTTORE____________________*/
 	public Game(ArrayList<Player> players) {
 		
 		teams = new ArrayList<Team>();
@@ -49,6 +41,8 @@ public class Game {
 		start();
 	}
 
+	/*_____________GETTERS & SETTERS______________*/
+
 	synchronized public ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
 	}
@@ -58,12 +52,44 @@ public class Game {
 		this.cardsOnBoard = cardsOnBoard;
 	}
 
+	public int getTeamIndex() {
+		return teamIndex;
+	}
+
+	public void setTeamIndex(int teamIndex) {
+		this.teamIndex = teamIndex;
+	}
+	
 	synchronized public ArrayList<Team> getTeams() {
 		return teams;
 	}
 	
+	synchronized public int getTurn() {
+		return turn;
+	}
+	
+	//_____________METODI_________________________*/	
+	
+	/**
+	 * Questo metodo ha il compito di far iniziare la partita. 
+	 * Si mischiano le carte, si danno ai giocatori, si inizializza il turno, e si startano i thread dei giocatori.
+	 */
+	public void start() {
+		
+		shuffle();
+		giveCards();
+		
+		turn = 1;
+		
+		for (int i = 0; i < 4; i++) {
+	    	PlayerThread tr = new PlayerThread(this, players.get(i));
+	        tr.start();
+		}
+	}
+	
 	/**
 	 * Questo metodo crea i team e li memorizza.
+
 	 * 
 	 */
 	private void makeTeam() {
@@ -138,27 +164,7 @@ public class Game {
 			}
 		}
 	}
-
 	
-	/**
-	 * Questo metodo ha il compito di far iniziare la partita. 
-	 * Si mischiano le carte, si danno ai giocatori, si inizializza il turno, e si startano i thread dei giocatori.
-	 */
-	public void start() {
-		
-		shuffle();
-		giveCards();
-		
-		turn = 1;
-		
-		for (int i = 0; i < 4; i++) {
-	    	PlayerThread tr = new PlayerThread(this, players.get(i));
-	        tr.start();
-		}
-
-	}
-
-
 	/**
 	 * Questo metodo mescola il deck.
 	 */
@@ -202,7 +208,6 @@ public class Game {
 		}
 
 	}
-	
 	
 	/*
 	 * (Per thread)
@@ -257,15 +262,6 @@ public class Game {
 	
 	/*
 	 * (Per thread)
-	 * Restituisce il valore del turno corrente.
-	 * 
-	 */
-	synchronized public int getTurn() {
-		return turn;
-	}
-	
-	/*
-	 * (Per thread)
 	 * Aggiorna il contatore del turno.
 	 * 
 	 */
@@ -288,10 +284,4 @@ public class Game {
 		System.out.println("punti team A: " + getTeams().get(0).getTotalPoints());
 		System.out.println("punti team B: " + getTeams().get(1).getTotalPoints());
 	}
-
-
-	public void setTeamIndex(int teamIndex) {
-		this.teamIndex = teamIndex;
-	}
-	
 }
