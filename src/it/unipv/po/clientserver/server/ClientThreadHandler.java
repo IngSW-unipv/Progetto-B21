@@ -10,7 +10,7 @@ import it.unipv.po.model.player.types.HumanPlayer;
  * Questa classe rappresenta il server nei confronti di un unico client
  * E' un thread che viene creato e avviato ogni qualvolta un client si connette al server
  * e dovrebbe gestire l'input dal cliente e inviargli messaggi.
- * @author Vito Avanzato
+ * @author Vito Avanzato  
  *
  */
 public class ClientThreadHandler extends Thread{

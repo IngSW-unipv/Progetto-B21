@@ -45,7 +45,7 @@ public class Client {
 	}
 	
 	/**
-	 * Con questo metodo il client prova effettivamente a connettersi ad un server con i parametri specificati 
+	 * Con questo metodo il client prova effettivamente a connettersi ad un server con i parametri specificati  
 	 * e crea una connessione tramite socket.
 	 * @param serverName: il nome del server (host name)
 	 * @param serverPort: la porta del server (TCP)

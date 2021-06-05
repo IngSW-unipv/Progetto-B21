@@ -19,7 +19,7 @@ import it.unipv.po.model.player.types.HumanPlayer;
 
 public class MainServer {
 
-	//TCP
+	//TCP 
 	private final int portNumber;
 	private final String hostName;
 	private ServerSocket serverSocket;
