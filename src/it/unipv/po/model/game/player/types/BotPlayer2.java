@@ -1,9 +1,9 @@
-package it.unipv.po.model.player.types;
+package it.unipv.po.model.game.player.types;
 
 import java.util.ArrayList;
 
-import it.unipv.po.model.cards.Card;
-import it.unipv.po.model.player.Player;
+import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.player.Player;
 
 /**
  * Questa classe permette l'uso di intelligenza artificiale semplice, con il Bot

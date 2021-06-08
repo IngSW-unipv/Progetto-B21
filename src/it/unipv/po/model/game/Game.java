@@ -3,11 +3,12 @@ package it.unipv.po.model.game;
 import java.util.ArrayList;
 
 import java.util.Random;
-import it.unipv.po.model.cards.Card;
-import it.unipv.po.model.cards.Suit;
-import it.unipv.po.model.player.Player;
-import it.unipv.po.model.player.PlayerThread;
-import it.unipv.po.model.player.Team;
+
+import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.cards.Suit;
+import it.unipv.po.model.game.player.Player;
+import it.unipv.po.model.game.player.PlayerThread;
+import it.unipv.po.model.game.player.Team;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali

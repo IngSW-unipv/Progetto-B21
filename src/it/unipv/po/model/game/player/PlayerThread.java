@@ -1,4 +1,4 @@
-package it.unipv.po.model.player;
+package it.unipv.po.model.game.player;
 
 import it.unipv.po.model.game.Game;
 

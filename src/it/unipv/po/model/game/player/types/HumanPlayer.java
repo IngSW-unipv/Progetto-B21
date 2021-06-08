@@ -1,12 +1,12 @@
-package it.unipv.po.model.player.types;
+package it.unipv.po.model.game.player.types;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import it.unipv.po.model.cards.Card;
-import it.unipv.po.model.player.Player;
+import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.player.Player;
 
 /**
  * Questa classe permette ad un giocatore umano di effettuare le sue mosse.

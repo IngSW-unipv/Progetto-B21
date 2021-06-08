@@ -1,8 +1,8 @@
-package it.unipv.po.model.player;
+package it.unipv.po.model.game.player;
 
 import java.util.ArrayList;
 
-import it.unipv.po.model.cards.Card;
+import it.unipv.po.model.game.cards.Card;
 
 public interface Actions {
 

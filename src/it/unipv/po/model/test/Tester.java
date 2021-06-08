@@ -3,8 +3,8 @@ package it.unipv.po.model.test;
 import java.util.ArrayList;
 
 import it.unipv.po.model.game.Game;
-import it.unipv.po.model.player.Player;
-import it.unipv.po.model.player.types.*;
+import it.unipv.po.model.game.player.Player;
+import it.unipv.po.model.game.player.types.*;
 public class Tester {
 
 	public static void main(String[] args) {

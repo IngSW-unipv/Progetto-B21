@@ -8,8 +8,8 @@ package it.unipv.po.model.game;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.unipv.po.model.cards.Card;
-import it.unipv.po.model.cards.Suit;
+import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.cards.Suit;
 
 public class Calculator {
 

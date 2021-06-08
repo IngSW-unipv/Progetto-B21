@@ -1,6 +1,6 @@
 package it.unipv.po.model.test;
 
-import it.unipv.po.clientserver.client.Client;
+import it.unipv.po.model.clientserver.client.Client;
 
 public class ClientServerTester {
 	public static void main(String args[]) {

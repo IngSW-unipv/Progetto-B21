@@ -1,4 +1,4 @@
-package it.unipv.po.model.cards;
+package it.unipv.po.model.game.cards;
 
 /**
  * 
