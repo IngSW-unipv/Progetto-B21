@@ -27,7 +27,7 @@ public class ScoponeGUI extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(ScoponeGUI.class.getResource("/it/unipv/po/images/logo.png")));
 
-		inzialize();
+		mainMenu();
 	}
 
 	/* __________________GETTERS & SETTERS________ */
@@ -64,7 +64,7 @@ public class ScoponeGUI extends JFrame {
 	}
 
 	/* _________________METODI_____________________ */
-	private void inzialize() {
+	private void mainMenu() {
 
 		this.loader = new ImagesLoader();
 
@@ -131,5 +131,16 @@ public class ScoponeGUI extends JFrame {
 			ImageIcon soundSet2 = new ImageIcon(sound);
 			soundButton.setIcon(soundSet2);
 		}
+	}
+	
+	public void gameGraphics() {
+		
+		// background
+		this.background = loader.uploadImage("/it/unipv/po/images/background.png");
+		ImageIcon image = new ImageIcon(background);
+		JLabel backgroundlabel = new JLabel("", image, JLabel.CENTER);
+		backgroundlabel.setBounds(0, 0, 800, 500);
+		backgroundlabel.setLayout(null);
+		
 	}
 }
