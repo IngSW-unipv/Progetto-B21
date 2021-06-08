@@ -99,7 +99,7 @@ public class ScoponeGUI extends JFrame {
 
 		// sound
 		this.soundButton = new JButton();
-		this.sound = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
+		this.sound = loader.uploadImage("/it/unipv/po/images/audioON.png");
 		ImageIcon soundSet = new ImageIcon(sound);
 		soundButton.setIcon(soundSet);
 		soundButton.setBounds(720, 15, 50, 50);
@@ -122,12 +122,12 @@ public class ScoponeGUI extends JFrame {
 
 		switch (i) {
 		case 0:
-			this.sound = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
+			this.sound = loader.uploadImage("/it/unipv/po/images/audioON.png");
 			ImageIcon soundSet = new ImageIcon(sound);
 			soundButton.setIcon(soundSet);
 			break;
 		case 1:
-			this.sound = loader.uploadImage("/it/unipv/po/images/audioON.png");
+			this.sound = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
 			ImageIcon soundSet2 = new ImageIcon(sound);
 			soundButton.setIcon(soundSet2);
 		}
