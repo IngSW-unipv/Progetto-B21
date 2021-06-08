@@ -2,134 +2,119 @@ package it.unipv.po.clientserver.client;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.*;
-import it.unipv.po.clientserver.server.*;
-import it.unipv.po.model.player.*;
-import it.unipv.po.model.player.types.HumanPlayer;
 
 import java.io.*;
 
 /**
- * Questa classe rappresenta ogni client, ossia ogni persona fisica che si connetterà al server.
- * Il giocatore potrà interagire e comunicare con il server (in realtà con il thread che gestirà questo client)
- * per poter giocare correttamente allo Scopone.
+ * Semplice client che permette la scambio di messaggi con un server
  * @author Vito Avanzato
  *
  */
-public class Client {
+public class Client extends Thread{
 
-	private static Socket socket;
-	private static Player player;
-	private static BufferedReader inputFromThisClient;
-	private static BufferedReader inputFromServer;
-	private static PrintWriter outputToServer;
-
-	private static boolean isConnected = false;
+	//parametri di connessione
+	private Socket socket;
+	private int serverPort = 0;
+	private String serverName = null;
+	private boolean isConnected = false;
 	
-	public static boolean isConnected() {
+	//parametri di I/O
+	private BufferedReader clientInput;
+	private BufferedReader serverOutput;
+	private PrintWriter clientOutput;
+	private String serverMsg;
+	private String clientMsg;
+
+	/**
+	 * Costruttore
+	 */
+	public Client() {
+		this.serverPort = 0;
+		this.serverName = null;
+	}
+	
+	/**
+	 * Come prima cosa viene aperta la connessione con il server, poi si gestisce lo scambio di 
+	 * messaggi String da client a server. Alla fine la connessione viene chiusa
+	 */
+	public void run() {
 		
-		return isConnected;
-	}
-	
-	public static Socket getSocket() {
-		return socket;
-	}
-	public static void setSocket(Socket socket) {
-		Client.socket = socket;
-	}
-	public static Player getPlayer() {
-		return player;
-	}
-	public static void setPlayer(Player player) {
-		Client.player = player;
+		clientInput = new BufferedReader(new InputStreamReader((System.in)));
+		
+		connectToServer();
+		
+		while(isConnected) {
+			try {
+				getMessageFromServer();
+				sendMessageToServer();
+			} catch (Exception e) {}
+		}
+		
+		try {
+			socket.close();
+		} catch (IOException e) {}
+		
 	}
 	
 	/**
 	 * Con questo metodo il client prova effettivamente a connettersi ad un server con i parametri specificati  
 	 * e crea una connessione tramite socket.
-	 * @param serverName: il nome del server (host name)
-	 * @param serverPort: la porta del server (TCP)
 	 */
-	public static void connectToServer(String serverName, int serverPort) {
-		
-		try {
+	private void connectToServer() {
+		//inserimento parametri da tastiera
+		while(!isConnected) { 
+			try {
+				System.out.println("A che server vuoi connetterti?");
+				System.out.print("Porta server (inserire 8989): ");
+				serverPort = Integer.parseInt(clientInput.readLine());
+				System.out.print("Nome server (inserire localhost):");
+				serverName = clientInput.readLine();
+			} catch (NumberFormatException e1) {	
+				System.out.println("La porta deve essere un numero intero");
+			} catch (IOException e1) {
+				System.out.println("Errore");
+			}
 			
-			socket = new Socket(serverName, serverPort);
-			inputFromThisClient = new BufferedReader(new InputStreamReader((System.in)));
-			inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			outputToServer = new PrintWriter(socket.getOutputStream(), true);
-			
-			System.out.println("Successfully connected to the server.");
-			
-			isConnected = true;
-			
-		} catch (UnknownHostException e) {
-			System.err.println("Non esiste alcun server all'indirizzo specificato ("+serverName+").");
-			
-		} catch (IOException e) {
-			System.err.println("Qualcosa è andato storto. Riprovare.");
-			
-		}
-		
-	}
-	public static void main(String[] args) {
-		
-		Scanner keyboard = new Scanner(System.in);
-		String userReply;
-		
-		System.out.println("Vuoi collegarti a un server? y/n");
-		userReply = keyboard.next();
-		if(userReply.equalsIgnoreCase("y")) {
-			
-			System.out.println("A che server vuoi connetterti? Specificare:");
-			System.out.print("Porta server: ");
-			int serverPort = keyboard.nextInt();
-			System.out.print("Nome server:");
-			String serverName = keyboard.next();
-			
-			connectToServer(serverName, serverPort);
-			
-			if(isConnected) {
-				
-				System.out.print("Choose a nickname: ");
-				userReply = keyboard.next();
-				outputToServer.println(userReply);
-				setPlayer(new HumanPlayer(userReply));
-				
-				System.out.println("Hi "+player.getNickname());
-				
-				//Tutto da rivedere per far avvenire la comunicazione tra client e server correttamente
-				while(true) {
-					
-					try {
-						
-						while(inputFromServer.readLine() != null) {
-							
-							String serverMsg = inputFromServer.readLine();
-							
-							System.out.println("Server: "+serverMsg);
-						}
-						
-						while(inputFromThisClient.readLine() != null) {
-							
-							String clientMsg = inputFromThisClient.readLine();
-							
-							outputToServer.println(clientMsg);
-							
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+			//connessione effettiva
+			try {
+				socket = new Socket(serverName, serverPort);
+				serverOutput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				clientOutput = new PrintWriter(socket.getOutputStream(), true);
+				System.out.println("Connessione al server riuscita.");
+				isConnected = true;
+			} catch (UnknownHostException e) {
+				System.err.println("Non esiste alcun server all'indirizzo ("+serverName+").");
+			} catch (IOException e) {
+				System.err.println("Errore. Riprovare.");
 			}
 		}
 		
-		
-		keyboard.close();
-		
-	
-		
 	}
+	
+	/**
+	 * Se c'è, viene mostrato in console il messaggio inviato dal server
+	 */
+	private void getMessageFromServer() throws Exception {
+		serverMsg = serverOutput.readLine();
+		if (serverMsg != null) 
+			System.out.println("Server: "+serverMsg);
+	}
+	
+	/**
+	 * Si prende input da tastiera e lo si invia al server.
+	 * In caso l'input sia "close" si chiude la connessione
+	 */
+	private void sendMessageToServer() throws Exception {
+		clientMsg = clientInput.readLine();
+		if (clientMsg != null) {
+			if (clientMsg == "close") {
+				try {
+					socket.close();
+				} catch (IOException e) {}
+			}
+			clientOutput.println(clientMsg);
+		}
+	}
+
 
 }
