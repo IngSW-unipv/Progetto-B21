@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.Player;
 
@@ -18,10 +17,9 @@ public class HumanPlayer extends Player {
 
 	public HumanPlayer(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+
 	}
 
-	@Override
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
 		getCardsListTemp().clear();
@@ -30,7 +28,7 @@ public class HumanPlayer extends Player {
 		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("\n|CARTE SUL TAVOLO|");
-		
+
 		for (int j = 0; j <= cardsOnBoard.size() - 1; j++) {
 			System.out.println(j + "| " + cardsOnBoard.get(j).getValue() + " di " + cardsOnBoard.get(j).getSuit());
 		}

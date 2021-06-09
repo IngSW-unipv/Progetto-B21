@@ -11,6 +11,7 @@ public class MainMenu {
 
 	private Game scopone;
 	private Music music;
+	private Player player;
 
 	public MainMenu() {
 		super();
@@ -27,10 +28,21 @@ public class MainMenu {
 		return scopone;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	public void singlePlayer() {
 
 		ArrayList<Player> players = new ArrayList<Player>();
-		players.add(new HumanPlayer("Fabio Secci"));
+		HumanPlayer human = new HumanPlayer("Fabio Secci");
+		setPlayer(human);
+		
+		players.add(human);
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());

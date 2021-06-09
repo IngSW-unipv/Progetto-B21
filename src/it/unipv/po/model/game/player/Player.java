@@ -14,12 +14,24 @@ public abstract class Player implements Actions{
 	private int teamIndex;
 	private int playerIndex;
 	private ArrayList<Card> cardsListTemp;
+	private boolean isCardSelected;
+
 	
 	public Player(String nickname) {
 		super();
 		deck = new ArrayList<Card>();
 		cardsListTemp = new ArrayList<Card>();
 		this.nickname = nickname;
+		isCardSelected = true;
+	}
+
+	public boolean isCardSelected() {
+		
+		return isCardSelected;
+	}
+
+	public void setCardSelected() {
+		this.isCardSelected = !isCardSelected;
 	}
 
 	public ArrayList<Card> getCardsListTemp() {

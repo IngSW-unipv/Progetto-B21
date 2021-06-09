@@ -60,4 +60,12 @@ public class Card implements Comparable<Card> {
 
 		return 0;
 	}
+
+	public String toString() {
+
+		String s = super.toString();
+		s = ""+getValue() + getSuit();
+
+		return s;
+	}
 }

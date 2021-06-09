@@ -27,9 +27,9 @@ public class Game {
 	private int turn;
 	private int teamIndex;
 
-	/* ____________COSTRUTTORE____________________*/
+	/* ____________COSTRUTTORE____________________ */
 	public Game(ArrayList<Player> players) {
-		
+
 		teams = new ArrayList<Team>();
 		deck = new ArrayList<Card>();
 		shuffledDeck = new ArrayList<Card>();
@@ -42,7 +42,7 @@ public class Game {
 		start();
 	}
 
-	/*_____________GETTERS & SETTERS______________*/
+	/* _____________GETTERS & SETTERS______________ */
 
 	synchronized public ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -60,37 +60,38 @@ public class Game {
 	public void setTeamIndex(int teamIndex) {
 		this.teamIndex = teamIndex;
 	}
-	
+
 	synchronized public ArrayList<Team> getTeams() {
 		return teams;
 	}
-	
+
 	synchronized public int getTurn() {
 		return turn;
 	}
-	
-	//_____________METODI_________________________*/	
-	
+
+	// _____________METODI_________________________*/
+
 	/**
-	 * Questo metodo ha il compito di far iniziare la partita. 
-	 * Si mischiano le carte, si danno ai giocatori, si inizializza il turno, e si startano i thread dei giocatori.
+	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
+	 * carte, si danno ai giocatori, si inizializza il turno, e si startano i thread
+	 * dei giocatori.
 	 */
 	public void start() {
-		
+
 		shuffle();
 		giveCards();
-		
+
 		turn = 1;
-		
+
 		for (int i = 0; i < 4; i++) {
-	    	PlayerThread tr = new PlayerThread(this, players.get(i));
-	        tr.start();
+			PlayerThread tr = new PlayerThread(this, players.get(i));
+			tr.start();
 		}
 	}
-	
+
 	/**
 	 * Questo metodo crea i team e li memorizza.
-
+	 * 
 	 * 
 	 */
 	private void makeTeam() {
@@ -165,7 +166,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	/**
 	 * Questo metodo mescola il deck.
 	 */
@@ -209,14 +210,12 @@ public class Game {
 		}
 
 	}
-	
+
 	/*
-	 * (Per thread)
-	 * Questo metodo fa fare un azione ad un giocatore bot o umano
+	 * (Per thread) Questo metodo fa fare un azione ad un giocatore bot o umano
 	 * 
 	 */
-	synchronized public void playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
-
+	synchronized public boolean playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
 
 		switch (player.playCard(cardsOnBoard).size()) {
 
@@ -224,8 +223,8 @@ public class Game {
 			cardsOnBoard.addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
 			setTeamIndex(player.getTeamIndex());
-			
-			break;
+
+			return true;
 
 		default:
 
@@ -236,49 +235,51 @@ public class Game {
 				temp += player.getCardsListTemp().get(i).getValue();
 			}
 
-			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size()-1).getValue()) {
+			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue()) {
 
 				System.out.println("|CROUPIER| mossa valida");
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
 				cardsOnBoard.removeAll(player.getCardsListTemp());
 				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
 				setTeamIndex(player.getTeamIndex());
-				
+
 				if (cardsOnBoard.isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
 					System.out.println("|CROUPIER| SCOPA!");
 				}
+				
+				return true;
 			}
 
 			else {
 
 				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player, cardsOnBoard);
+				
+				return false;
 			}
-
-			break;
 		}
 	}
-	
+
 	/*
-	 * (Per thread)
-	 * Aggiorna il contatore del turno.
+	 * (Per thread) Aggiorna il contatore del turno.
 	 * 
 	 */
 	synchronized public void nextTurn() {
 		turn++;
-		if (turn == 5) turn = 1;
-	} 
-	
+		if (turn == 5)
+			turn = 1;
+	}
+
 	/*
-	 * (Per thread)
-	 * La partita finisce. Vengono calcolati i punti finali e mostrati all'utente.
-	 * turn viene messo a zero così i thread non possono attivarsi finchè non inizia una nuova partita.
+	 * (Per thread) La partita finisce. Vengono calcolati i punti finali e mostrati
+	 * all'utente. turn viene messo a zero così i thread non possono attivarsi
+	 * finchè non inizia una nuova partita.
 	 * 
 	 */
 	synchronized public void endGame() {
-		
+
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();
 		Calculator.finalScore(this);
