@@ -21,7 +21,7 @@ public class ScoponeGUI extends JFrame {
 	private BufferedImage buffer;
 	private ImagesLoader loader;
 	private JButton singlePlayerButton, multiPlayerButton, soundButton, send;
-	private JLabel backgroundLabel;
+	private JLabel backgroundLabel, chat;
 	private ArrayList<JButton> cards;
 
 	/* __________________COSTRUTTORE______________ */
@@ -75,6 +75,14 @@ public class ScoponeGUI extends JFrame {
 
 	public ArrayList<JButton> getCards() {
 		return cards;
+	}
+
+	public JLabel getChat() {
+		return chat;
+	}
+
+	public void setChat(JLabel chat) {
+		this.chat = chat;
 	}
 
 	/* _________________METODI_____________________ */
@@ -165,11 +173,17 @@ public class ScoponeGUI extends JFrame {
 		getBackgroundLabel().setIcon(game);
 
 		// invio
-		JButton send = new JButton();
+		this.send = new JButton();
 		send.setBounds(750, 309, 30, 113);
 		setSend(send);
 		getBackgroundLabel().add(send);
 
+		// chat
+		this.chat = new JLabel();
+		setChat(chat);
+		chat.setBounds(0, 440, 800, 20);
+		chat.setOpaque(true);
+		getBackgroundLabel().add(chat);
 	}
 
 	public JButton cardsBuilder(int x, int y, String txt) {

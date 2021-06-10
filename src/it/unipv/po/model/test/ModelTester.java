@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import it.unipv.po.model.game.Game;
 import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.types.*;
-public class Tester {
+public class ModelTester {
 
 	public static void main(String[] args) {
 	
