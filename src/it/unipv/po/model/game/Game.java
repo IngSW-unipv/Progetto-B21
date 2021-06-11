@@ -6,9 +6,11 @@ import java.util.Random;
 
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
+import it.unipv.po.model.game.player.HumanThread;
 import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.PlayerThread;
 import it.unipv.po.model.game.player.Team;
+import it.unipv.po.model.game.player.types.HumanPlayer;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali
@@ -26,6 +28,7 @@ public class Game {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
+	private HumanThread human;
 
 	/* ____________COSTRUTTORE____________________ */
 	public Game(ArrayList<Player> players) {
@@ -68,8 +71,18 @@ public class Game {
 	synchronized public int getTurn() {
 		return turn;
 	}
+	
+	public HumanThread getHuman() {
+		return human;
+	}
+
+	public void setHuman(HumanThread human) {
+		this.human = human;
+	}	
 
 	// _____________METODI_________________________*/
+
+
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
@@ -83,7 +96,11 @@ public class Game {
 
 		turn = 1;
 
-		for (int i = 0; i < 4; i++) {
+		HumanThread human = new HumanThread(this, (HumanPlayer) players.get(0));
+		human.start();
+		setHuman(human);
+		
+		for (int i = 1; i < 4; i++) {
 			PlayerThread tr = new PlayerThread(this, players.get(i));
 			tr.start();
 		}
@@ -222,7 +239,6 @@ public class Game {
 		case 1:
 			cardsOnBoard.addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			setTeamIndex(player.getTeamIndex());
 
 			return true;
 
@@ -256,6 +272,57 @@ public class Game {
 
 				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player, cardsOnBoard);
+				
+				return false;
+			}
+		}
+	}
+	
+	synchronized public boolean playerActionMonitoring(HumanPlayer player) {
+
+		System.out.println(player.getCardsListTemp().size());
+		switch (player.getCardsListTemp().size()) {
+
+		case 1:
+			cardsOnBoard.addAll(player.getCardsListTemp());
+			player.getDeck().removeAll(player.getCardsListTemp());
+			player.setCardPlayed(player.getCardsListTemp().get(0));
+			player.getCardsListTemp().clear();
+			
+			return true;
+
+		default:
+
+			int temp = 0;
+
+			for (int i = 0; i < player.getCardsListTemp().size() - 1; i++) {
+
+				temp += player.getCardsListTemp().get(i).getValue();
+			}
+
+			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue()) {
+
+				System.out.println("|CROUPIER| mossa valida");
+				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
+				cardsOnBoard.removeAll(player.getCardsListTemp());
+				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
+				setTeamIndex(player.getTeamIndex());
+				player.setCardPlayed(player.getCardsListTemp().get(player.getCardsListTemp().size()-1));
+				player.getCardsListTemp().clear();
+
+				if (cardsOnBoard.isEmpty()) {
+
+					teams.get(player.getTeamIndex()).scopa();
+					System.out.println("|CROUPIER| SCOPA!");
+				}
+				
+				return true;
+			}
+
+			else {
+
+				System.out.println("|CROUPIER| mossa non valida");
+				playerActionMonitoring(player);
 				
 				return false;
 			}

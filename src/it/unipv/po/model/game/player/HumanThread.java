@@ -1,6 +1,7 @@
 package it.unipv.po.model.game.player;
 
 import it.unipv.po.model.game.Game;
+import it.unipv.po.model.game.player.types.HumanPlayer;
 
 /**
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza
@@ -11,11 +12,11 @@ import it.unipv.po.model.game.Game;
  * 
  */
 
-public class PlayerThread extends Thread {
-	private Player p;
+public class HumanThread extends Thread {
+	private HumanPlayer p;
 	private Game g;
 
-	public PlayerThread(Game g, Player p) {
+	public HumanThread(Game g, HumanPlayer p) {
 		this.p = p;
 		this.g = g;
 	}
@@ -25,11 +26,14 @@ public class PlayerThread extends Thread {
 	 * finisce il turno.
 	 */
 	public void run() {
-		while (true) {
-			checkTurn();
-			play();
-			endTurn();
-		}
+
+		checkTurn();
+		play();
+		endTurn();
+	}
+	
+	public HumanPlayer getP() {
+		return p;
 	}
 
 	/**
@@ -46,14 +50,24 @@ public class PlayerThread extends Thread {
 	/**
 	 * Il giocatore gioca una carta
 	 */
-	synchronized public void play() {
+	synchronized public boolean play() {
+
 		try {
 			sleep(5000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			g.playerActionMonitoring(p);
+
+			return true;
 		}
-		g.playerActionMonitoring(p, g.getCardsOnBoard());
+		
+		if(p.getCardsListTemp().size() == 0) {
+			
+			g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+			return true;
+		}
+		return false;
 	}
 
 	/**

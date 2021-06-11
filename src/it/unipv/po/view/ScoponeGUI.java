@@ -212,4 +212,9 @@ public class ScoponeGUI extends JFrame {
 			card.setBounds(card.getBounds().x, card.getBounds().y + 30, 65, 113);
 		}
 	}
+	
+	public void cardPlayed(JButton card) {
+		
+		card.setVisible(false);
+	}
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 
 import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.player.types.HumanPlayer;
 import it.unipv.po.model.menu.MainMenu;
 import it.unipv.po.view.ScoponeGUI;
 
@@ -14,6 +15,7 @@ public class Controller {
 
 	private MainMenu menu;
 	private ScoponeGUI gui;
+	private HashMap<Card, JButton> map;
 
 	public Controller(MainMenu menu, ScoponeGUI gui) {
 		super();
@@ -74,12 +76,12 @@ public class Controller {
 
 	private void deck() {
 
-		HashMap<Card, JButton> map = new HashMap<Card, JButton>();
+		this.map = new HashMap<Card, JButton>();
 
 		int x = 30;
 		int y = 309;
 
-		for (Card s : menu.getPlayer().getDeck()) {
+		for (Card s : menu.getScopone().getHuman().getP().getDeck()) {
 
 			map.put(s, gui.cardsBuilder(x, y, s.toString()));
 
@@ -88,18 +90,18 @@ public class Controller {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					if (menu.getPlayer().isCardSelected()) {
+					if (menu.getScopone().getHuman().getP().isCardSelected()) {
 
-						menu.getPlayer().getCardsListTemp().remove(s);
-						menu.getPlayer().setCardSelected();
+						menu.getScopone().getHuman().getP().getCardsListTemp().add(s);
+						menu.getScopone().getHuman().getP().setCardSelected();
 						gui.cardSelected(true, map.get(s));
 						System.out.println(s.toString());
 					}
 
 					else {
 
-						menu.getPlayer().getCardsListTemp().add(s);
-						menu.getPlayer().setCardSelected();
+						menu.getScopone().getHuman().getP().getCardsListTemp().remove(s);
+						menu.getScopone().getHuman().getP().setCardSelected();
 						gui.cardSelected(false, map.get(s));
 					}
 				}
@@ -117,11 +119,17 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (menu.getScopone().playerActionMonitoring(menu.getPlayer(), menu.getScopone().getCardsOnBoard())) {
-
-				}
+				menu.getScopone().getHuman().interrupt();
+				cardPlayed();
 			}
 		};
 		gui.getSend().addActionListener(send);
+	}
+
+	private void cardPlayed() {
+
+		System.out.println("CIAI");
+		System.out.println(menu.getScopone().getHuman().getP().getCardPlayed().getSuit());
+		gui.cardPlayed(map.get(((HumanPlayer) menu.getScopone().getHuman().getP()).getCardPlayed()));
 	}
 }

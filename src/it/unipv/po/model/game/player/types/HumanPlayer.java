@@ -1,8 +1,5 @@
 package it.unipv.po.model.game.player.types;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.Player;
@@ -13,69 +10,112 @@ import it.unipv.po.model.game.player.Player;
  * @author Paolo Falzone, Giuseppe Lentini
  */
 
+//____________________COSTRUTTORE_________________
 public class HumanPlayer extends Player {
 
+	private Card cardPlayed;
+	
 	public HumanPlayer(String name) {
 		super(name);
 
 	}
 
+//__________________GETTERS & SETTERS______________
+	
+	
+	public Card getCardPlayed() {
+		return cardPlayed;
+	}
+
+	public void setCardPlayed(Card cardPlayed) {
+		this.cardPlayed = cardPlayed;
+	}
+	
+//__________________METODI__________________________
+	
+
+	/**
+	 * Questa è la stessa funzione del botPlayer. serve nel caso il giocatore umano
+	 * non fa mosse.
+	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
 		getCardsListTemp().clear();
 
-		int i;
-		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+		switch (makePresa(cardsOnBoard)) {
 
-		System.out.println("\n|CARTE SUL TAVOLO|");
+		case 1:
 
-		for (int j = 0; j <= cardsOnBoard.size() - 1; j++) {
-			System.out.println(j + "| " + cardsOnBoard.get(j).getValue() + " di " + cardsOnBoard.get(j).getSuit());
-		}
-		System.out.println("\nSeleziona una carta: (specificare l'indice)");
+			return getCardsListTemp();
 
-		for (int j = 0; j < getDeck().size(); j++) {
+		case 0:
 
-			System.out.println(j + "| " + getDeck().get(j).getValue() + " di " + getDeck().get(j).getSuit());
-		}
-		try {
-			i = Integer.parseInt(keyboard.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-			i = 0;
+			int i = 0;
+
+			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
+					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
+			getCardsListTemp().add(getDeck().get(i));
+
+			return getCardsListTemp();
 		}
 
-		if (cardsOnBoard.size() != 0) {
-			chooseCards(cardsOnBoard);
-		}
-
-		System.out.println(
-				getNickname() + " gioca la carta " + getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-
-		getCardsListTemp().add(getDeck().get(i));
-
-		return getCardsListTemp();
+		return null;
 	}
 
-	public ArrayList<Card> chooseCards(ArrayList<Card> cardsOnBoard) {
+	private int makePresa(ArrayList<Card> cardsOnBoard) {
 
-		String in;
-		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Selezionare le carte da prendere: (specificare gli indici, concludere con 'x')");
+		if (cardsOnBoard.isEmpty()) {
 
-		for (int j = 0; j == cardsOnBoard.size() - 1; j++) {
+			int i = 0;
 
-			System.out.println(j + "| " + cardsOnBoard.get(j).getValue() + " di " + cardsOnBoard.get(j).getSuit());
+			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
+					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
+
+			setCardPlayed(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(i));
+
+			return 1;
 		}
-		try {
-			while (((in = keyboard.readLine()).charAt(0) != 'x')) {
-				getCardsListTemp().add(cardsOnBoard.get(Integer.parseInt(in)));
+
+		else {
+
+			for (Card deck : getDeck()) {
+
+				int counter = 0;
+				ArrayList<Card> cardList = new ArrayList<Card>();
+
+				for (Card table : cardsOnBoard) {
+
+					counter += table.getValue();
+					cardList.add(table);
+
+					if (counter == deck.getValue() && cardList.size() != 1) {
+
+						getCardsListTemp().addAll(cardList);
+						getCardsListTemp().add(deck);
+						setCardPlayed(deck);
+
+						System.out.println("PRESA MULTIPLA");
+						return 1;
+					}
+
+					else {
+
+						if (deck.getValue() == table.getValue()) {
+
+							getCardsListTemp().add(table);
+							getCardsListTemp().add(deck);
+							setCardPlayed(deck);
+							
+							System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta "
+									+ deck.getValue() + " di " + deck.getSuit());
+
+							return 1;
+						}
+					}
+				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-
-		return getCardsListTemp();
+		return 0;
 	}
-
 }
