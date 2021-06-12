@@ -34,7 +34,7 @@ public class Controller {
 
 				gui.gameGraphics();
 				menu.singlePlayer();
-				deck();
+				deck(30, 309);
 				send();
 			}
 		};
@@ -74,12 +74,9 @@ public class Controller {
 
 	}
 
-	private void deck() {
+	private void deck(int x, int y) {
 
 		this.map = new HashMap<Card, JButton>();
-
-		int x = 30;
-		int y = 309;
 
 		for (Card s : menu.getScopone().getHuman().getP().getDeck()) {
 
@@ -95,6 +92,7 @@ public class Controller {
 						menu.getScopone().getHuman().getP().getCardsListTemp().add(s);
 						menu.getScopone().getHuman().getP().setCardSelected();
 						gui.cardSelected(true, map.get(s));
+						menu.getScopone().getHuman().getP().setCardPlayed(s);
 						System.out.println(s.toString());
 					}
 
@@ -102,6 +100,7 @@ public class Controller {
 
 						menu.getScopone().getHuman().getP().getCardsListTemp().remove(s);
 						menu.getScopone().getHuman().getP().setCardSelected();
+						menu.getScopone().getHuman().getP().setCardPlayed(null);
 						gui.cardSelected(false, map.get(s));
 					}
 				}
@@ -121,6 +120,7 @@ public class Controller {
 
 				menu.getScopone().getHuman().interrupt();
 				cardPlayed();
+				gameAdvisor(menu.getScopone().getHuman().getP().getNickname() + " gioca " + menu.getScopone().getHuman().getP().getCardPlayed());
 			}
 		};
 		gui.getSend().addActionListener(send);
@@ -128,8 +128,11 @@ public class Controller {
 
 	private void cardPlayed() {
 
-		System.out.println("CIAI");
-		System.out.println(menu.getScopone().getHuman().getP().getCardPlayed().getSuit());
 		gui.cardPlayed(map.get(((HumanPlayer) menu.getScopone().getHuman().getP()).getCardPlayed()));
+	}
+	
+	private synchronized void gameAdvisor(String txt) {
+		
+		gui.getChat().setText(txt);
 	}
 }

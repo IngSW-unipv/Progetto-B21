@@ -19,7 +19,7 @@ import it.unipv.po.model.game.player.types.HumanPlayer;
  * 
  * @author gruppo B
  */
-public class Game {
+public class ScoponeGame {
 
 	private ArrayList<Card> cardsOnBoard;
 	private ArrayList<Card> deck;
@@ -30,8 +30,8 @@ public class Game {
 	private int teamIndex;
 	private HumanThread human;
 
-	/* ____________COSTRUTTORE____________________ */
-	public Game(ArrayList<Player> players) {
+//__________________COSTRUTTORE____________________ 
+	public ScoponeGame(ArrayList<Player> players) {
 
 		teams = new ArrayList<Team>();
 		deck = new ArrayList<Card>();
@@ -45,7 +45,7 @@ public class Game {
 		start();
 	}
 
-	/* _____________GETTERS & SETTERS______________ */
+//__________________________GETTERS & SETTERS______________ 
 
 	synchronized public ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -71,18 +71,16 @@ public class Game {
 	synchronized public int getTurn() {
 		return turn;
 	}
-	
+
 	public HumanThread getHuman() {
 		return human;
 	}
 
 	public void setHuman(HumanThread human) {
 		this.human = human;
-	}	
+	}
 
-	// _____________METODI_________________________*/
-
-
+// ______________________METODI_________________________*/
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
@@ -99,7 +97,7 @@ public class Game {
 		HumanThread human = new HumanThread(this, (HumanPlayer) players.get(0));
 		human.start();
 		setHuman(human);
-		
+
 		for (int i = 1; i < 4; i++) {
 			PlayerThread tr = new PlayerThread(this, players.get(i));
 			tr.start();
@@ -264,7 +262,7 @@ public class Game {
 					teams.get(player.getTeamIndex()).scopa();
 					System.out.println("|CROUPIER| SCOPA!");
 				}
-				
+
 				return true;
 			}
 
@@ -272,58 +270,56 @@ public class Game {
 
 				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player, cardsOnBoard);
-				
+
 				return false;
 			}
 		}
 	}
-	
+
+	/*
+	 * Questa funzione permette di monitorare la giocata di un giocatore umano che
+	 * interagisce tramite la GUI
+	 */
 	synchronized public boolean playerActionMonitoring(HumanPlayer player) {
 
-		System.out.println(player.getCardsListTemp().size());
 		switch (player.getCardsListTemp().size()) {
 
-		case 1:
+		case 1: // caso nel cui il giocatore non fa una presa
 			cardsOnBoard.addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			player.setCardPlayed(player.getCardsListTemp().get(0));
 			player.getCardsListTemp().clear();
-			
+
 			return true;
 
-		default:
-
+		default: // caso nel cui il giocatore fa una presa
 			int temp = 0;
+			int valueCardPlayed = player.getCardsListTemp().get(player.getCardsListTemp().size()-1).getValue();
 
 			for (int i = 0; i < player.getCardsListTemp().size() - 1; i++) {
 
 				temp += player.getCardsListTemp().get(i).getValue();
 			}
 
-			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue()) {
+			if (temp == valueCardPlayed) {
 
-				System.out.println("|CROUPIER| mossa valida");
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
 				cardsOnBoard.removeAll(player.getCardsListTemp());
 				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
 				setTeamIndex(player.getTeamIndex());
-				player.setCardPlayed(player.getCardsListTemp().get(player.getCardsListTemp().size()-1));
 				player.getCardsListTemp().clear();
 
 				if (cardsOnBoard.isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
-					System.out.println("|CROUPIER| SCOPA!");
 				}
-				
+
 				return true;
 			}
 
 			else {
 
-				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player);
-				
+
 				return false;
 			}
 		}
@@ -349,7 +345,7 @@ public class Game {
 
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();
-		Calculator.finalScore(this);
+		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 		System.out.println("punti team A: " + getTeams().get(0).getTotalPoints());
 		System.out.println("punti team B: " + getTeams().get(1).getTotalPoints());
 	}

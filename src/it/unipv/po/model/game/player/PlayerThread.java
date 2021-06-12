@@ -1,6 +1,6 @@
 package it.unipv.po.model.game.player;
 
-import it.unipv.po.model.game.Game;
+import it.unipv.po.model.game.ScoponeGame;
 
 /**
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza
@@ -13,9 +13,9 @@ import it.unipv.po.model.game.Game;
 
 public class PlayerThread extends Thread {
 	private Player p;
-	private Game g;
+	private ScoponeGame g;
 
-	public PlayerThread(Game g, Player p) {
+	public PlayerThread(ScoponeGame g, Player p) {
 		this.p = p;
 		this.g = g;
 	}

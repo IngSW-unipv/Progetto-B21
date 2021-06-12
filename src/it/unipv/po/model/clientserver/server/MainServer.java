@@ -26,7 +26,7 @@ public class MainServer {
 	private int numberOfConnectedClients;
 	
 	private ArrayList<ClientThreadHandler> clientHandlers; //Per memorizzare tutti i thread ed eventualmente ricevere informazioni
-	private ArrayList<Game> games; //Per memorizzare più game
+	private ArrayList<ScoponeGame> games; //Per memorizzare più game
 	private ArrayList<Player> gamePlayers; //Per memorizzare tutti i giocatori attualmente connessi al server
 	
 	public ArrayList<Player> getGamePlayers(){
@@ -34,7 +34,7 @@ public class MainServer {
 		return gamePlayers;
 		
 	}
-	public ArrayList<Game> getGames() {
+	public ArrayList<ScoponeGame> getGames() {
 		
 		return games;
 		
@@ -82,7 +82,7 @@ public class MainServer {
 			  
 			  clientHandlers = new ArrayList<ClientThreadHandler>();
 			  numberOfConnectedClients = 0;
-			  games = new ArrayList<Game>();
+			  games = new ArrayList<ScoponeGame>();
 			  
 			}
 

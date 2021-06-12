@@ -10,17 +10,18 @@ import java.util.Collections;
 
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
+import it.unipv.po.model.game.player.Team;
 
 public class Calculator {
 
-	static void finalScore(Game game) {
+	static void finalScore(Team a, Team b) {
 
 		int scoreA = 0;
 		int scoreB = 0;
 		int numDenariA = 0;
 		int numDenariB = 0;
 
-		for (Card card : game.getTeams().get(0).getCardsCollected()) {
+		for (Card card : a.getCardsCollected()) {
 
 			if (card.getValue() == 7 && card.getSuit() == Suit.DENARI) {
 				// punto settebello
@@ -32,7 +33,7 @@ public class Calculator {
 			}
 		}
 
-		if (game.getTeams().get(0).getCardsCollected().size() > 20) {
+		if (a.getCardsCollected().size() > 20) {
 			// punto carte
 			scoreA += 1;
 		}
@@ -41,9 +42,9 @@ public class Calculator {
 			scoreA += 1;
 		}
 
-		scoreA += game.getTeams().get(0).getNumScope();
+		scoreA += a.getNumScope();
 
-		for (Card card : game.getTeams().get(1).getCardsCollected()) {
+		for (Card card : b.getCardsCollected()) {
 
 			if (card.getValue() == 7 && card.getSuit() == Suit.DENARI) {
 				// punto settebello
@@ -55,7 +56,7 @@ public class Calculator {
 			}
 		}
 
-		if (game.getTeams().get(1).getCardsCollected().size() > 20) {
+		if (b.getCardsCollected().size() > 20) {
 			// punto carte
 			scoreB += 1;
 		}
@@ -64,27 +65,25 @@ public class Calculator {
 			scoreB += 1;
 		}
 
-		scoreB += game.getTeams().get(1).getNumScope();
+		scoreB += b.getNumScope();
 
 		// System.out.println("Punti primiera A: " +
 		// calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
 		// System.out.println("Punti primiera B: " +
 		// calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
 
-		if (calculatePrimiera(game.getTeams().get(0).getCardsCollected()) > calculatePrimiera(
-				game.getTeams().get(1).getCardsCollected())) {
+		if (calculatePrimiera(a.getCardsCollected()) > calculatePrimiera(b.getCardsCollected())) {
 
 			scoreA++;
 		}
 
-		else if (calculatePrimiera(game.getTeams().get(0).getCardsCollected()) < calculatePrimiera(
-				game.getTeams().get(1).getCardsCollected())) {
+		else if (calculatePrimiera(a.getCardsCollected()) < calculatePrimiera(b.getCardsCollected())) {
 
 			scoreB++;
 		}
 
-		game.getTeams().get(0).setTotalPoints(scoreA + game.getTeams().get(0).getTotalPoints());
-		game.getTeams().get(1).setTotalPoints(scoreB + game.getTeams().get(1).getTotalPoints());
+		a.setTotalPoints(scoreA + a.getTotalPoints());
+		b.setTotalPoints(scoreB + b.getTotalPoints());
 
 	}
 

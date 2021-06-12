@@ -1,6 +1,6 @@
 package it.unipv.po.model.game.player;
 
-import it.unipv.po.model.game.Game;
+import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.player.types.HumanPlayer;
 
 /**
@@ -14,9 +14,9 @@ import it.unipv.po.model.game.player.types.HumanPlayer;
 
 public class HumanThread extends Thread {
 	private HumanPlayer p;
-	private Game g;
+	private ScoponeGame g;
 
-	public HumanThread(Game g, HumanPlayer p) {
+	public HumanThread(ScoponeGame g, HumanPlayer p) {
 		this.p = p;
 		this.g = g;
 	}

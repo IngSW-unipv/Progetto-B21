@@ -2,7 +2,7 @@ package it.unipv.po.model.test;
 
 import java.util.ArrayList;
 
-import it.unipv.po.model.game.Game;
+import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.types.*;
 public class ModelTester {
@@ -15,7 +15,7 @@ public class ModelTester {
 		players.add(new BotPlayer1());
 		players.add(new BotPlayer2());
 
-		Game board = new Game(players);
+		ScoponeGame board = new ScoponeGame(players);
 		board.start();
 	}
 }
