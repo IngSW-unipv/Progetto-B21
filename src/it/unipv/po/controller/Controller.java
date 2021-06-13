@@ -27,17 +27,23 @@ public class Controller {
 
 	private void start() {
 
+		
 		ActionListener singlePlayer = new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				gui.gameGraphics();
+				gui.getMainMenu().setVisible(false);
+				gui.game();
 				menu.singlePlayer();
 				deck(30, 309);
 				send();
 			}
 		};
+		
+		gui.getMainMenu().getSingle().addActionListener(singlePlayer);
+		
+		
 
 		ActionListener multiPlayer = new ActionListener() {
 
@@ -57,20 +63,18 @@ public class Controller {
 
 					menu.getMusic().getHit().stop();
 					menu.getMusic().setMusicOn(false);
-					gui.soundRefresh(1);
+					gui.getSound().soundRefresh(1);
 				}
 
 				else {
 					menu.getMusic().getHit().start();
 					menu.getMusic().setMusicOn(true);
-					gui.soundRefresh(0);
+					gui.getSound().soundRefresh(0);
 				}
 			}
 		};
 
-		gui.getMultiPlayerButton().addActionListener(multiPlayer);
-		gui.getSinglePlayerButton().addActionListener(singlePlayer);
-		gui.getSoundButton().addActionListener(sound);
+		gui.getSound().addActionListener(sound);
 
 	}
 
@@ -80,7 +84,7 @@ public class Controller {
 
 		for (Card s : menu.getScopone().getHuman().getP().getDeck()) {
 
-			map.put(s, gui.cardsBuilder(x, y, s.toString()));
+			map.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 
 			ActionListener a = new ActionListener() {
 
@@ -91,7 +95,7 @@ public class Controller {
 
 						menu.getScopone().getHuman().getP().getCardsListTemp().add(s);
 						menu.getScopone().getHuman().getP().setCardSelected();
-						gui.cardSelected(true, map.get(s));
+						gui.getGame().cardSelected(true, map.get(s));
 						menu.getScopone().getHuman().getP().setCardPlayed(s);
 						System.out.println(s.toString());
 					}
@@ -101,7 +105,7 @@ public class Controller {
 						menu.getScopone().getHuman().getP().getCardsListTemp().remove(s);
 						menu.getScopone().getHuman().getP().setCardSelected();
 						menu.getScopone().getHuman().getP().setCardPlayed(null);
-						gui.cardSelected(false, map.get(s));
+						gui.getGame().cardSelected(false, map.get(s));
 					}
 				}
 			};
@@ -123,16 +127,17 @@ public class Controller {
 				gameAdvisor(menu.getScopone().getHuman().getP().getNickname() + " gioca " + menu.getScopone().getHuman().getP().getCardPlayed());
 			}
 		};
-		gui.getSend().addActionListener(send);
+		gui.getGame().getSend().addActionListener(send);
 	}
 
 	private void cardPlayed() {
 
-		gui.cardPlayed(map.get(((HumanPlayer) menu.getScopone().getHuman().getP()).getCardPlayed()));
+		gui.getGame().cardPlayed(map.get(((HumanPlayer) menu.getScopone().getHuman().getP()).getCardPlayed()));
 	}
 	
 	private synchronized void gameAdvisor(String txt) {
 		
-		gui.getChat().setText(txt);
+		gui.getGame().getGameAdvisor().setText(txt);
 	}
+
 }

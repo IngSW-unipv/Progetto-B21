@@ -1,15 +1,13 @@
 package it.unipv.po.view;
 
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+
+import it.unipv.po.view.buttons.sound.SoundButton;
+import it.unipv.po.view.labels.GameGUI;
+import it.unipv.po.view.labels.MainMenuGUI;
 
 public class ScoponeGUI extends JFrame {
 
@@ -18,122 +16,57 @@ public class ScoponeGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private BufferedImage buffer;
+	private MainMenuGUI mainMenu;
+	private GameGUI game;
+	private boolean mainCreated;
 	private ImagesLoader loader;
-	private JButton singlePlayerButton, multiPlayerButton, soundButton, send;
-	private JLabel backgroundLabel, chat;
-	private ArrayList<JButton> cards;
+	private SoundButton sound;
 
-	/* __________________COSTRUTTORE______________ */
+//_____________________COSTRUTTORE__________________
 	public ScoponeGUI() {
 		super();
-		this.loader = new ImagesLoader();
 
+		mainCreated = false;
+		create();
 		mainMenu();
 	}
 
-	/* __________________GETTERS & SETTERS________ */
-	public JButton getSinglePlayerButton() {
-		return singlePlayerButton;
+//____________________GETTERS&SETTERS_______________
+	public MainMenuGUI getMainMenu() {
+		return mainMenu;
 	}
 
-	public void setSinglePlayerButton(JButton singlePlayerButton) {
-		this.singlePlayerButton = singlePlayerButton;
+	public void setMainMenu(MainMenuGUI mainMenu) {
+		this.mainMenu = mainMenu;
 	}
 
-	public JButton getMultiPlayerButton() {
-		return multiPlayerButton;
+	public SoundButton getSound() {
+		return sound;
 	}
 
-	public void setMultiPlayerButton(JButton multiPlayerButton) {
-		this.multiPlayerButton = multiPlayerButton;
+	public void setSound(SoundButton sound) {
+		this.sound = sound;
 	}
 
-	public JButton getSoundButton() {
-		return soundButton;
+	public boolean isMainCreated() {
+		return mainCreated;
 	}
 
-	public void setSoundButton(JButton soundButton) {
-		this.soundButton = soundButton;
+	public void setMainCreated(boolean mainCreated) {
+		this.mainCreated = mainCreated;
 	}
 
-	public JLabel getBackgroundLabel() {
-		return backgroundLabel;
+	public GameGUI getGame() {
+		return game;
 	}
 
-	public void setBackgroundLabel(JLabel backgroundLabel) {
-		this.backgroundLabel = backgroundLabel;
+	public void setGame(GameGUI game) {
+		this.game = game;
 	}
 
-	public JButton getSend() {
-		return send;
-	}
+	// ___________________METODI_________________________
+	private void create() {
 
-	public void setSend(JButton send) {
-		this.send = send;
-	}
-
-	public ArrayList<JButton> getCards() {
-		return cards;
-	}
-
-	public JLabel getChat() {
-		return chat;
-	}
-
-	public void setChat(JLabel chat) {
-		this.chat = chat;
-	}
-
-	/* _________________METODI_____________________ */
-	private void mainMenu() {
-
-		// background
-		this.buffer = loader.uploadImage("/it/unipv/po/images/background.png");
-		ImageIcon image = new ImageIcon(buffer);
-		JLabel backgroundLabel = new JLabel("", image, JLabel.CENTER);
-		setBackgroundLabel(backgroundLabel);
-		backgroundLabel.setBounds(0, 0, 800, 500);
-		backgroundLabel.setLayout(null);
-
-		// singlePlayer
-		this.singlePlayerButton = new JButton();
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button1.png");
-		ImageIcon singlePImg = new ImageIcon(buffer);
-		setSinglePlayerButton(singlePlayerButton);
-		singlePlayerButton.setBounds(200, 189, 382, 105);
-		singlePlayerButton.setIcon(singlePImg);
-		singlePlayerButton.setOpaque(false);
-		singlePlayerButton.setContentAreaFilled(false);
-		singlePlayerButton.setBorderPainted(false);
-		singlePlayerButton.setVisible(true);
-		backgroundLabel.add(singlePlayerButton);
-
-		// multiPlayer
-		this.multiPlayerButton = new JButton();
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button2.png");
-		ImageIcon multiPImg = new ImageIcon(buffer);
-		setMultiPlayerButton(multiPlayerButton);
-		multiPlayerButton.setIcon(multiPImg);
-		multiPlayerButton.setBounds(200, 309, 382, 105);
-		multiPlayerButton.setOpaque(false);
-		multiPlayerButton.setContentAreaFilled(false);
-		multiPlayerButton.setBorderPainted(false);
-		multiPlayerButton.setVisible(true);
-		backgroundLabel.add(multiPlayerButton);
-
-		// sound
-		this.soundButton = new JButton();
-		this.buffer = loader.uploadImage("/it/unipv/po/images/audioON.png");
-		ImageIcon soundSet = new ImageIcon(buffer);
-		setSoundButton(soundButton);
-		soundButton.setIcon(soundSet);
-		soundButton.setBounds(720, 15, 50, 50);
-		soundButton.setContentAreaFilled(false);
-		soundButton.setBorderPainted(false);
-		backgroundLabel.add(soundButton);
-
-		// main Frame
 		setTitle("Scopone Scientifico");
 		Dimension dim = new Dimension(800, 500);
 		setMinimumSize(dim);
@@ -143,78 +76,42 @@ public class ScoponeGUI extends JFrame {
 				Toolkit.getDefaultToolkit().getImage(ScoponeGUI.class.getResource("/it/unipv/po/images/logo.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
-		getContentPane().add(backgroundLabel);
+		setVisible(true);
+		
+		loader = new ImagesLoader();
+		this.sound = new SoundButton(loader);
 	}
 
-	public void soundRefresh(int i) {
+	public void mainMenu() {
 
-		switch (i) {
-		case 0:
-			this.buffer = loader.uploadImage("/it/unipv/po/images/audioON.png");
-			ImageIcon soundSet = new ImageIcon(buffer);
-			soundButton.setIcon(soundSet);
-			break;
-		case 1:
-			this.buffer = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
-			ImageIcon soundSet2 = new ImageIcon(buffer);
-			soundButton.setIcon(soundSet2);
+		if (mainCreated) {
+
+			getMainMenu().setVisible(true);
+			sound.setVisible(true);
+			add(sound);
+			add(getMainMenu());
+			repaint();
 		}
-	}
 
-	public synchronized void gameGraphics() {
-
-		getSinglePlayerButton().setVisible(false);
-		getMultiPlayerButton().setVisible(false);
-
-		cards = new ArrayList<JButton>();
-		// background
-		this.buffer = loader.uploadImage("/it/unipv/po/images/table.png");
-		ImageIcon game = new ImageIcon(buffer);
-		getBackgroundLabel().setIcon(game);
-
-		// invio
-		this.send = new JButton();
-		send.setBounds(750, 309, 30, 113);
-		setSend(send);
-		getBackgroundLabel().add(send);
-
-		// chat
-		this.chat = new JLabel();
-		setChat(chat);
-		chat.setBounds(0, 440, 800, 20);
-		chat.setOpaque(true);
-		getBackgroundLabel().add(chat);
-	}
-
-	public JButton cardsBuilder(int x, int y, String txt) {
-		
-		JButton card = new JButton();
-		this.buffer = loader.uploadImage("/it/unipv/po/images/napoletane/l/" + txt + ".png");
-		ImageIcon multiPImg = new ImageIcon(buffer);
-		card.setIcon(multiPImg);
-		card.setBounds(x, y, 65, 113);
-		getBackgroundLabel().add(card);
-
-		cards.add(card);
-		
-		return card;
-	}
-
-	public void cardSelected(boolean temp, JButton card) {
-		
-		if(temp) {
-			
-			card.setBounds(card.getBounds().x, card.getBounds().y - 30, 65, 113);
-		}
-		
 		else {
-			
-			card.setBounds(card.getBounds().x, card.getBounds().y + 30, 65, 113);
+
+			MainMenuGUI mainMenu = new MainMenuGUI(loader);
+			sound.setVisible(true);
+			add(sound);
+			add(mainMenu);
+			setMainMenu(mainMenu);
+			setMainCreated(true);
+			repaint();
 		}
 	}
-	
-	public void cardPlayed(JButton card) {
-		
-		card.setVisible(false);
+
+	public void game() {
+
+		GameGUI game = new GameGUI(loader);
+		setGame(game);
+		sound.setVisible(true);
+		add(sound);
+		add(game);
+		repaint();
 	}
 }
