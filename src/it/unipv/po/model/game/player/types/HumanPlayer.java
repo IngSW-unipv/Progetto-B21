@@ -7,6 +7,7 @@ import it.unipv.po.model.game.player.Player;
 /**
  * Questa classe permette ad un giocatore umano di effettuare le sue mosse.
  * 
+ * 
  * @author Paolo Falzone, Giuseppe Lentini
  */
 
@@ -33,7 +34,7 @@ public class HumanPlayer extends Player {
 //__________________METODI__________________________
 
 	/**
-	 * Questa è la stessa funzione del botPlayer. serve nel caso il giocatore umano
+	 * Questa ï¿½ la stessa funzione del botPlayer. serve nel caso il giocatore umano
 	 * non fa mosse.
 	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
@@ -60,6 +61,13 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param cardsOnBoard arraylist di carte presenti sul tavolo
+	 * @return torna un intero per usarlo nello switch della funzione playCard
+	 */
+	
 	private int makePresa(ArrayList<Card> cardsOnBoard) {
 
 		if (cardsOnBoard.isEmpty()) {
