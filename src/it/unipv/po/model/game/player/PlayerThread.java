@@ -1,6 +1,7 @@
 package it.unipv.po.model.game.player;
 
 import it.unipv.po.model.game.ScoponeGame;
+import it.unipv.po.model.game.player.types.TypePlayer;
 
 /**
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza
@@ -20,6 +21,10 @@ public class PlayerThread extends Thread {
 		this.g = g;
 	}
 
+	public Player getP() {
+		return p;
+	}
+
 	/**
 	 * Ogni giocatore fa 3 cose: controlla se è il suo turno; gioca una carta;
 	 * finisce il turno.
@@ -35,25 +40,58 @@ public class PlayerThread extends Thread {
 	/**
 	 * Se l'indice del giocatore è == al turno, allora tocca a lui
 	 */
-	synchronized public void checkTurn() {
+	synchronized public boolean checkTurn() {
 		while (g.getTurn() != p.getPlayerIndex())
 			try {
 				notifyAll();
 			} catch (Exception e) {
 			}
+
+		return true;
 	}
 
 	/**
 	 * Il giocatore gioca una carta
 	 */
-	synchronized public void play() {
-		try {
-			sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	synchronized public boolean play() {
+
+		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
+
+			try {
+				sleep(10000);
+			} catch (InterruptedException e) {
+
+				if (!g.playerActionMonitoring(p)) {
+
+					try {
+						sleep(10000);
+					} catch (InterruptedException e1) {
+
+						g.playerActionMonitoring(p);
+					}
+				}
+
+				return true;
+			}
+
+			g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+			return true;
 		}
-		g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+		else {
+
+			try {
+				sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+			return true;
+		}
 	}
 
 	/**

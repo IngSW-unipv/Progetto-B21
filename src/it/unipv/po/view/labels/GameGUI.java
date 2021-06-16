@@ -1,15 +1,12 @@
 package it.unipv.po.view.labels;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
-import it.unipv.po.view.ImagesLoader;
 import it.unipv.po.view.buttons.gameButtons.CardButton;
 import it.unipv.po.view.buttons.gameButtons.SendButton;
+import it.unipv.po.view.imagesLoader.ImagesLoader;
 
 public class GameGUI extends JLabel {
 
@@ -22,7 +19,6 @@ public class GameGUI extends JLabel {
 	private BufferedImage buffer;
 	private SendButton send;
 	private JLabel gameAdvisor;
-	private ArrayList<JButton> cards;
 
 
 	public GameGUI(ImagesLoader loader) {
@@ -55,7 +51,6 @@ public class GameGUI extends JLabel {
 		setIcon(game);
 		setBounds(0, 0, 800, 500);
 		setLayout(null);
-		cards = new ArrayList<JButton>();
 		setVisible(true);
 	}
 	
@@ -77,8 +72,6 @@ public JButton cardsBuilder(int x, int y, String txt) {
 		
 		JButton card = new CardButton(loader, x, y, txt);
 		add(card);
-
-		cards.add(card);
 		
 		return card;
 	}

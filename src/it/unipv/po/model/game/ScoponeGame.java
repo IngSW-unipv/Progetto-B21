@@ -1,16 +1,13 @@
 package it.unipv.po.model.game;
 
 import java.util.ArrayList;
-
 import java.util.Random;
 
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
-import it.unipv.po.model.game.player.HumanThread;
 import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.PlayerThread;
 import it.unipv.po.model.game.player.Team;
-import it.unipv.po.model.game.player.types.HumanPlayer;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali
@@ -28,17 +25,14 @@ public class ScoponeGame {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
-	private HumanThread human;
+	private PlayerThread human;
+	private boolean havePlayed;
 
 //__________________COSTRUTTORE____________________ 
 	public ScoponeGame(ArrayList<Player> players) {
 
-		teams = new ArrayList<Team>();
-		deck = new ArrayList<Card>();
-		shuffledDeck = new ArrayList<Card>();
-		cardsOnBoard = new ArrayList<Card>();
 		this.players = players;
-		setTeamIndex(0);
+		havePlayed = false;
 
 		makeTeam();
 		createDeck();
@@ -47,11 +41,11 @@ public class ScoponeGame {
 
 //__________________________GETTERS & SETTERS______________ 
 
-	synchronized public ArrayList<Card> getCardsOnBoard() {
+	 public synchronized ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
 	}
 
-	synchronized public void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
+	 public synchronized void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
 
 		this.cardsOnBoard = cardsOnBoard;
 	}
@@ -64,23 +58,32 @@ public class ScoponeGame {
 		this.teamIndex = teamIndex;
 	}
 
-	synchronized public ArrayList<Team> getTeams() {
+	 public synchronized ArrayList<Team> getTeams() {
 		return teams;
 	}
 
-	synchronized public int getTurn() {
+	public synchronized int getTurn() {
 		return turn;
 	}
 
-	public HumanThread getHuman() {
+	public PlayerThread getHuman() {
 		return human;
 	}
 
-	public void setHuman(HumanThread human) {
+	public void setHuman(PlayerThread human) {
 		this.human = human;
 	}
 
+	public boolean isHavePlayed() {
+		return havePlayed;
+	}
+
+	public void setHavePlayed(boolean havePlayed) {
+		this.havePlayed = havePlayed;
+	}
+	
 // ______________________METODI_________________________*/
+
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
@@ -89,19 +92,23 @@ public class ScoponeGame {
 	 */
 	public void start() {
 
+		cardsOnBoard = new ArrayList<Card>();
+		
 		shuffle();
 		giveCards();
 
 		turn = 1;
 
-		HumanThread human = new HumanThread(this, (HumanPlayer) players.get(0));
-		human.start();
-		setHuman(human);
+		PlayerThread t1 = new PlayerThread(this, players.get(0));
+		PlayerThread t2 = new PlayerThread(this, players.get(1));
+		PlayerThread t3 = new PlayerThread(this, players.get(2));
+		PlayerThread t4 = new PlayerThread(this, players.get(3));
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+		setHuman(t1);
 
-		for (int i = 1; i < 4; i++) {
-			PlayerThread tr = new PlayerThread(this, players.get(i));
-			tr.start();
-		}
 	}
 
 	/**
@@ -111,6 +118,7 @@ public class ScoponeGame {
 	 */
 	private void makeTeam() {
 
+		teams = new ArrayList<Team>();
 		Team a = new Team();
 		Team b = new Team();
 
@@ -140,6 +148,8 @@ public class ScoponeGame {
 	 * deck.
 	 */
 	private void createDeck() {
+
+		deck = new ArrayList<Card>();
 
 		for (Suit s : Suit.values()) {
 
@@ -187,6 +197,7 @@ public class ScoponeGame {
 	 */
 	private void shuffle() {
 
+		shuffledDeck = new ArrayList<Card>();
 		Random temp = new Random();
 
 		for (int i = 0; i < 40; i++) {
@@ -230,14 +241,13 @@ public class ScoponeGame {
 	 * (Per thread) Questo metodo fa fare un azione ad un giocatore bot o umano
 	 * 
 	 */
-	synchronized public boolean playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
+	public synchronized boolean playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
 
 		switch (player.playCard(cardsOnBoard).size()) {
 
 		case 1:
 			cardsOnBoard.addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-
 			return true;
 
 		default:
@@ -280,20 +290,50 @@ public class ScoponeGame {
 	 * Questa funzione permette di monitorare la giocata di un giocatore umano che
 	 * interagisce tramite la GUI
 	 */
-	synchronized public boolean playerActionMonitoring(HumanPlayer player) {
+	public synchronized boolean playerActionMonitoring(Player player) {
+
+		int counter = 0;
 
 		switch (player.getCardsListTemp().size()) {
 
 		case 1: // caso nel cui il giocatore non fa una presa
+
+			for (Card table : cardsOnBoard) {
+
+				counter += table.getValue();
+
+				if (counter == player.getCardsListTemp().get(0).getValue()) {
+
+					System.out.println("Errore: presa multipla possibile");
+					player.getCardsListTemp().clear();
+					setHavePlayed(false);
+					
+					return false;
+				}
+
+				else {
+
+					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
+
+						System.out.println("errore: presa singola possibile");
+						player.getCardsListTemp().clear();
+						setHavePlayed(false);
+						
+						return false;
+					}
+				}
+			}
+
 			cardsOnBoard.addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
 			player.getCardsListTemp().clear();
-
+			setHavePlayed(true);
+			
 			return true;
 
 		default: // caso nel cui il giocatore fa una presa
 			int temp = 0;
-			int valueCardPlayed = player.getCardsListTemp().get(player.getCardsListTemp().size()-1).getValue();
+			int valueCardPlayed = player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue();
 
 			for (int i = 0; i < player.getCardsListTemp().size() - 1; i++) {
 
@@ -313,13 +353,16 @@ public class ScoponeGame {
 					teams.get(player.getTeamIndex()).scopa();
 				}
 
+				setHavePlayed(true);
+				
 				return true;
 			}
 
 			else {
 
 				playerActionMonitoring(player);
-
+				setHavePlayed(false);
+				
 				return false;
 			}
 		}
@@ -329,7 +372,7 @@ public class ScoponeGame {
 	 * (Per thread) Aggiorna il contatore del turno.
 	 * 
 	 */
-	synchronized public void nextTurn() {
+	public synchronized void nextTurn() {
 		turn++;
 		if (turn == 5)
 			turn = 1;
@@ -341,7 +384,7 @@ public class ScoponeGame {
 	 * finchè non inizia una nuova partita.
 	 * 
 	 */
-	synchronized public void endGame() {
+	public synchronized void endGame() {
 
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();

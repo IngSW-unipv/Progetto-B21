@@ -14,7 +14,7 @@ import it.unipv.po.model.game.player.Player;
 public class BotPlayer2 extends Player {
 
 	public BotPlayer2() {
-		super("Bot presa multipla");
+		super("bot");
 	}
 
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
@@ -93,5 +93,11 @@ public class BotPlayer2 extends Player {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public TypePlayer typePlayer() {
+		// TODO Auto-generated method stub
+		return TypePlayer.BOTPLAYER;
 	}
 }

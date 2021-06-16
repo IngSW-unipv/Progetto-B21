@@ -1,11 +1,15 @@
 package it.unipv.po.view.labels;
 
+import java.awt.Color;
+import java.awt.TextField;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import it.unipv.po.view.ImagesLoader;
+
+
 import it.unipv.po.view.buttons.menuButtons.MultiPlayerButton;
 import it.unipv.po.view.buttons.menuButtons.SinglePlayerButton;
+import it.unipv.po.view.imagesLoader.ImagesLoader;
 
 public class MainMenuGUI extends JLabel {
 
@@ -18,6 +22,7 @@ public class MainMenuGUI extends JLabel {
 	private ImagesLoader loader;
 	private SinglePlayerButton single;
 	private MultiPlayerButton multi;
+	private TextField nickname;
 
 //_______________________COSTRUTTORE_______________________
 	public MainMenuGUI(ImagesLoader loader) {
@@ -44,6 +49,14 @@ public class MainMenuGUI extends JLabel {
 	public void setMulti(MultiPlayerButton multi) {
 		this.multi = multi;
 	}
+	
+	public TextField getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(TextField nickname) {
+		this.nickname = nickname;
+	}	
 
 	// _______________________METODI____________________________
 
@@ -67,5 +80,13 @@ public class MainMenuGUI extends JLabel {
 		this.multi = new MultiPlayerButton(loader);
 		setMulti(multi);
 		add(multi);
+		
+		//nickname
+		this.nickname = new TextField();
+		nickname.setBackground(Color.WHITE);
+		nickname.setBounds(345, 170, 110, 20);
+		nickname.setText("inserire nickname");
+		nickname.setVisible(true);
+		add(nickname);
 	}
 }

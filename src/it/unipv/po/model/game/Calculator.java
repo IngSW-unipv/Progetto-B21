@@ -67,11 +67,6 @@ public class Calculator {
 
 		scoreB += b.getNumScope();
 
-		// System.out.println("Punti primiera A: " +
-		// calculatePrimiera(game.getTeams().get(0).getCardsCollected()));
-		// System.out.println("Punti primiera B: " +
-		// calculatePrimiera(game.getTeams().get(1).getCardsCollected()));
-
 		if (calculatePrimiera(a.getCardsCollected()) > calculatePrimiera(b.getCardsCollected())) {
 
 			scoreA++;
@@ -110,9 +105,8 @@ public class Calculator {
 						primiera += s.getPrimieraValue();
 						counter++;
 						break;
-					}
 
-					else {
+					} else {
 						break;
 					}
 				case BASTONI:
@@ -141,6 +135,7 @@ public class Calculator {
 						primiera += s.getPrimieraValue();
 						counter++;
 						break;
+
 					} else {
 						break;
 					}

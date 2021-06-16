@@ -10,9 +10,9 @@ public class ModelTester {
 	public static void main(String[] args) {
 	
 		ArrayList<Player> players = new ArrayList<Player>();
-		players.add(new HumanPlayer("Fabio Secci"));
 		players.add(new BotPlayer2());
-		players.add(new BotPlayer1());
+		players.add(new BotPlayer2());
+		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
 
 		ScoponeGame board = new ScoponeGame(players);

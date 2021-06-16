@@ -10,6 +10,7 @@ public class Card implements Comparable<Card> {
 	private int value;
 	private Suit suit;
 	private int primieraValue;
+	private boolean selected;
 
 	/**
 	 * 
@@ -21,6 +22,7 @@ public class Card implements Comparable<Card> {
 		this.value = value;
 		this.suit = suit;
 		this.primieraValue = primieraValue;
+		this.selected = false;
 	}
 
 	public int getValue() {
@@ -45,6 +47,15 @@ public class Card implements Comparable<Card> {
 
 	public void setPrimieraValue(int primieraValue) {
 		this.primieraValue = primieraValue;
+	}
+	
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected() {
+		this.selected = !selected;
 	}
 
 	@Override

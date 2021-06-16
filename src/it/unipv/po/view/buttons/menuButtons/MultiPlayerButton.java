@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import it.unipv.po.view.ImagesLoader;
+import it.unipv.po.view.imagesLoader.ImagesLoader;
 
 public class MultiPlayerButton extends JButton {
 

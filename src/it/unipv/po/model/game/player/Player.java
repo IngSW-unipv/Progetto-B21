@@ -3,6 +3,7 @@ package it.unipv.po.model.game.player;
 import java.util.ArrayList;
 
 import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.player.types.TypePlayer;
 /**
  * 
  * @author Giuseppe Lentini
@@ -22,7 +23,7 @@ public abstract class Player implements Actions{
 		deck = new ArrayList<Card>();
 		cardsListTemp = new ArrayList<Card>();
 		this.nickname = nickname;
-		isCardSelected = true;
+		isCardSelected = false;
 	}
 
 	public boolean isCardSelected() {
@@ -76,4 +77,6 @@ public abstract class Player implements Actions{
 
 		this.deck = deck;
 	}
+	
+	public abstract TypePlayer typePlayer();
 }

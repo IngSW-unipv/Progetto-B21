@@ -11,12 +11,21 @@ public class MainMenu {
 
 	private ScoponeGame scopone;
 	private Music music;
+	private String txt;
 
 	public MainMenu() {
 		super();
 
 		this.music = new Music();
 		music.playMusic();
+	}
+
+	public String getTxt() {
+		return txt;
+	}
+
+	public void setTxt(String txt) {
+		this.txt = txt;
 	}
 
 	public Music getMusic() {
@@ -27,17 +36,17 @@ public class MainMenu {
 		return scopone;
 	}
 
-	public void singlePlayer() {
+	public ScoponeGame singlePlayer() {
 
 		ArrayList<Player> players = new ArrayList<Player>();
-		HumanPlayer human = new HumanPlayer("Fabio Secci");
+		HumanPlayer human = new HumanPlayer(txt);
 
 		players.add(human);
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
 
-		this.scopone = new ScoponeGame(players);
+		return this.scopone = new ScoponeGame(players);
 	}
 
 	public void multiPlayer() {

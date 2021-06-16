@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import it.unipv.po.view.buttons.sound.SoundButton;
+import it.unipv.po.view.imagesLoader.ImagesLoader;
 import it.unipv.po.view.labels.GameGUI;
 import it.unipv.po.view.labels.MainMenuGUI;
 
@@ -95,11 +96,10 @@ public class ScoponeGUI extends JFrame {
 
 		else {
 
-			MainMenuGUI mainMenu = new MainMenuGUI(loader);
+			this.mainMenu = new MainMenuGUI(loader);
 			sound.setVisible(true);
 			add(sound);
 			add(mainMenu);
-			setMainMenu(mainMenu);
 			setMainCreated(true);
 			repaint();
 		}
@@ -107,7 +107,7 @@ public class ScoponeGUI extends JFrame {
 
 	public void game() {
 
-		GameGUI game = new GameGUI(loader);
+		this.game = new GameGUI(loader);
 		setGame(game);
 		sound.setVisible(true);
 		add(sound);

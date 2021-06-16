@@ -14,15 +14,14 @@ import it.unipv.po.model.game.player.Player;
 public class HumanPlayer extends Player {
 
 	private Card cardPlayed;
-	
+
 	public HumanPlayer(String name) {
 		super(name);
 
 	}
 
 //__________________GETTERS & SETTERS______________
-	
-	
+
 	public Card getCardPlayed() {
 		return cardPlayed;
 	}
@@ -30,9 +29,8 @@ public class HumanPlayer extends Player {
 	public void setCardPlayed(Card cardPlayed) {
 		this.cardPlayed = cardPlayed;
 	}
-	
+
 //__________________METODI__________________________
-	
 
 	/**
 	 * Questa è la stessa funzione del botPlayer. serve nel caso il giocatore umano
@@ -106,9 +104,9 @@ public class HumanPlayer extends Player {
 							getCardsListTemp().add(table);
 							getCardsListTemp().add(deck);
 							setCardPlayed(deck);
-							
-							System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta "
-									+ deck.getValue() + " di " + deck.getSuit());
+
+							System.out.println(getNickname() + getPlayerIndex() + "| "
+									+ "PRESA SINGOLA: Gioco la carta " + deck.getValue() + " di " + deck.getSuit());
 
 							return 1;
 						}
@@ -117,5 +115,11 @@ public class HumanPlayer extends Player {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public TypePlayer typePlayer() {
+		// TODO Auto-generated method stub
+		return TypePlayer.HUMANPLAYER;
 	}
 }

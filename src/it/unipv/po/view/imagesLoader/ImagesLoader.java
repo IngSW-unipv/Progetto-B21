@@ -1,4 +1,4 @@
-package it.unipv.po.view;
+package it.unipv.po.view.imagesLoader;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import it.unipv.po.view.ImagesLoader;
+import it.unipv.po.view.imagesLoader.ImagesLoader;
 
 public class SendButton extends JButton{
 
@@ -31,8 +31,8 @@ public class SendButton extends JButton{
 		ImageIcon multiPImg = new ImageIcon(buffer);
 		setBounds(200, 309, 382, 105);
 		setIcon(multiPImg);
-		setOpaque(false);
-		setContentAreaFilled(false);
+		setOpaque(true);
+		setContentAreaFilled(true);
 		setBorderPainted(false);
 		setVisible(true);
 	}
