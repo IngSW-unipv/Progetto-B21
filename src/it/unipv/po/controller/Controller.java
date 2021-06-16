@@ -111,7 +111,7 @@ public class Controller {
 		gui.game();
 		send();
 		deck(30, 309);
-		
+
 	}
 
 	private void send() {
@@ -172,7 +172,7 @@ public class Controller {
 						System.out.println(s.toString());
 					}
 
-					else if (s.isSelected() == true && human.isCardSelected() == true){
+					else if (s.isSelected() == true && human.isCardSelected() == true) {
 
 						human.getCardsListTemp().remove(s);
 						human.setCardSelected();
@@ -199,29 +199,29 @@ public class Controller {
 	}
 
 	private void updateBoard() {
-		
+
 		ArrayList<Card> temp = new ArrayList<Card>();
 		temp.addAll(game.getCardsOnBoard());
-		
-		TimerTask task = new  TimerTask() {
-			
+
+		TimerTask task = new TimerTask() {
+
 			@Override
 			public void run() {
 
 				cardsOnBoard(temp, 39, 100);
 			}
 		};
-		
+
 		Timer timer = new Timer();
 		timer.schedule(task, Date.from(Instant.now()), 1);
 	}
-	
+
 	private void cardsOnBoard(ArrayList<Card> temp, int x, int y) {
 
 		this.cardsOnBoard = new HashMap<Card, JButton>();
-		
+
 		for (Card s : temp) {
-			
+
 			cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 
 			ActionListener a = new ActionListener() {
