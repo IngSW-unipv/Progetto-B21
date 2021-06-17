@@ -337,7 +337,7 @@ public class ScoponeGame {
 
 			else {
 
-				playerActionMonitoring(player);
+				player.getCardsListTemp().clear();
 				setHavePlayed(false);
 
 				return false;

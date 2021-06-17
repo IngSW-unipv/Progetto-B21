@@ -24,6 +24,7 @@ public class Controller {
 	private Player human;
 	private HashMap<Card, JButton> deck;
 	private HashMap<Card, JButton> cardsOnBoard;
+	private int x;
 
 //___________________CONTROLLER______________________
 	public Controller(Main menu, ScoponeGUI gui) {
@@ -31,11 +32,29 @@ public class Controller {
 		this.menu = menu;
 		this.gui = gui;
 		this.cardsOnBoard = new HashMap<Card, JButton>();
+		x = 30;
 
 		start();
 	}
+	
+	
+	
 
-//___________________METODI__________________________
+public synchronized int getX() {
+		return x;
+	}
+
+
+
+
+	public synchronized void setX(int x) {
+		this.x = x;
+	}
+
+
+
+
+	//___________________METODI__________________________
 	private void start() {
 
 		TextListener nickname = new TextListener() {
@@ -227,7 +246,7 @@ public class Controller {
 				cardsOnBoard.get(s).addActionListener(a);
 				gui.getGame().repaint();
 
-				x += 70;
+				setX(x += 70);
 			}
 		}
 	}

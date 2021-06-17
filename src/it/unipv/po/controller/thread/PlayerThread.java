@@ -19,6 +19,7 @@ public class PlayerThread extends Thread {
 	private ScoponeGame g;
 	private Controller controller;
 
+
 	public PlayerThread(ScoponeGame g, Player p, Controller controller) {
 		this.p = p;
 		this.g = g;
@@ -42,10 +43,11 @@ public class PlayerThread extends Thread {
 		}
 	}
 
-	
 	private synchronized void updateBoard() {
-		controller.cardsOnBoard(g.getCardsOnBoard(), 30, 40);
+		
+		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 40);
 	}
+
 	/**
 	 * Se l'indice del giocatore è == al turno, allora tocca a lui
 	 */
