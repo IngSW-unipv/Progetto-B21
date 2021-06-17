@@ -2,12 +2,10 @@ package it.unipv.po.model.game;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
-import it.unipv.po.model.game.player.Player;
-import it.unipv.po.model.game.player.PlayerThread;
-import it.unipv.po.model.game.player.Team;
+import it.unipv.po.model.game.player.team.Team;
+import it.unipv.po.model.game.player.types.Player;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali
@@ -25,7 +23,6 @@ public class ScoponeGame {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
-	private PlayerThread human;
 	private boolean havePlayed;
 
 //__________________COSTRUTTORE____________________ 
@@ -41,11 +38,11 @@ public class ScoponeGame {
 
 //__________________________GETTERS & SETTERS______________ 
 
-	 public synchronized ArrayList<Card> getCardsOnBoard() {
+	public synchronized ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
 	}
 
-	 public synchronized void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
+	public synchronized void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
 
 		this.cardsOnBoard = cardsOnBoard;
 	}
@@ -58,20 +55,12 @@ public class ScoponeGame {
 		this.teamIndex = teamIndex;
 	}
 
-	 public synchronized ArrayList<Team> getTeams() {
+	public synchronized ArrayList<Team> getTeams() {
 		return teams;
 	}
 
 	public synchronized int getTurn() {
 		return turn;
-	}
-
-	public PlayerThread getHuman() {
-		return human;
-	}
-
-	public void setHuman(PlayerThread human) {
-		this.human = human;
 	}
 
 	public boolean isHavePlayed() {
@@ -81,9 +70,8 @@ public class ScoponeGame {
 	public void setHavePlayed(boolean havePlayed) {
 		this.havePlayed = havePlayed;
 	}
-	
-// ______________________METODI_________________________*/
 
+// ______________________METODI_________________________*/
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
@@ -93,22 +81,11 @@ public class ScoponeGame {
 	public void start() {
 
 		cardsOnBoard = new ArrayList<Card>();
-		
+
 		shuffle();
 		giveCards();
 
 		turn = 1;
-
-		PlayerThread t1 = new PlayerThread(this, players.get(0));
-		PlayerThread t2 = new PlayerThread(this, players.get(1));
-		PlayerThread t3 = new PlayerThread(this, players.get(2));
-		PlayerThread t4 = new PlayerThread(this, players.get(3));
-		t1.start();
-		t2.start();
-		t3.start();
-		t4.start();
-		setHuman(t1);
-
 	}
 
 	/**
@@ -307,7 +284,7 @@ public class ScoponeGame {
 					System.out.println("Errore: presa multipla possibile");
 					player.getCardsListTemp().clear();
 					setHavePlayed(false);
-					
+
 					return false;
 				}
 
@@ -318,7 +295,7 @@ public class ScoponeGame {
 						System.out.println("errore: presa singola possibile");
 						player.getCardsListTemp().clear();
 						setHavePlayed(false);
-						
+
 						return false;
 					}
 				}
@@ -328,7 +305,7 @@ public class ScoponeGame {
 			player.getDeck().removeAll(player.getCardsListTemp());
 			player.getCardsListTemp().clear();
 			setHavePlayed(true);
-			
+
 			return true;
 
 		default: // caso nel cui il giocatore fa una presa
@@ -354,7 +331,7 @@ public class ScoponeGame {
 				}
 
 				setHavePlayed(true);
-				
+
 				return true;
 			}
 
@@ -362,7 +339,7 @@ public class ScoponeGame {
 
 				playerActionMonitoring(player);
 				setHavePlayed(false);
-				
+
 				return false;
 			}
 		}

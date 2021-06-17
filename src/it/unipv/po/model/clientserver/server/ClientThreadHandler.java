@@ -2,8 +2,9 @@ package it.unipv.po.model.clientserver.server;
 
 import java.net.*;
 import java.io.*;
-import it.unipv.po.model.game.player.Player;
+
 import it.unipv.po.model.game.player.types.HumanPlayer;
+import it.unipv.po.model.game.player.types.Player;
 
 /**
  * Questa classe rappresenta il server nei confronti di un unico client

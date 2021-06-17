@@ -4,24 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JButton;
+
+import it.unipv.po.controller.menu.Main;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
-import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.types.HumanPlayer;
-import it.unipv.po.model.menu.MainMenu;
+import it.unipv.po.model.game.player.types.Player;
 import it.unipv.po.view.ScoponeGUI;
 
 public class Controller {
 
-	private MainMenu menu;
+	private Main menu;
 	private ScoponeGUI gui;
 	private ScoponeGame game;
 	private Player human;
@@ -29,10 +26,11 @@ public class Controller {
 	private HashMap<Card, JButton> cardsOnBoard;
 
 //___________________CONTROLLER______________________
-	public Controller(MainMenu menu, ScoponeGUI gui) {
+	public Controller(Main menu, ScoponeGUI gui) {
 		super();
 		this.menu = menu;
 		this.gui = gui;
+		this.cardsOnBoard = new HashMap<Card, JButton>();
 
 		start();
 	}
@@ -106,12 +104,11 @@ public class Controller {
 	private void singlePlayer() {
 
 		this.game = menu.singlePlayer();
-		this.human = game.getHuman().getP();
+		this.human = menu.getThread().getP();
 		gui.getMainMenu().setVisible(false);
 		gui.game();
 		send();
 		deck(30, 309);
-
 	}
 
 	private void send() {
@@ -123,7 +120,7 @@ public class Controller {
 
 				if (game.getCardsOnBoard().size() == 0) {
 
-					game.getHuman().interrupt();
+					menu.getThread().interrupt();
 					cardPlayed();
 					gameAdvisor(human.getNickname() + " gioca " + ((HumanPlayer) human).getCardPlayed());
 					human.setCardSelected();
@@ -132,7 +129,7 @@ public class Controller {
 
 				else {
 
-					game.getHuman().interrupt();
+					menu.getThread().interrupt();
 
 					if (game.isHavePlayed()) {
 						cardPlayed();
@@ -198,42 +195,41 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	private void updateBoard() {
-
-		ArrayList<Card> temp = new ArrayList<Card>();
-		temp.addAll(game.getCardsOnBoard());
-
-		TimerTask task = new TimerTask() {
-
-			@Override
-			public void run() {
-
-				cardsOnBoard(temp, 39, 100);
-			}
-		};
-
-		Timer timer = new Timer();
-		timer.schedule(task, Date.from(Instant.now()), 1);
-	}
-
-	private void cardsOnBoard(ArrayList<Card> temp, int x, int y) {
-
-		this.cardsOnBoard = new HashMap<Card, JButton>();
+	public synchronized void cardsOnBoard(ArrayList<Card> temp, int x, int y) {
 
 		for (Card s : temp) {
 
-			cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
+			if (cardsOnBoard.get(s) == null) {
 
-			ActionListener a = new ActionListener() {
+				cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-				}
-			};
+				ActionListener a = new ActionListener() {
 
-			cardsOnBoard.get(s).addActionListener(a);
+					@Override
+					public void actionPerformed(ActionEvent e) {
 
-			x += 70;
+						if (s.isSelected() == false) {
+
+							human.getCardsListTemp().add(s);
+							s.setSelected();
+							gui.getGame().cardSelected(true, cardsOnBoard.get(s));
+						}
+
+						else {
+
+							human.getCardsListTemp().remove(s);
+							s.setSelected();
+							gui.getGame().cardSelected(false, cardsOnBoard.get(s));
+						}
+					}
+				};
+
+				cardsOnBoard.get(s).addActionListener(a);
+				gui.getGame().repaint();
+
+				x += 70;
+			}
 		}
 	}
+
 }

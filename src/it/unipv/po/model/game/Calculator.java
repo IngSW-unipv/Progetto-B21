@@ -10,7 +10,7 @@ import java.util.Collections;
 
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
-import it.unipv.po.model.game.player.Team;
+import it.unipv.po.model.game.player.team.Team;
 
 public class Calculator {
 

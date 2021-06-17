@@ -3,7 +3,6 @@ package it.unipv.po.model.test;
 import java.util.ArrayList;
 
 import it.unipv.po.model.game.ScoponeGame;
-import it.unipv.po.model.game.player.Player;
 import it.unipv.po.model.game.player.types.*;
 public class ModelTester {
 

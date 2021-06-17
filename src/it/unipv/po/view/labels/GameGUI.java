@@ -19,6 +19,7 @@ public class GameGUI extends JLabel {
 	private BufferedImage buffer;
 	private SendButton send;
 	private JLabel gameAdvisor;
+	private JLabel teamAdvisor;
 
 
 	public GameGUI(ImagesLoader loader) {
@@ -43,6 +44,14 @@ public class GameGUI extends JLabel {
 	public void setGameAdvisor(JLabel gameAdvisor) {
 		this.gameAdvisor = gameAdvisor;
 	}
+	
+	public JLabel getTeamAdvisor() {
+		return teamAdvisor;
+	}
+
+	public void setTeamAdvisor(JLabel teamAdvisor) {
+		this.teamAdvisor = teamAdvisor;
+	}
 
 	private void create() {
 		
@@ -65,6 +74,13 @@ public class GameGUI extends JLabel {
 		this.gameAdvisor = new JLabel();
 		gameAdvisor.setBounds(0, 440, 800, 20);
 		gameAdvisor.setOpaque(true);
+		add(gameAdvisor);
+		
+		//teamAdvisor
+		this.teamAdvisor = new JLabel();
+		teamAdvisor.setBounds(0, 200, 100, 100);
+		teamAdvisor.setText("CIAO");
+		teamAdvisor.setOpaque(true);
 		add(gameAdvisor);
 	}
 

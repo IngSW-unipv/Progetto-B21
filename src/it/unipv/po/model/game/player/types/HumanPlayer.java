@@ -2,7 +2,6 @@ package it.unipv.po.model.game.player.types;
 
 import java.util.ArrayList;
 import it.unipv.po.model.game.cards.Card;
-import it.unipv.po.model.game.player.Player;
 
 /**
  * Questa classe permette ad un giocatore umano di effettuare le sue mosse.
