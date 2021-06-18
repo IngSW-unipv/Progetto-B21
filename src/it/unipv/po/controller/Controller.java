@@ -36,25 +36,25 @@ public class Controller {
 
 		start();
 	}
-	
-	
-	
 
-public synchronized int getX() {
+//__________________GETTERS&SETTERS__________________
+	public synchronized int getX() {
 		return x;
 	}
-
-
-
 
 	public synchronized void setX(int x) {
 		this.x = x;
 	}
 
+	public HashMap<Card, JButton> getCardsOnBoard() {
+		return cardsOnBoard;
+	}
 
+	public HashMap<Card, JButton> getDeck() {
+		return deck;
+	}
 
-
-	//___________________METODI__________________________
+	// ___________________METODI__________________________
 	private void start() {
 
 		TextListener nickname = new TextListener() {
@@ -137,30 +137,11 @@ public synchronized int getX() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (game.getCardsOnBoard().size() == 0) {
-
-					menu.getThread().interrupt();
-					cardPlayed();
-					gameAdvisor(human.getNickname() + " gioca " + ((HumanPlayer) human).getCardPlayed());
-					human.setCardSelected();
-					game.setHavePlayed(false);
-				}
-
-				else {
-
-					menu.getThread().interrupt();
-
-					if (game.isHavePlayed()) {
-						cardPlayed();
-						gameAdvisor(human.getNickname() + " gioca " + ((HumanPlayer) human).getCardPlayed());
-						human.setCardSelected();
-					}
-
-					else {
-						gameAdvisor("ERRORE: PRESA POSSIBILE");
-					}
-				}
+				menu.getThread().interrupt();
+				human.setCardSelected();
+				game.setHavePlayed(true);
 			}
+
 		};
 		gui.getGame().getSend().addActionListener(send);
 	}
@@ -204,12 +185,7 @@ public synchronized int getX() {
 		}
 	}
 
-	private synchronized void cardPlayed() {
-
-		gui.getGame().cardPlayed(deck.get(((HumanPlayer) human).getCardPlayed()));
-	}
-
-	private synchronized void gameAdvisor(String txt) {
+	public synchronized void gameAdvisor(String txt) {
 
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
@@ -218,9 +194,9 @@ public synchronized int getX() {
 
 		for (Card s : temp) {
 
-			if (cardsOnBoard.get(s) == null) {
+			if (this.cardsOnBoard.get(s) == null) {
 
-				cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
+				this.cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 
 				ActionListener a = new ActionListener() {
 
@@ -231,14 +207,14 @@ public synchronized int getX() {
 
 							human.getCardsListTemp().add(s);
 							s.setSelected();
-							gui.getGame().cardSelected(true, cardsOnBoard.get(s));
+							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 						}
 
 						else {
 
 							human.getCardsListTemp().remove(s);
 							s.setSelected();
-							gui.getGame().cardSelected(false, cardsOnBoard.get(s));
+							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 						}
 					}
 				};
@@ -247,8 +223,10 @@ public synchronized int getX() {
 				gui.getGame().repaint();
 
 				setX(x += 70);
+				if (getX() > 720) {
+					setX(30);
+				}
 			}
 		}
 	}
-
 }

@@ -275,7 +275,7 @@ public class ScoponeGame {
 
 		case 1: // caso nel cui il giocatore non fa una presa
 
-			for (Card table : cardsOnBoard) {
+			for (Card table : getCardsOnBoard()) {
 
 				counter += table.getValue();
 
@@ -301,7 +301,7 @@ public class ScoponeGame {
 				}
 			}
 
-			cardsOnBoard.addAll(player.getCardsListTemp());
+			getCardsOnBoard().addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
 			player.getCardsListTemp().clear();
 			setHavePlayed(true);
@@ -320,12 +320,12 @@ public class ScoponeGame {
 			if (temp == valueCardPlayed) {
 
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
-				cardsOnBoard.removeAll(player.getCardsListTemp());
+				getCardsOnBoard().removeAll(player.getCardsListTemp());
 				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
 				setTeamIndex(player.getTeamIndex());
 				player.getCardsListTemp().clear();
 
-				if (cardsOnBoard.isEmpty()) {
+				if (getCardsOnBoard().isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
 				}

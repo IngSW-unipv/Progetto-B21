@@ -2,6 +2,8 @@ package it.unipv.po.controller.thread;
 
 import it.unipv.po.controller.Controller;
 import it.unipv.po.model.game.ScoponeGame;
+import it.unipv.po.model.game.cards.Card;
+import it.unipv.po.model.game.player.types.HumanPlayer;
 import it.unipv.po.model.game.player.types.Player;
 import it.unipv.po.model.game.player.types.TypePlayer;
 
@@ -18,7 +20,6 @@ public class PlayerThread extends Thread {
 	private Player p;
 	private ScoponeGame g;
 	private Controller controller;
-
 
 	public PlayerThread(ScoponeGame g, Player p, Controller controller) {
 		this.p = p;
@@ -37,15 +38,31 @@ public class PlayerThread extends Thread {
 	public void run() {
 		while (true) {
 			checkTurn();
-			updateBoard();
 			play();
+			updateBoard();
 			endTurn();
 		}
 	}
 
 	private synchronized void updateBoard() {
+
+		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 50);
 		
-		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 40);
+		if(p.typePlayer() ==TypePlayer.HUMANPLAYER) {
+			
+			deckAction();
+		
+			if(p.getCardsListTemp().size() > 1) {
+				boardAction();
+			}
+		}
+		
+		else {
+			
+			if(p.getCardsListTemp().size() > 1) {
+				boardAction();
+			}
+		}
 	}
 
 	/**
@@ -82,11 +99,16 @@ public class PlayerThread extends Thread {
 					}
 				}
 
+				controller.gameAdvisor(p.getNickname() + " gioca " + ((HumanPlayer) p).getCardPlayed());
+				
 				return true;
 			}
 
 			g.playerActionMonitoring(p, g.getCardsOnBoard());
 
+			controller.gameAdvisor(
+					p.getNickname() + " gioca " + p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+			
 			return true;
 		}
 
@@ -101,6 +123,9 @@ public class PlayerThread extends Thread {
 
 			g.playerActionMonitoring(p, g.getCardsOnBoard());
 
+			controller.gameAdvisor(
+					p.getNickname() + " gioca " + p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+			
 			return true;
 		}
 	}
@@ -111,6 +136,7 @@ public class PlayerThread extends Thread {
 	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
 	 */
 	synchronized public void endTurn() {
+
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 			g.endGame();
 			try {
@@ -120,5 +146,25 @@ public class PlayerThread extends Thread {
 		}
 		g.nextTurn();
 		notifyAll();
+	}
+
+	private void deckAction() {
+
+		controller.getDeck().get(((HumanPlayer) p).getCardPlayed()).setVisible(false);
+	}
+	
+	private void boardAction() {
+		
+		for (Card s : p.getCardsListTemp()) {
+
+			if(p.getCardsListTemp().contains(s)){
+				
+				try{
+					controller.getCardsOnBoard().get(s).setVisible(false);
+				}
+				catch (Exception e) {
+				}
+			}
+		}
 	}
 }

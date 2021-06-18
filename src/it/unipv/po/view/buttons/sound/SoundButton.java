@@ -28,7 +28,7 @@ public class SoundButton extends JButton {
 		this.buffer = loader.uploadImage("/it/unipv/po/images/audioON.png");
 		ImageIcon soundSet = new ImageIcon(buffer);
 		setIcon(soundSet);
-		setBounds(720, 15, 50, 50);
+		setBounds(730, 15, 50, 50);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);
