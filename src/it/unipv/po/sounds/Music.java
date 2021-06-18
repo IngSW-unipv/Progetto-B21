@@ -29,10 +29,10 @@ public class Music {
 		return hit;
 	}
 
-	public void playMusic() {
+	public void playMusic(String txt) {
 
 		try {
-			AudioInputStream audio = AudioSystem.getAudioInputStream(new File("it/unipv/po/sounds/music.wav"));
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File("it/unipv/po/sounds/" + txt));
 			this.hit = AudioSystem.getClip();
 			hit.open(audio);
 			hit.start();

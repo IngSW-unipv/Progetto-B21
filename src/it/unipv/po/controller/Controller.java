@@ -165,8 +165,8 @@ public class Controller {
 						human.setCardSelected();
 						s.setSelected();
 						gui.getGame().cardSelected(true, deck.get(s));
+						menu.getClick().playMusic("card_flip.wav");
 						((HumanPlayer) human).setCardPlayed(s);
-						System.out.println(s.toString());
 					}
 
 					else if (s.isSelected() == true && human.isCardSelected() == true) {
@@ -175,6 +175,7 @@ public class Controller {
 						human.setCardSelected();
 						s.setSelected();
 						((HumanPlayer) human).setCardPlayed(null);
+						menu.getClick().playMusic("card_flip.wav");
 						gui.getGame().cardSelected(false, deck.get(s));
 					}
 				}
@@ -207,6 +208,7 @@ public class Controller {
 
 							human.getCardsListTemp().add(s);
 							s.setSelected();
+							menu.getClick().playMusic("card_flip.wav");
 							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 						}
 
@@ -214,6 +216,7 @@ public class Controller {
 
 							human.getCardsListTemp().remove(s);
 							s.setSelected();
+							menu.getClick().playMusic("card_flip.wav");
 							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 						}
 					}

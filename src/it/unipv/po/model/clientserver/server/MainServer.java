@@ -6,7 +6,6 @@ import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import it.unipv.po.model.game.*;
-import it.unipv.po.model.game.player.*;
 import it.unipv.po.model.game.player.types.Player;
 import it.unipv.po.model.clientserver.client.*;
 /**

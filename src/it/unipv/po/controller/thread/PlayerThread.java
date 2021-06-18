@@ -51,7 +51,7 @@ public class PlayerThread extends Thread {
 		if(p.typePlayer() ==TypePlayer.HUMANPLAYER) {
 			
 			deckAction();
-		
+			System.out.println(p.getCardsListTemp().size());
 			if(p.getCardsListTemp().size() > 1) {
 				boardAction();
 			}
@@ -101,6 +101,7 @@ public class PlayerThread extends Thread {
 
 				controller.gameAdvisor(p.getNickname() + " gioca " + ((HumanPlayer) p).getCardPlayed());
 				
+				
 				return true;
 			}
 
@@ -144,6 +145,8 @@ public class PlayerThread extends Thread {
 			} catch (InterruptedException e) {
 			}
 		}
+		
+		p.getCardsListTemp().clear();
 		g.nextTurn();
 		notifyAll();
 	}
@@ -157,7 +160,7 @@ public class PlayerThread extends Thread {
 		
 		for (Card s : p.getCardsListTemp()) {
 
-			if(p.getCardsListTemp().contains(s)){
+			if(controller.getCardsOnBoard().get(s) != null){
 				
 				try{
 					controller.getCardsOnBoard().get(s).setVisible(false);

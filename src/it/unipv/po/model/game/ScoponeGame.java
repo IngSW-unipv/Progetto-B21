@@ -282,7 +282,6 @@ public class ScoponeGame {
 				if (counter == player.getCardsListTemp().get(0).getValue()) {
 
 					System.out.println("Errore: presa multipla possibile");
-					player.getCardsListTemp().clear();
 					setHavePlayed(false);
 
 					return false;
@@ -293,7 +292,6 @@ public class ScoponeGame {
 					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
 
 						System.out.println("errore: presa singola possibile");
-						player.getCardsListTemp().clear();
 						setHavePlayed(false);
 
 						return false;
@@ -303,7 +301,6 @@ public class ScoponeGame {
 
 			getCardsOnBoard().addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			player.getCardsListTemp().clear();
 			setHavePlayed(true);
 
 			return true;
@@ -323,7 +320,6 @@ public class ScoponeGame {
 				getCardsOnBoard().removeAll(player.getCardsListTemp());
 				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
 				setTeamIndex(player.getTeamIndex());
-				player.getCardsListTemp().clear();
 
 				if (getCardsOnBoard().isEmpty()) {
 
@@ -337,7 +333,6 @@ public class ScoponeGame {
 
 			else {
 
-				player.getCardsListTemp().clear();
 				setHavePlayed(false);
 
 				return false;

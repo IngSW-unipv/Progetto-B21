@@ -15,12 +15,13 @@ public class Main {
 	private String txt;
 	private Controller controller;
 	private PlayerThread thread;
+	private Music click;
 
 	public Main() {
 		super();
 
 		this.music = new Music();
-		music.playMusic();
+		music.playMusic("music.wav");
 	}
 
 	public String getTxt() {
@@ -59,6 +60,14 @@ public class Main {
 		this.thread = thread;
 	}
 
+	public Music getClick() {
+		return click;
+	}
+
+	public void setClick(Music click) {
+		this.click = click;
+	}
+
 	public ScoponeGame singlePlayer() {
 
 		ArrayList<Player> players = new ArrayList<Player>();
@@ -68,9 +77,10 @@ public class Main {
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
 		players.add(new BotPlayer2());
-		
+
 		this.scopone = new ScoponeGame(players);
-		
+		this.click = new Music();
+
 		PlayerThread t1 = new PlayerThread(scopone, players.get(0), controller);
 		setThread(t1);
 		PlayerThread t2 = new PlayerThread(scopone, players.get(1), controller);
