@@ -6,10 +6,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-
-import it.unipv.po.view.buttons.menuButtons.MultiPlayerButton;
-import it.unipv.po.view.buttons.menuButtons.SinglePlayerButton;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
+import it.unipv.po.view.menuElements.buttons.MultiPlayerButton;
+import it.unipv.po.view.menuElements.buttons.SinglePlayerButton;
 
 public class MainMenuGUI extends JLabel {
 

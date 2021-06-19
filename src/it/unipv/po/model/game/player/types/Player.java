@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.Actions;
+
 /**
  * 
  * @author Giuseppe Lentini
  */
-public abstract class Player implements Actions{
+public abstract class Player implements Actions {
 
 	private String nickname;
 	private ArrayList<Card> deck;
@@ -16,8 +17,8 @@ public abstract class Player implements Actions{
 	private int playerIndex;
 	private ArrayList<Card> cardsListTemp;
 	private boolean isCardSelected;
+	private boolean scopa;
 
-	
 	public Player(String nickname) {
 		super();
 		deck = new ArrayList<Card>();
@@ -27,7 +28,7 @@ public abstract class Player implements Actions{
 	}
 
 	public boolean isCardSelected() {
-		
+
 		return isCardSelected;
 	}
 
@@ -43,7 +44,13 @@ public abstract class Player implements Actions{
 		this.cardsListTemp = temp;
 	}
 
+	public boolean isScopa() {
+		return scopa;
+	}
 
+	public void setScopa() {
+		this.scopa = !scopa;
+	}
 
 	public int getTeamIndex() {
 		return teamIndex;
@@ -77,6 +84,6 @@ public abstract class Player implements Actions{
 
 		this.deck = deck;
 	}
-	
+
 	public abstract TypePlayer typePlayer();
 }

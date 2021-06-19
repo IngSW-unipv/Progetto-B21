@@ -247,6 +247,7 @@ public class ScoponeGame {
 				if (cardsOnBoard.isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
+					player.setScopa();
 					System.out.println("|CROUPIER| SCOPA!");
 				}
 
@@ -324,6 +325,7 @@ public class ScoponeGame {
 				if (getCardsOnBoard().isEmpty()) {
 
 					teams.get(player.getTeamIndex()).scopa();
+					player.setScopa();
 				}
 
 				setHavePlayed(true);

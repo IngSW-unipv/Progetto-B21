@@ -4,8 +4,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import it.unipv.po.view.buttons.gameButtons.CardButton;
-import it.unipv.po.view.buttons.gameButtons.SendButton;
+
+import it.unipv.po.view.gameElements.buttons.CardButton;
+import it.unipv.po.view.gameElements.buttons.SendButton;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
 public class GameGUI extends JLabel {
@@ -66,20 +67,12 @@ public class GameGUI extends JLabel {
 
 		// invio
 		this.send = new SendButton(loader);
-		send.setBounds(750, 309, 30, 113);
 		add(send);
 
 		// chat
 		this.gameAdvisor = new JLabel();
 		gameAdvisor.setBounds(0, 440, 800, 20);
 		gameAdvisor.setOpaque(true);
-		add(gameAdvisor);
-
-		// teamAdvisor
-		this.teamAdvisor = new JLabel();
-		teamAdvisor.setBounds(0, 200, 100, 100);
-		teamAdvisor.setText("CIAO");
-		teamAdvisor.setOpaque(true);
 		add(gameAdvisor);
 	}
 

@@ -1,14 +1,13 @@
 package it.unipv.po.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.swing.JButton;
-
 import it.unipv.po.controller.menu.Main;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
@@ -52,6 +51,10 @@ public class Controller {
 
 	public HashMap<Card, JButton> getDeck() {
 		return deck;
+	}
+
+	public ScoponeGUI getGui() {
+		return gui;
 	}
 
 	// ___________________METODI__________________________
@@ -137,11 +140,12 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				menu.getThread().interrupt();
-				human.setCardSelected();
-				game.setHavePlayed(true);
+				if (human.getCardsListTemp().size() != 0) {
+					menu.getThread().interrupt();
+					human.setCardSelected();
+					game.setHavePlayed(true);
+				}
 			}
-
 		};
 		gui.getGame().getSend().addActionListener(send);
 	}
@@ -197,6 +201,9 @@ public class Controller {
 
 			if (this.cardsOnBoard.get(s) == null) {
 
+				if (s.isSelected() == true)
+					s.setSelected();
+
 				this.cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 
 				ActionListener a = new ActionListener() {
@@ -204,20 +211,27 @@ public class Controller {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						if (s.isSelected() == false) {
-
-							human.getCardsListTemp().add(s);
-							s.setSelected();
-							menu.getClick().playMusic("card_flip.wav");
-							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+						if (human.isCardSelected()) {
+							selectError();
 						}
 
 						else {
 
-							human.getCardsListTemp().remove(s);
-							s.setSelected();
-							menu.getClick().playMusic("card_flip.wav");
-							gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+							if (s.isSelected() == false) {
+
+								human.getCardsListTemp().add(s);
+								s.setSelected();
+								menu.getClick().playMusic("card_flip.wav");
+								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+							}
+
+							else {
+
+								human.getCardsListTemp().remove(s);
+								s.setSelected();
+								menu.getClick().playMusic("card_flip.wav");
+								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+							}
 						}
 					}
 				};
@@ -231,5 +245,22 @@ public class Controller {
 				}
 			}
 		}
+	}
+
+	private void selectError() {
+		
+		gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		gameAdvisor("ERRORE: selezionare prima la carta da prendere");
+	}
+	
+	public void sendError() {
+		gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		gameAdvisor("ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");
+
+	}
+	public synchronized void scopa(Player player) {
+
+		gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		gameAdvisor(player.getNickname() + " FA SCOPA!");
 	}
 }

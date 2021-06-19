@@ -1,4 +1,4 @@
-package it.unipv.po.view.buttons.sound;
+package it.unipv.po.view.menuElements.sound;
 
 import java.awt.image.BufferedImage;
 
@@ -46,6 +46,7 @@ public class SoundButton extends JButton {
 			this.buffer = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
 			ImageIcon soundSet2 = new ImageIcon(buffer);
 			setIcon(soundSet2);
+			break;
 		}
 	}
 }

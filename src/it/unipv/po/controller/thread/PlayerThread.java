@@ -1,5 +1,6 @@
 package it.unipv.po.controller.thread;
 
+import java.awt.Color;
 import it.unipv.po.controller.Controller;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
@@ -45,22 +46,61 @@ public class PlayerThread extends Thread {
 	}
 
 	private synchronized void updateBoard() {
-
-		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 50);
 		
-		if(p.typePlayer() ==TypePlayer.HUMANPLAYER) {
-			
+		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 50);
+		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
+
+		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
+
 			deckAction();
 			System.out.println(p.getCardsListTemp().size());
-			if(p.getCardsListTemp().size() > 1) {
+			if (p.getCardsListTemp().size() > 1) {
 				boardAction();
+				
+				try {
+					sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if (p.isScopa()) {
+
+					controller.scopa(p);
+					p.setScopa();
+
+					try {
+						sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
-		
+
 		else {
-			
-			if(p.getCardsListTemp().size() > 1) {
+
+			if (p.getCardsListTemp().size() > 1) {
 				boardAction();
+				
+				try {
+					sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (p.isScopa()) {
+
+					controller.scopa(p);
+					p.setScopa();
+					try {
+						sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
@@ -86,12 +126,18 @@ public class PlayerThread extends Thread {
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 
 			try {
-				sleep(10000);
+				sleep(300);
+				controller.getGui().getGame().getGameAdvisor().setForeground(Color.GREEN);
+				controller.gameAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
+				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
+				sleep(19700);
 			} catch (InterruptedException e) {
 
 				if (!g.playerActionMonitoring(p)) {
 
 					try {
+						controller.sendError();
+						p.setCardSelected();
 						sleep(10000);
 					} catch (InterruptedException e1) {
 
@@ -99,17 +145,18 @@ public class PlayerThread extends Thread {
 					}
 				}
 
-				controller.gameAdvisor(p.getNickname() + " gioca " + ((HumanPlayer) p).getCardPlayed());
-				
+				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+						+ ((HumanPlayer) p).getCardPlayed());
+
 				
 				return true;
 			}
 
 			g.playerActionMonitoring(p, g.getCardsOnBoard());
 
-			controller.gameAdvisor(
-					p.getNickname() + " gioca " + p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-			
+			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+
 			return true;
 		}
 
@@ -124,9 +171,9 @@ public class PlayerThread extends Thread {
 
 			g.playerActionMonitoring(p, g.getCardsOnBoard());
 
-			controller.gameAdvisor(
-					p.getNickname() + " gioca " + p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-			
+			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+
 			return true;
 		}
 	}
@@ -138,6 +185,13 @@ public class PlayerThread extends Thread {
 	 */
 	synchronized public void endTurn() {
 
+		try {
+			sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 			g.endGame();
 			try {
@@ -145,7 +199,7 @@ public class PlayerThread extends Thread {
 			} catch (InterruptedException e) {
 			}
 		}
-		
+
 		p.getCardsListTemp().clear();
 		g.nextTurn();
 		notifyAll();
@@ -155,17 +209,16 @@ public class PlayerThread extends Thread {
 
 		controller.getDeck().get(((HumanPlayer) p).getCardPlayed()).setVisible(false);
 	}
-	
+
 	private void boardAction() {
-		
+
 		for (Card s : p.getCardsListTemp()) {
 
-			if(controller.getCardsOnBoard().get(s) != null){
-				
-				try{
+			if (controller.getCardsOnBoard().get(s) != null) {
+
+				try {
 					controller.getCardsOnBoard().get(s).setVisible(false);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 				}
 			}
 		}

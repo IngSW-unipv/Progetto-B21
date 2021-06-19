@@ -1,4 +1,4 @@
-package it.unipv.po.view.buttons.gameButtons;
+package it.unipv.po.view.menuElements.buttons;
 
 import java.awt.image.BufferedImage;
 
@@ -7,16 +7,17 @@ import javax.swing.JButton;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class SendButton extends JButton{
+public class SinglePlayerButton extends JButton {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private ImagesLoader loader;
 	private BufferedImage buffer;
-	
-	public SendButton(ImagesLoader loader) {
+
+	public SinglePlayerButton(ImagesLoader loader) {
 		super();
 
 		this.loader = loader;
@@ -24,15 +25,14 @@ public class SendButton extends JButton{
 		create();
 	}
 
-
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/invio.png");
-		ImageIcon multiPImg = new ImageIcon(buffer);
-		setBounds(200, 309, 382, 105);
-		setIcon(multiPImg);
-		setOpaque(true);
-		setContentAreaFilled(true);
+		this.buffer = loader.uploadImage("/it/unipv/po/images/button1.png");
+		ImageIcon singlePImg = new ImageIcon(buffer);
+		setBounds(200, 189, 382, 105);
+		setIcon(singlePImg);
+		setOpaque(false);
+		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);
 	}

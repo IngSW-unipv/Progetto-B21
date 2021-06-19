@@ -1,4 +1,4 @@
-package it.unipv.po.view.buttons.menuButtons;
+package it.unipv.po.view.menuElements.buttons;
 
 import java.awt.image.BufferedImage;
 
@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class SinglePlayerButton extends JButton {
+public class MultiPlayerButton extends JButton {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class SinglePlayerButton extends JButton {
 	private ImagesLoader loader;
 	private BufferedImage buffer;
 
-	public SinglePlayerButton(ImagesLoader loader) {
+	public MultiPlayerButton(ImagesLoader loader) {
 		super();
 
 		this.loader = loader;
@@ -27,10 +27,10 @@ public class SinglePlayerButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button1.png");
-		ImageIcon singlePImg = new ImageIcon(buffer);
-		setBounds(200, 189, 382, 105);
-		setIcon(singlePImg);
+		this.buffer = loader.uploadImage("/it/unipv/po/images/button2.png");
+		ImageIcon multiPImg = new ImageIcon(buffer);
+		setBounds(200, 309, 382, 105);
+		setIcon(multiPImg);
 		setOpaque(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);

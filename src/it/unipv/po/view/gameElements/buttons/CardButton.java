@@ -1,4 +1,4 @@
-package it.unipv.po.view.buttons.menuButtons;
+package it.unipv.po.view.gameElements.buttons;
 
 import java.awt.image.BufferedImage;
 
@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class MultiPlayerButton extends JButton {
+public class CardButton extends JButton {
 
 	/**
 	 * 
@@ -16,24 +16,25 @@ public class MultiPlayerButton extends JButton {
 
 	private ImagesLoader loader;
 	private BufferedImage buffer;
+	private int x, y;
+	private String txt;
 
-	public MultiPlayerButton(ImagesLoader loader) {
+	public CardButton(ImagesLoader loader, int x, int y, String txt) {
 		super();
-
 		this.loader = loader;
+		this.x = x;
+		this.y = y;
+		this.txt = txt;
 
 		create();
 	}
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button2.png");
+		this.buffer = loader.uploadImage("/it/unipv/po/images/napoletane/" + txt + ".png");
 		ImageIcon multiPImg = new ImageIcon(buffer);
-		setBounds(200, 309, 382, 105);
 		setIcon(multiPImg);
-		setOpaque(false);
-		setContentAreaFilled(false);
-		setBorderPainted(false);
+		setBounds(x, y, 65, 113);
 		setVisible(true);
 	}
 }

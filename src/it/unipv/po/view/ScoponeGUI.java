@@ -5,10 +5,10 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import it.unipv.po.view.buttons.sound.SoundButton;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 import it.unipv.po.view.labels.GameGUI;
 import it.unipv.po.view.labels.MainMenuGUI;
+import it.unipv.po.view.menuElements.sound.SoundButton;
 
 public class ScoponeGUI extends JFrame {
 
@@ -105,7 +105,7 @@ public class ScoponeGUI extends JFrame {
 		}
 	}
 
-	public void game() {
+	public GameGUI game() {
 
 		this.game = new GameGUI(loader);
 		setGame(game);
@@ -113,5 +113,7 @@ public class ScoponeGUI extends JFrame {
 		add(sound);
 		add(game);
 		repaint();
+		
+		return game;
 	}
 }
