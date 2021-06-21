@@ -14,9 +14,11 @@ import it.unipv.po.model.game.cards.Card;
 public class HumanPlayer extends Player {
 
 	private Card cardPlayed;
+	private boolean havePlayed;
 
 	public HumanPlayer(String name) {
 		super(name);
+		havePlayed = false;
 
 	}
 
@@ -29,8 +31,18 @@ public class HumanPlayer extends Player {
 	public void setCardPlayed(Card cardPlayed) {
 		this.cardPlayed = cardPlayed;
 	}
+	
+	public boolean isHavePlayed() {
+		return havePlayed;
+	}
+
+	public void setHavePlayed(boolean havePlayed) {
+		this.havePlayed = havePlayed;
+	}	
 
 //__________________METODI__________________________
+
+
 
 	/**
 	 * Questa � la stessa funzione del botPlayer. serve nel caso il giocatore umano
@@ -48,11 +60,7 @@ public class HumanPlayer extends Player {
 
 		case 0:
 
-			int i = 0;
-
-			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
-					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-			getCardsListTemp().add(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(0));
 
 			return getCardsListTemp();
 		}
@@ -71,13 +79,8 @@ public class HumanPlayer extends Player {
 
 		if (cardsOnBoard.isEmpty()) {
 
-			int i = 0;
-
-			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
-					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-
-			setCardPlayed(getDeck().get(i));
-			getCardsListTemp().add(getDeck().get(i));
+			setCardPlayed(getDeck().get(0));
+			getCardsListTemp().add(getDeck().get(0));
 
 			return 1;
 		}
@@ -100,7 +103,6 @@ public class HumanPlayer extends Player {
 						getCardsListTemp().add(deck);
 						setCardPlayed(deck);
 
-						System.out.println("PRESA MULTIPLA");
 						return 1;
 					}
 
@@ -111,9 +113,6 @@ public class HumanPlayer extends Player {
 							getCardsListTemp().add(table);
 							getCardsListTemp().add(deck);
 							setCardPlayed(deck);
-
-							System.out.println(getNickname() + getPlayerIndex() + "| "
-									+ "PRESA SINGOLA: Gioco la carta " + deck.getValue() + " di " + deck.getSuit());
 
 							return 1;
 						}

@@ -28,11 +28,7 @@ public class BotPlayer2 extends Player {
 
 		case 0:
 
-			int i = 0;
-
-			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO(NO PRESA): Gioco la carta "
-					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-			getCardsListTemp().add(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(0));
 
 			return getCardsListTemp();
 		}
@@ -44,12 +40,7 @@ public class BotPlayer2 extends Player {
 
 		if (cardsOnBoard.isEmpty()) {
 
-			int i = 0;
-
-			System.out.println(getNickname() + getPlayerIndex() + "| " + "DEPOSITO: Gioco la carta "
-					+ getDeck().get(i).getValue() + " di " + getDeck().get(i).getSuit());
-
-			getCardsListTemp().add(getDeck().get(i));
+			getCardsListTemp().add(getDeck().get(0));
 
 			return 1;
 		}
@@ -71,7 +62,6 @@ public class BotPlayer2 extends Player {
 						getCardsListTemp().addAll(cardList);
 						getCardsListTemp().add(deck);
 
-						System.out.println("PRESA MULTIPLA");
 						return 1;
 					}
 
@@ -81,9 +71,6 @@ public class BotPlayer2 extends Player {
 
 							getCardsListTemp().add(table);
 							getCardsListTemp().add(deck);
-
-							System.out.println(getNickname() + getPlayerIndex() + "| " + "PRESA SINGOLA: Gioco la carta "
-									+ deck.getValue() + " di " + deck.getSuit());
 
 							return 1;
 						}

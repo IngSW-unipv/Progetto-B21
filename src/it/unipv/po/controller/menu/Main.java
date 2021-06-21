@@ -15,7 +15,7 @@ public class Main {
 	private String txt;
 	private Controller controller;
 	private PlayerThread thread;
-	private Music click;
+	private Music sound;
 
 	public Main() {
 		super();
@@ -60,12 +60,12 @@ public class Main {
 		this.thread = thread;
 	}
 
-	public Music getClick() {
-		return click;
+	public Music getSound() {
+		return sound;
 	}
 
-	public void setClick(Music click) {
-		this.click = click;
+	public void setSound(Music click) {
+		this.sound = click;
 	}
 
 	public ScoponeGame singlePlayer() {
@@ -79,7 +79,7 @@ public class Main {
 		players.add(new BotPlayer2());
 
 		this.scopone = new ScoponeGame(players);
-		this.click = new Music();
+		this.sound = new Music();
 
 		PlayerThread t1 = new PlayerThread(scopone, players.get(0), controller);
 		setThread(t1);

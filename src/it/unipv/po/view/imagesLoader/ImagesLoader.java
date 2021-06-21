@@ -19,5 +19,4 @@ public class ImagesLoader {
 		
 		return image;
 	}
-
 }

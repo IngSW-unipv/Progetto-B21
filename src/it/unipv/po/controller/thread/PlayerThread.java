@@ -21,11 +21,21 @@ public class PlayerThread extends Thread {
 	private Player p;
 	private ScoponeGame g;
 	private Controller controller;
+	private int click; //Uso questa variabile per gestire il bug del doppio click durante l'invio della giocata
 
 	public PlayerThread(ScoponeGame g, Player p, Controller controller) {
 		this.p = p;
 		this.g = g;
 		this.controller = controller;
+		this.click = 0;
+	}
+
+	public int getClick() {
+		return click;
+	}
+
+	public void setClick(int click) {
+		this.click = click;
 	}
 
 	public Player getP() {
@@ -46,24 +56,23 @@ public class PlayerThread extends Thread {
 	}
 
 	private synchronized void updateBoard() {
-		
-		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 50);
+
+		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 
 			deckAction();
-			System.out.println(p.getCardsListTemp().size());
 			if (p.getCardsListTemp().size() > 1) {
 				boardAction();
-				
+
 				try {
 					sleep(3000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				if (p.isScopa()) {
 
 					controller.scopa(p);
@@ -83,7 +92,7 @@ public class PlayerThread extends Thread {
 
 			if (p.getCardsListTemp().size() > 1) {
 				boardAction();
-				
+
 				try {
 					sleep(3000);
 				} catch (InterruptedException e) {
@@ -125,6 +134,8 @@ public class PlayerThread extends Thread {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 
+			setClick(0);
+
 			try {
 				sleep(300);
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.GREEN);
@@ -148,7 +159,6 @@ public class PlayerThread extends Thread {
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
-				
 				return true;
 			}
 
@@ -163,7 +173,7 @@ public class PlayerThread extends Thread {
 		else {
 
 			try {
-				sleep(5000);
+				sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -191,7 +201,7 @@ public class PlayerThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 			g.endGame();
 			try {

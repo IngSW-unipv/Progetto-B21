@@ -61,6 +61,7 @@ public class GameGUI extends JLabel {
 		setBounds(0, 0, 800, 500);
 		setLayout(null);
 		setVisible(true);
+
 	}
 
 	public void game() {

@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 import it.unipv.po.view.labels.GameGUI;
 import it.unipv.po.view.labels.MainMenuGUI;
+import it.unipv.po.view.labels.MultiPlayerMenuGUI;
 import it.unipv.po.view.menuElements.sound.SoundButton;
 
 public class ScoponeGUI extends JFrame {
@@ -19,7 +20,9 @@ public class ScoponeGUI extends JFrame {
 
 	private MainMenuGUI mainMenu;
 	private GameGUI game;
+	private MultiPlayerMenuGUI multiPlayer;
 	private boolean mainCreated;
+	private boolean multiPlayerCreated;
 	private ImagesLoader loader;
 	private SoundButton sound;
 
@@ -28,6 +31,7 @@ public class ScoponeGUI extends JFrame {
 		super();
 
 		mainCreated = false;
+		multiPlayerCreated = false;
 		create();
 		mainMenu();
 	}
@@ -65,6 +69,22 @@ public class ScoponeGUI extends JFrame {
 		this.game = game;
 	}
 
+	public MultiPlayerMenuGUI getMultiPlayer() {
+		return multiPlayer;
+	}
+
+	public void setMultiPlayer(MultiPlayerMenuGUI multiPlayer) {
+		this.multiPlayer = multiPlayer;
+	}
+
+	public boolean isMultiPlayerCreated() {
+		return multiPlayerCreated;
+	}
+
+	public void setMultiPlayerCreated(boolean multiPlayerCreated) {
+		this.multiPlayerCreated = multiPlayerCreated;
+	}
+
 	// ___________________METODI_________________________
 	private void create() {
 
@@ -78,7 +98,7 @@ public class ScoponeGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setVisible(true);
-		
+
 		loader = new ImagesLoader();
 		this.sound = new SoundButton(loader);
 	}
@@ -113,7 +133,29 @@ public class ScoponeGUI extends JFrame {
 		add(sound);
 		add(game);
 		repaint();
-		
+
 		return game;
+	}
+	
+	public MultiPlayerMenuGUI multiPlayer() {
+		
+		if (multiPlayerCreated) {
+
+			getMultiPlayer().setVisible(true);
+			sound.setVisible(true);
+			add(sound);
+			add(getMultiPlayer());
+			repaint();
+		}
+
+		else {
+			this.multiPlayer = new MultiPlayerMenuGUI(loader);
+			setMultiPlayer(multiPlayer);
+			add(sound);
+			add(multiPlayer);
+			repaint();
+		}
+		
+		return multiPlayer;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Random;
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.cards.Suit;
 import it.unipv.po.model.game.player.team.Team;
-import it.unipv.po.model.game.player.types.Player;
+import it.unipv.po.model.game.player.types.*;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali
@@ -23,13 +23,10 @@ public class ScoponeGame {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
-	private boolean havePlayed;
-
 //__________________COSTRUTTORE____________________ 
 	public ScoponeGame(ArrayList<Player> players) {
 
 		this.players = players;
-		havePlayed = false;
 
 		makeTeam();
 		createDeck();
@@ -63,13 +60,7 @@ public class ScoponeGame {
 		return turn;
 	}
 
-	public boolean isHavePlayed() {
-		return havePlayed;
-	}
 
-	public void setHavePlayed(boolean havePlayed) {
-		this.havePlayed = havePlayed;
-	}
 
 // ______________________METODI_________________________*/
 
@@ -238,7 +229,6 @@ public class ScoponeGame {
 
 			if (temp == player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue()) {
 
-				System.out.println("|CROUPIER| mossa valida");
 				getTeams().get(player.getTeamIndex()).getCardsCollected().addAll(player.getCardsListTemp());
 				cardsOnBoard.removeAll(player.getCardsListTemp());
 				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
@@ -248,7 +238,6 @@ public class ScoponeGame {
 
 					teams.get(player.getTeamIndex()).scopa();
 					player.setScopa();
-					System.out.println("|CROUPIER| SCOPA!");
 				}
 
 				return true;
@@ -256,7 +245,6 @@ public class ScoponeGame {
 
 			else {
 
-				System.out.println("|CROUPIER| mossa non valida");
 				playerActionMonitoring(player, cardsOnBoard);
 
 				return false;
@@ -282,9 +270,7 @@ public class ScoponeGame {
 
 				if (counter == player.getCardsListTemp().get(0).getValue()) {
 
-					System.out.println("Errore: presa multipla possibile");
-					setHavePlayed(false);
-
+					((HumanPlayer) player).setHavePlayed(false);
 					return false;
 				}
 
@@ -292,9 +278,7 @@ public class ScoponeGame {
 
 					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
 
-						System.out.println("errore: presa singola possibile");
-						setHavePlayed(false);
-
+						((HumanPlayer) player).setHavePlayed(false);
 						return false;
 					}
 				}
@@ -302,7 +286,7 @@ public class ScoponeGame {
 
 			getCardsOnBoard().addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			setHavePlayed(true);
+			((HumanPlayer) player).setHavePlayed(true);
 
 			return true;
 
@@ -328,14 +312,14 @@ public class ScoponeGame {
 					player.setScopa();
 				}
 
-				setHavePlayed(true);
+				((HumanPlayer) player).setHavePlayed(true);
 
 				return true;
 			}
 
 			else {
 
-				setHavePlayed(false);
+				((HumanPlayer) player).setHavePlayed(false);
 
 				return false;
 			}

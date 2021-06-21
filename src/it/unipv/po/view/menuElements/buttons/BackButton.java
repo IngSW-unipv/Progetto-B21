@@ -1,4 +1,4 @@
-package it.unipv.po.view.gameElements.buttons;
+package it.unipv.po.view.menuElements.buttons;
 
 import java.awt.image.BufferedImage;
 
@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class CardButton extends JButton {
+public class BackButton extends JButton {
 
 	/**
 	 * 
@@ -16,28 +16,24 @@ public class CardButton extends JButton {
 
 	private ImagesLoader loader;
 	private BufferedImage buffer;
-	private int x, y;
-	private String txt;
 
-	public CardButton(ImagesLoader loader, int x, int y, String txt) {
+	public BackButton(ImagesLoader loader) {
 		super();
+
 		this.loader = loader;
-		this.x = x;
-		this.y = y;
-		this.txt = txt;
 
 		create();
 	}
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/deckGraphics/" + txt + ".png");
-		ImageIcon card = new ImageIcon(buffer);
-		setIcon(card);
-		setOpaque(true);
+		this.buffer = loader.uploadImage("/it/unipv/po/images/back.png");
+		ImageIcon back = new ImageIcon(buffer);
+		setBounds(10, 15, 60, 60);
+		setIcon(back);
+		setOpaque(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
-		setBounds(x, y, 65, 113);
 		setVisible(true);
 	}
 }

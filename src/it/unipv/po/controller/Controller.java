@@ -25,7 +25,7 @@ public class Controller {
 	private HashMap<Card, JButton> cardsOnBoard;
 	private int x;
 
-//___________________CONTROLLER______________________
+//___________________COSTRUTTORE_______________________
 	public Controller(Main menu, ScoponeGUI gui) {
 		super();
 		this.menu = menu;
@@ -36,7 +36,7 @@ public class Controller {
 		start();
 	}
 
-//__________________GETTERS&SETTERS__________________
+//__________________GETTERS&SETTERS____________________
 	public synchronized int getX() {
 		return x;
 	}
@@ -57,7 +57,7 @@ public class Controller {
 		return gui;
 	}
 
-	// ___________________METODI__________________________
+//_______________________METODI___________________________
 	private void start() {
 
 		TextListener nickname = new TextListener() {
@@ -93,7 +93,7 @@ public class Controller {
 				if (menu.getTxt() == null) {
 					gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 				} else
-					menu.multiPlayer();
+					multiPlayer();
 			}
 		};
 
@@ -132,6 +132,13 @@ public class Controller {
 		send();
 		deck(30, 309);
 	}
+	
+	private void multiPlayer() {
+		gui.getMainMenu().setVisible(false);
+		gui.multiPlayer();
+		menu.multiPlayer();
+		back();
+	}
 
 	private void send() {
 
@@ -140,10 +147,12 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (human.getCardsListTemp().size() != 0) {
+				if (human.getCardsListTemp().size() != 0 && menu.getThread().getClick() == 0) {
+
 					menu.getThread().interrupt();
 					human.setCardSelected();
-					game.setHavePlayed(true);
+					if(((HumanPlayer) human).isHavePlayed())
+					menu.getThread().setClick(1);
 				}
 			}
 		};
@@ -169,7 +178,7 @@ public class Controller {
 						human.setCardSelected();
 						s.setSelected();
 						gui.getGame().cardSelected(true, deck.get(s));
-						menu.getClick().playMusic("card_flip.wav");
+						menu.getSound().playMusic("card_flip.wav");
 						((HumanPlayer) human).setCardPlayed(s);
 					}
 
@@ -179,7 +188,7 @@ public class Controller {
 						human.setCardSelected();
 						s.setSelected();
 						((HumanPlayer) human).setCardPlayed(null);
-						menu.getClick().playMusic("card_flip.wav");
+						menu.getSound().playMusic("card_flip.wav");
 						gui.getGame().cardSelected(false, deck.get(s));
 					}
 				}
@@ -221,7 +230,7 @@ public class Controller {
 
 								human.getCardsListTemp().add(s);
 								s.setSelected();
-								menu.getClick().playMusic("card_flip.wav");
+								menu.getSound().playMusic("card_flip.wav");
 								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 							}
 
@@ -229,7 +238,7 @@ public class Controller {
 
 								human.getCardsListTemp().remove(s);
 								s.setSelected();
-								menu.getClick().playMusic("card_flip.wav");
+								menu.getSound().playMusic("card_flip.wav");
 								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
 							}
 						}
@@ -248,19 +257,37 @@ public class Controller {
 	}
 
 	private void selectError() {
-		
+
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor("ERRORE: selezionare prima la carta da prendere");
 	}
-	
+
 	public void sendError() {
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
-		gameAdvisor("ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");
-
+		gameAdvisor(
+				"ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");
 	}
+
 	public synchronized void scopa(Player player) {
 
+		menu.getSound().playMusic("applause.wav");
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(player.getNickname() + " FA SCOPA!");
+	}
+
+	private void back() {
+		
+		ActionListener back = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				gui.getMultiPlayer().setVisible(false);
+				gui.getMainMenu().add(gui.getSound());
+				gui.getMainMenu().setVisible(true);
+			}
+		};
+		
+		gui.getMultiPlayer().getBack().addActionListener(back);
 	}
 }
