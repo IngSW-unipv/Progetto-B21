@@ -10,7 +10,6 @@ public class TesterGUI {
 		Main menu = new Main();
 		ScoponeGUI gui = new ScoponeGUI();
 
-		@SuppressWarnings("unused")
 		Controller controller = new Controller(menu, gui);
 		menu.setController(controller);
 		gui.setVisible(true);

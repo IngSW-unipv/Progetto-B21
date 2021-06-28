@@ -27,7 +27,7 @@ public class EntraLobbyButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/EntraLobby.png");
+		this.buffer = loader.uploadImage("/it/unipv/po/images/entraLobby.png");
 		ImageIcon entraLobby = new ImageIcon(buffer);
 		setBounds(200, 309, 382, 105);
 		setIcon(entraLobby);

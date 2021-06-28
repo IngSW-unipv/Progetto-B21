@@ -10,7 +10,7 @@ import it.unipv.po.view.imagesLoader.ImagesLoader;
 import it.unipv.po.view.menuElements.buttons.MultiPlayerButton;
 import it.unipv.po.view.menuElements.buttons.SinglePlayerButton;
 
-public class MainMenuGUI extends JLabel {
+public class MainMenuUI extends JLabel {
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class MainMenuGUI extends JLabel {
 	private TextField nickname;
 
 //_______________________COSTRUTTORE_______________________
-	public MainMenuGUI(ImagesLoader loader) {
+	public MainMenuUI(ImagesLoader loader) {
 		super();
 		this.loader = loader;
 		create();

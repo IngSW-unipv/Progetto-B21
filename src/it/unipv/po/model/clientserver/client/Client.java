@@ -1,9 +1,11 @@
 package it.unipv.po.model.clientserver.client;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.*;
-
-import java.io.*;
+import it.unipv.po.controller.Controller;
+import it.unipv.po.model.clientserver.server.ClientThreadHandler;
+import it.unipv.po.model.clientserver.message.*;
 
 /**
  * Semplice client che permette la scambio di messaggi con un server
@@ -13,25 +15,18 @@ import java.io.*;
  */
 public class Client extends Thread {
 
-	// parametri di connessione
 	private Socket socket;
-	private int serverPort = 0;
+	private Controller controller;
+	private int serverPort = 6789;
 	private String serverName = null;
 	private boolean isConnected = false;
+	private ObjectInputStream ois;
 
-	// parametri di I/O
-	private BufferedReader clientInput;
-	private BufferedReader serverOutput;
-	private PrintWriter clientOutput;
-	private String serverMsg;
-	private String clientMsg;
+//_____________________COSTRUTTORE____________________
+	public Client(Controller controller, String serverName) {
 
-	/**
-	 * Costruttore
-	 */
-	public Client() {
-		this.serverPort = 0;
-		this.serverName = null;
+		this.controller = controller;
+		this.serverName = serverName;
 	}
 
 	/**
@@ -41,23 +36,14 @@ public class Client extends Thread {
 	 */
 	public void run() {
 
-		clientInput = new BufferedReader(new InputStreamReader((System.in)));
-
 		connectToServer();
-
-		while (isConnected) {
-			try {
-				getMessageFromServer();
-				sendMessageToServer();
-			} catch (Exception e) {
-			}
-		}
-
+		
 		try {
-			socket.close();
-		} catch (IOException e) {
+			startFromServer();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -65,59 +51,40 @@ public class Client extends Thread {
 	 * con i parametri specificati e crea una connessione tramite socket.
 	 */
 	private void connectToServer() {
-		// inserimento parametri da tastiera
 		while (!isConnected) {
 			try {
-				System.out.println("A che server vuoi connetterti?");
-				System.out.print("Porta server (inserire 8989): ");
-				serverPort = Integer.parseInt(clientInput.readLine());
-				System.out.print("Nome server (inserire localhost):");
-				serverName = clientInput.readLine();
-			} catch (NumberFormatException e1) {
-				System.out.println("La porta deve essere un numero intero");
-			} catch (IOException e1) {
-				System.out.println("Errore");
-			}
-
-			// connessione effettiva
-			try {
-				socket = new Socket(serverName, serverPort);
-				serverOutput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				clientOutput = new PrintWriter(socket.getOutputStream(), true);
-				System.out.println("Connessione al server riuscita.");
+				this.socket = new Socket(serverName, serverPort);
+				if (socket.isConnected())
+					System.out.println("Connessione al server riuscita.");
+				this.ois = new ObjectInputStream(socket.getInputStream());
 				isConnected = true;
 			} catch (UnknownHostException e) {
-				System.err.println("Non esiste alcun server all'indirizzo (" + serverName + ").");
+				controller.getGui().getEntraLobby().getAdvisor()
+						.setText("Non esiste alcun server all'indirizzo (" + serverName + ").");
 			} catch (IOException e) {
-				System.err.println("Errore. Riprovare.");
+				controller.getGui().getEntraLobby().getAdvisor().setText("Errore. Riprovare.");
+
 			}
 		}
-
 	}
 
-	/**
-	 * Se c'è, viene mostrato in console il messaggio inviato dal server
-	 */
-	private void getMessageFromServer() throws Exception {
-		serverMsg = serverOutput.readLine();
-		if (serverMsg != null)
-			System.out.println("Server: " + serverMsg);
-	}
+	private void startFromServer() throws ClassNotFoundException, IOException {
 
-	/**
-	 * Si prende input da tastiera e lo si invia al server. In caso l'input sia
-	 * "close" si chiude la connessione
-	 */
-	private void sendMessageToServer() throws Exception {
-		clientMsg = clientInput.readLine();
-		if (clientMsg != null) {
-			if (clientMsg == "close") {
-				try {
-					socket.close();
-				} catch (IOException e) {
-				}
-			}
-			clientOutput.println(clientMsg);
+		ClientThreadHandler clientThread = new ClientThreadHandler(socket);
+		clientThread.start();
+		clientThread.setController(controller);
+
+		while (((Message) ois.readObject()).isStart() == false) {
+
+			if (controller.getGui().getEntraLobby() != null)
+				controller.getGui().getEntraLobby().setVisible(false);
+
+			if (controller.getGui().getCreaLobby() != null)
+				controller.getGui().getCreaLobby().setVisible(false);
+
+			controller.getGui().game();
+			controller.sendListener();
+			controller.deckCreator(30, 309);
 		}
 	}
 }

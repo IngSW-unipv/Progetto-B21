@@ -23,11 +23,14 @@ public class ScoponeGame {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
+	private boolean firstRound;
+
 //__________________COSTRUTTORE____________________ 
 	public ScoponeGame(ArrayList<Player> players) {
 
 		this.players = players;
 
+		create();
 		makeTeam();
 		createDeck();
 		start();
@@ -42,6 +45,10 @@ public class ScoponeGame {
 	public synchronized void setCardsOnBoard(ArrayList<Card> cardsOnBoard) {
 
 		this.cardsOnBoard = cardsOnBoard;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
 	public int getTeamIndex() {
@@ -59,24 +66,43 @@ public class ScoponeGame {
 	public synchronized int getTurn() {
 		return turn;
 	}
+	
+	public boolean isFirstRound() {
+		return firstRound;
+	}
 
-
+	public void setFirstRound(boolean firstRound) {
+		this.firstRound = firstRound;
+	}	
 
 // ______________________METODI_________________________*/
+
+
+
+
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
 	 * carte, si danno ai giocatori, si inizializza il turno, e si startano i thread
 	 * dei giocatori.
 	 */
-	public void start() {
 
-		cardsOnBoard = new ArrayList<Card>();
+	private void create() {
+
+		this.cardsOnBoard = new ArrayList<Card>();
+		this.teams = new ArrayList<Team>();
+		this.deck = new ArrayList<Card>();
+		this.shuffledDeck = new ArrayList<Card>();
+
+	}
+
+	public void start() {
 
 		shuffle();
 		giveCards();
 
-		turn = 1;
+		this.turn = 1;
+		setFirstRound(true);
 	}
 
 	/**
@@ -86,10 +112,10 @@ public class ScoponeGame {
 	 */
 	private void makeTeam() {
 
-		teams = new ArrayList<Team>();
 		Team a = new Team();
 		Team b = new Team();
 
+		
 		players.get(0).setPlayerIndex(1);
 		players.get(0).setTeamIndex(0);
 		players.get(1).setPlayerIndex(2);
@@ -116,8 +142,6 @@ public class ScoponeGame {
 	 * deck.
 	 */
 	private void createDeck() {
-
-		deck = new ArrayList<Card>();
 
 		for (Suit s : Suit.values()) {
 
@@ -165,7 +189,7 @@ public class ScoponeGame {
 	 */
 	private void shuffle() {
 
-		shuffledDeck = new ArrayList<Card>();
+		shuffledDeck.clear();
 		Random temp = new Random();
 
 		for (int i = 0; i < 40; i++) {
@@ -347,7 +371,23 @@ public class ScoponeGame {
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
-		System.out.println("punti team A: " + getTeams().get(0).getTotalPoints());
-		System.out.println("punti team B: " + getTeams().get(1).getTotalPoints());
+	}
+	
+	public synchronized void changeIndex() {
+
+		for (int i = 3; i >= 0; i--) {
+
+			int t = getPlayers().get(i).getPlayerIndex() - 1;
+
+			if (t == 0)
+				t = 4;
+
+			getPlayers().get(i).setPlayerIndex(t);
+		}
+	}
+	
+	public String ToString() {
+		
+		return "Scopone";
 	}
 }

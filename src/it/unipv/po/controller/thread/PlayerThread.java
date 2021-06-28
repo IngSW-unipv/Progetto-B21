@@ -21,7 +21,8 @@ public class PlayerThread extends Thread {
 	private Player p;
 	private ScoponeGame g;
 	private Controller controller;
-	private int click; //Uso questa variabile per gestire il bug del doppio click durante l'invio della giocata
+	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
+						// della giocata
 
 	public PlayerThread(ScoponeGame g, Player p, Controller controller) {
 		this.p = p;
@@ -57,58 +58,31 @@ public class PlayerThread extends Thread {
 
 	private synchronized void updateBoard() {
 
-		controller.cardsOnBoard(g.getCardsOnBoard(), controller.getX(), 48);
+		controller.cardsOnBoardCreator(g.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
-
 			deckAction();
-			if (p.getCardsListTemp().size() > 1) {
-				boardAction();
-
-				try {
-					sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				if (p.isScopa()) {
-
-					controller.scopa(p);
-					p.setScopa();
-
-					try {
-						sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
 		}
 
-		else {
+		if (p.getCardsListTemp().size() > 1) {
+			boardAction();
 
-			if (p.getCardsListTemp().size() > 1) {
-				boardAction();
+			try {
+				sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (p.isScopa()) {
+
+				controller.scopaAlert(p);
+				p.setScopa();
 
 				try {
 					sleep(3000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				if (p.isScopa()) {
-
-					controller.scopa(p);
-					p.setScopa();
-					try {
-						sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				}
 			}
 		}
@@ -138,10 +112,10 @@ public class PlayerThread extends Thread {
 
 			try {
 				sleep(300);
-				controller.getGui().getGame().getGameAdvisor().setForeground(Color.GREEN);
-				controller.gameAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
+				controller.personalAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
-				sleep(19700);
+				sleep(1000);
+				counter();
 			} catch (InterruptedException e) {
 
 				if (!g.playerActionMonitoring(p)) {
@@ -173,9 +147,8 @@ public class PlayerThread extends Thread {
 		else {
 
 			try {
-				sleep(2000);
+				sleep(500);//2000
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -196,23 +169,39 @@ public class PlayerThread extends Thread {
 	synchronized public void endTurn() {
 
 		try {
-			sleep(3000);
+			sleep(1000); //3000
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
+
 			g.endGame();
+			controller.gameAdvisor("Punti team A: " + g.getTeams().get(0).getTotalPoints() + " | Punti team B: "
+					+ g.getTeams().get(1).getTotalPoints());
 			try {
-				wait();
-			} catch (InterruptedException e) {
+				sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
 			}
+			controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
+			try {
+				sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			p.getCardsListTemp().clear();
+			controller.restartGame();
+			notifyAll();
 		}
 
-		p.getCardsListTemp().clear();
-		g.nextTurn();
-		notifyAll();
+		else {
+
+			p.getCardsListTemp().clear();
+			g.nextTurn();
+			notifyAll();
+		}
 	}
 
 	private void deckAction() {
@@ -231,6 +220,15 @@ public class PlayerThread extends Thread {
 				} catch (Exception e) {
 				}
 			}
+		}
+	}
+
+	private void counter() throws InterruptedException {
+
+		for (int i = 20; i >= 0; i--) {
+
+			controller.personalAdvisor(String.valueOf(i));
+			wait(1000);
 		}
 	}
 }

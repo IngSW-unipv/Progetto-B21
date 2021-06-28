@@ -61,6 +61,7 @@ public class HumanPlayer extends Player {
 		case 0:
 
 			getCardsListTemp().add(getDeck().get(0));
+			setCardPlayed(getDeck().get(0));
 
 			return getCardsListTemp();
 		}

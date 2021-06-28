@@ -6,8 +6,11 @@ import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import it.unipv.po.model.game.*;
+import it.unipv.po.model.game.player.types.BotPlayer;
 import it.unipv.po.model.game.player.types.Player;
+import it.unipv.po.controller.Controller;
 import it.unipv.po.model.clientserver.client.*;
+import it.unipv.po.model.clientserver.message.Message;
 
 /**
  * Questa classe rappresenta il server principale al quale i vari client(i
@@ -19,220 +22,137 @@ import it.unipv.po.model.clientserver.client.*;
  *
  */
 
-public class MainServer {
+public class MainServer extends Thread {
 
-	// TCP
-	private final int portNumber;
-	private final String hostName;
-	private ServerSocket serverSocket;
-
+	private String hostName;
+	private ServerSocket server = null;
+	private Socket clientSocket = null;
+	private final int porta = 6789;
 	private int numberOfConnectedClients;
-
 	private ArrayList<ClientThreadHandler> clientHandlers; // Per memorizzare tutti i thread ed eventualmente ricevere
-															// informazioni
-	private ArrayList<ScoponeGame> games; // Per memorizzare più game
-	private ArrayList<Player> gamePlayers; // Per memorizzare tutti i giocatori attualmente connessi al server
+	private ScoponeGame scopone;
+	private ArrayList<Player> players; // Per memorizzare tutti i giocatori attualmente connessi al server
+	private Controller controller;
+	private ObjectInputStream is;
+	private ObjectOutputStream os;
 
-	public ArrayList<Player> getGamePlayers() {
+//________________________COSTRUTTORE________________________
 
-		return gamePlayers;
+	public MainServer() throws IOException {
 
+		this.server = new ServerSocket(porta);
+		server.getInetAddress();
+		hostName = InetAddress.getLocalHost().getHostAddress();
+		this.players = new ArrayList<Player>();
 	}
 
-	public ArrayList<ScoponeGame> getGames() {
-
-		return games;
-
-	}
-
-	public ServerSocket getServerSocket() {
-
-		return serverSocket;
-
-	}
-
-	public ArrayList<ClientThreadHandler> getClientHandlers() {
-		return clientHandlers;
-	}
-
-	public int getPortNumber() {
-		return portNumber;
-	}
+//________________________GETTERS&SETTERS_____________________
 
 	public String getHostName() {
 		return hostName;
 	}
+	
 
-	public Client getClientFromIndex(ArrayList<Client> connectedClients, int index) {
-
-		return connectedClients.get(index);
-
-	}
-
-	/**
-	 * Metodo per la creazione del server Automaticamente trova e imposta la porta
-	 * del server ad una porta TCP libera ed utilizzabile ed anche l'hostName, ossia
-	 * il nome del server (corrisponde all'indirizzo IP del PC su cui è stato
-	 * avviato questo main.
-	 * 
-	 * @throws IOException
-	 */
-	public MainServer() throws IOException {
-
-		try (final DatagramSocket socket = new DatagramSocket()) {
-			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-			hostName = socket.getLocalAddress().getHostAddress();
-			portNumber = socket.getLocalPort();
-
-			serverSocket = new ServerSocket(portNumber);
-
-			clientHandlers = new ArrayList<ClientThreadHandler>();
-			numberOfConnectedClients = 0;
-			games = new ArrayList<ScoponeGame>();
-
-		}
-
-	}
-
-	public void writeMessage(String message) {
-
-		System.out.println(message);
-
-	}
-
-	void addPlayer(Player player) {
-
-		gamePlayers.add(player);
-
-	}
-
-	void removeThreadHandler(ClientThreadHandler thread) {
-
-		clientHandlers.remove(thread);
-
-	}
-
+	
+	// _______________________METODI______________________________
 	/**
 	 * Avvia il server, aspetta che qualcuno si connetta, avvia il thread per
 	 * gestire ciascun client e periodicamente informa di quante persone sono
 	 * collegate e della connessione avvenuta con qualche client
 	 */
-	public void startServer() {
-
-		// MainServer server;
-		gamePlayers = new ArrayList<Player>();
+	public void run() {
 
 		try {
-			// server = new MainServer();
-			System.out.println("Server host name: " + hostName);
-			System.out.println("Server port number: " + portNumber);
+			this.clientSocket = server.accept();
+			this.is = new ObjectInputStream(clientSocket.getInputStream());
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			numberOfConnectedClients++;
 
-			while (true) {
+			if (numberOfConnectedClients == 1) {
 
-				if (numberOfConnectedClients == 0) {
+				System.out.println("At this time (" + dtf.format(now) + ") there is only " + numberOfConnectedClients
+						+ " connected clients.\n");
 
-					System.out.println("Waiting for clients to connect to the server at this port:" + portNumber);
+			} else {
 
-				} else {
+				System.out.println("At this time (" + dtf.format(now) + ") there are " + numberOfConnectedClients
+						+ " connected clients.\n");
 
-					System.out.println("Waiting for other clients to connect to the server...");
+			}
 
-				}
+			if (numberOfConnectedClients == 4) {
 
-				Socket socket = serverSocket.accept();
-
-				ClientThreadHandler clientHandler = new ClientThreadHandler(socket, this);
-				clientHandlers.add(clientHandler);
-				// numberOfConnectedClients++;
-
-				System.out.println("A Client just connected to this server!");
-				numberOfConnectedClients = clientHandlers.size();
-
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-				LocalDateTime now = LocalDateTime.now();
-
-				if (numberOfConnectedClients == 1) {
-
-					System.out.println("At this time (" + dtf.format(now) + ") there is only "
-							+ numberOfConnectedClients + " connected clients.\n");
-
-				} else {
-
-					System.out.println("At this time (" + dtf.format(now) + ") there are " + numberOfConnectedClients
-							+ " connected clients.\n");
-
-				}
-
-				clientHandler.start();
-				/*
-				 * while(clientHandler.getInputFromClient() == null) {
-				 * 
-				 * 
-				 * }
-				 * 
-				 * 
-				 * if(numberOfConnectedClients == 4) {
-				 * 
-				 * 
-				 * 
-				 * sendToEveryone("4 Clients successfully connected! A game is about to start..."
-				 * );
-				 * 
-				 * Game game = new Game(gamePlayers);
-				 * 
-				 * 
-				 * } else {
-				 * 
-				 * clientHandler.setOutputToClient(null);
-				 * sendToEveryone("4 Clients are needed to start a game...");
-				 * 
-				 * }
-				 */
+				startGame();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
-
-	public void createGame() {
-
-		// Game game = new Game();
-	}
-
-	public void sendToEveryone(String message) {
-
-		for (ClientThreadHandler aClient : clientHandlers) {
-
-			aClient.sendAMessage(message);
-
-		}
-	}
-
-	public String getInfo() {
-
-		return "////////INFO SERVER////////\nHOST NAME: " + this.getHostName() + "\nPORT: " + this.getPortNumber()
-				+ "\nCONNECTED CLIENTS: " + this.numberOfConnectedClients + "\n";
-	}
-
-	public void writeThreadInfos() {
-
-		for (ClientThreadHandler aThread : clientHandlers) {
-
-			System.out.println(aThread.getInfo());
-		}
-	}
-
-	public static void main(String[] args) {
-
+		
 		try {
-
-			MainServer server = new MainServer();
-			server.startServer();
+			addPlayer();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void setController(Controller controller) {
+		this.controller = controller;
+	}
+
+	public ScoponeGame createGame() {
+
+		if (numberOfConnectedClients < 4) {
+			for (int i = 0; i <= 3 - numberOfConnectedClients; i++) {
+
+				BotPlayer bot = new BotPlayer();
+				players.add(bot);
+			}
+		}
+
+		this.scopone = new ScoponeGame(players);
+		startGame();
+
+		return scopone;
+	}
+
+	public synchronized void startGame() {
+
+		
+		try {
+			this.os = new ObjectOutputStream(clientSocket.getOutputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			Message message = new Message();
+			message.setStart(true);
+			os.writeObject(message);
+			os.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private synchronized void addPlayer() throws ClassNotFoundException, IOException {
+
+		boolean temp = true;
+
+		while (temp) {
+			if (((Message) is.readObject()).getPlayer() != null)
+				players.add(((Message) is.readObject()).getPlayer());
+
+			if (players.size() == 4) {
+				temp = false;
+			}
 		}
 	}
 }

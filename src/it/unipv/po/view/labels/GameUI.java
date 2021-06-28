@@ -2,14 +2,11 @@ package it.unipv.po.view.labels;
 
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-
-import it.unipv.po.view.gameElements.buttons.CardButton;
-import it.unipv.po.view.gameElements.buttons.SendButton;
+import it.unipv.po.view.gameElements.buttons.*;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class GameGUI extends JLabel {
+public class GameUI extends JLabel {
 
 	/**
 	 * 
@@ -22,7 +19,7 @@ public class GameGUI extends JLabel {
 	private JLabel gameAdvisor;
 	private JLabel teamAdvisor;
 
-	public GameGUI(ImagesLoader loader) {
+	public GameUI(ImagesLoader loader) {
 		super();
 		this.loader = loader;
 		create();
@@ -72,29 +69,16 @@ public class GameGUI extends JLabel {
 
 		// chat
 		this.gameAdvisor = new JLabel();
-		gameAdvisor.setBounds(0, 440, 800, 20);
+		gameAdvisor.setBounds(0, 442, 800, 20);
 		gameAdvisor.setOpaque(true);
 		add(gameAdvisor);
 	}
 
-	public JButton cardsBuilder(int x, int y, String txt) {
+	public CardButton cardsBuilder(int x, int y, String txt) {
 
-		JButton card = new CardButton(loader, x, y, txt);
+		CardButton card = new CardButton(loader, x, y, txt);
 		add(card);
 
 		return card;
-	}
-
-	public void cardSelected(boolean temp, JButton card) {
-
-		if (temp) {
-
-			card.setBounds(card.getBounds().x, card.getBounds().y - 30, 65, 113);
-		}
-
-		else {
-
-			card.setBounds(card.getBounds().x, card.getBounds().y + 30, 65, 113);
-		}
 	}
 }

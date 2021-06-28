@@ -1,9 +1,11 @@
 package it.unipv.po.controller.menu;
 
+import java.io.IOException;
 import java.util.ArrayList;
-
 import it.unipv.po.controller.Controller;
 import it.unipv.po.controller.thread.PlayerThread;
+import it.unipv.po.model.clientserver.client.Client;
+import it.unipv.po.model.clientserver.server.MainServer;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.player.types.*;
 import it.unipv.po.sounds.Music;
@@ -16,6 +18,8 @@ public class Main {
 	private Controller controller;
 	private PlayerThread thread;
 	private Music sound;
+	private ArrayList<Player> players;
+	private MainServer server;
 
 	public Main() {
 		super();
@@ -70,13 +74,13 @@ public class Main {
 
 	public ScoponeGame singlePlayer() {
 
-		ArrayList<Player> players = new ArrayList<Player>();
+		this.players = new ArrayList<Player>();
 		HumanPlayer human = new HumanPlayer(txt);
 
 		players.add(human);
-		players.add(new BotPlayer2());
-		players.add(new BotPlayer2());
-		players.add(new BotPlayer2());
+		players.add(new BotPlayer());
+		players.add(new BotPlayer());
+		players.add(new BotPlayer());
 
 		this.scopone = new ScoponeGame(players);
 		this.sound = new Music();
@@ -94,7 +98,24 @@ public class Main {
 		return scopone;
 	}
 
-	public void multiPlayer() {
+	public MainServer creaLobby() {
+
+		try {
+			this.server = new MainServer();
+			server.start();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Client client = new Client(controller, server.getHostName());
+		client.start();
+			
+		return server;
+	}
+
+	public void entraLobby() {
 
 	}
 }

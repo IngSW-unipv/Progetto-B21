@@ -10,9 +10,9 @@ import it.unipv.po.model.game.cards.Card;
  * 
  * @author Giuseppe Lentini
  */
-public class BotPlayer2 extends Player {
+public class BotPlayer extends Player {
 
-	public BotPlayer2() {
+	public BotPlayer() {
 		super("bot");
 	}
 

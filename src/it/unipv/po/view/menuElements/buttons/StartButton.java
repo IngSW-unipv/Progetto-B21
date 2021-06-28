@@ -7,17 +7,13 @@ import javax.swing.JButton;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 
-public class CreaLobbyButton extends JButton {
+public class StartButton extends JButton{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	private ImagesLoader loader;
 	private BufferedImage buffer;
-
-	public CreaLobbyButton(ImagesLoader loader) {
+	
+	public StartButton(ImagesLoader loader) {
 		super();
 
 		this.loader = loader;
@@ -25,14 +21,15 @@ public class CreaLobbyButton extends JButton {
 		create();
 	}
 
+
 	private void create() {
 
 		this.buffer = loader.uploadImage("/it/unipv/po/images/creaLobby.png");
-		ImageIcon creaLobby = new ImageIcon(buffer);
-		setBounds(200, 189, 382, 105);
-		setIcon(creaLobby);
-		setOpaque(false);
-		setContentAreaFilled(false);
+		ImageIcon multiPImg = new ImageIcon(buffer);
+		setBounds(350, 300, 100, 50);
+		setIcon(multiPImg);
+		setOpaque(true);
+		setContentAreaFilled(true);
 		setBorderPainted(false);
 		setVisible(true);
 	}

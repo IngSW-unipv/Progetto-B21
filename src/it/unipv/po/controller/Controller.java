@@ -7,13 +7,15 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import it.unipv.po.controller.menu.Main;
+import it.unipv.po.model.clientserver.server.MainServer;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.types.HumanPlayer;
 import it.unipv.po.model.game.player.types.Player;
 import it.unipv.po.view.ScoponeGUI;
+import it.unipv.po.view.gameElements.buttons.CardButton;
 
 public class Controller {
 
@@ -21,19 +23,21 @@ public class Controller {
 	private ScoponeGUI gui;
 	private ScoponeGame game;
 	private Player human;
-	private HashMap<Card, JButton> deck;
-	private HashMap<Card, JButton> cardsOnBoard;
+	private HashMap<Card, CardButton> deck;
+	private HashMap<Card, CardButton> cardsOnBoard;
 	private int x;
+	private MainServer server;
 
 //___________________COSTRUTTORE_______________________
 	public Controller(Main menu, ScoponeGUI gui) {
 		super();
 		this.menu = menu;
 		this.gui = gui;
-		this.cardsOnBoard = new HashMap<Card, JButton>();
+		this.cardsOnBoard = new HashMap<Card, CardButton>();
+
 		x = 30;
 
-		start();
+		startMainMenu();
 	}
 
 //__________________GETTERS&SETTERS____________________
@@ -45,11 +49,11 @@ public class Controller {
 		this.x = x;
 	}
 
-	public HashMap<Card, JButton> getCardsOnBoard() {
+	public HashMap<Card, CardButton> getCardsOnBoard() {
 		return cardsOnBoard;
 	}
 
-	public HashMap<Card, JButton> getDeck() {
+	public HashMap<Card, CardButton> getDeck() {
 		return deck;
 	}
 
@@ -57,8 +61,68 @@ public class Controller {
 		return gui;
 	}
 
-//_______________________METODI___________________________
-	private void start() {
+	public MainServer getServer() {
+		return server;
+	}
+
+	public void setGame(ScoponeGame game) {
+		this.game = game;
+	}
+	
+	public Main getMenu() {
+		return menu;
+	}
+
+	public void setHuman(Player human) {
+		this.human = human;
+	}
+
+	// _______________________METODI___________________________
+	private void startMainMenu() {
+
+		nicknameListener();
+		singlePlayerListener();
+		multiPlayerListener();
+		soundListener();
+	}
+
+	private void startSinglePlayer() {
+
+		this.game = menu.singlePlayer();
+		this.human = menu.getThread().getP();
+		gui.getMainMenu().setVisible(false);
+		gui.game();
+		sendListener();
+		deckCreator(30, 309);
+	}
+
+	private void startMultiPlayer() {
+
+		gui.getMainMenu().setVisible(false);
+		gui.multiPlayer();
+		creaLobbyListener();
+		entraLobbyListener();
+		gui.getMultiPlayer().getBack().addActionListener(backListener(gui.getMultiPlayer(), gui.getMainMenu()));
+	}
+
+	private void startCreaLobby() {
+
+		gui.getMultiPlayer().setVisible(false);
+		gui.creaLobby();
+		this.server = menu.creaLobby();
+		creaLobbyStartListener();
+		gui.getCreaLobby().getAdvisor().setText("||DATI DA COMUNICARE|| ip: " + server.getHostName());
+		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
+	}
+
+	private void startEntraLobby() {
+
+		gui.getMultiPlayer().setVisible(false);
+		gui.creaLobby();
+		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
+	}
+
+	private void nicknameListener() {
 
 		TextListener nickname = new TextListener() {
 
@@ -70,6 +134,9 @@ public class Controller {
 		};
 
 		gui.getMainMenu().getNickname().addTextListener(nickname);
+	}
+
+	private void singlePlayerListener() {
 
 		ActionListener singlePlayer = new ActionListener() {
 
@@ -79,11 +146,14 @@ public class Controller {
 				if (menu.getTxt() == null) {
 					gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 				} else
-					singlePlayer();
+					startSinglePlayer();
 			}
 		};
 
 		gui.getMainMenu().getSingle().addActionListener(singlePlayer);
+	}
+
+	private void multiPlayerListener() {
 
 		ActionListener multiPlayer = new ActionListener() {
 
@@ -93,11 +163,62 @@ public class Controller {
 				if (menu.getTxt() == null) {
 					gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 				} else
-					multiPlayer();
+					startMultiPlayer();
 			}
 		};
 
 		gui.getMainMenu().getMulti().addActionListener(multiPlayer);
+	}
+
+	private void creaLobbyListener() {
+
+		ActionListener creaLobby = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				startCreaLobby();
+			}
+		};
+
+		gui.getMultiPlayer().getCreaLobby().addActionListener(creaLobby);
+	}
+
+	private void creaLobbyStartListener() {
+
+		ActionListener start = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				server.createGame();
+				server.startGame();
+				gui.getCreaLobby().setVisible(false);
+				gui.game();
+				sendListener();
+				deckCreator(30, 309);
+			}
+		};
+
+		server.setController(this);
+		gui.getCreaLobby().getStart().addActionListener(start);
+	}
+
+	private void entraLobbyListener() {
+
+		ActionListener entraLobby = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				startEntraLobby();
+			}
+		};
+
+		gui.getMultiPlayer().getEntraLobby().addActionListener(entraLobby);
+	}
+
+	private void soundListener() {
 
 		ActionListener sound = new ActionListener() {
 
@@ -120,27 +241,25 @@ public class Controller {
 		};
 
 		gui.getSound().addActionListener(sound);
-
 	}
 
-	private void singlePlayer() {
+	private ActionListener backListener(JLabel current, JLabel previus) {
 
-		this.game = menu.singlePlayer();
-		this.human = menu.getThread().getP();
-		gui.getMainMenu().setVisible(false);
-		gui.game();
-		send();
-		deck(30, 309);
-	}
-	
-	private void multiPlayer() {
-		gui.getMainMenu().setVisible(false);
-		gui.multiPlayer();
-		menu.multiPlayer();
-		back();
+		ActionListener back = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				current.setVisible(false);
+				previus.add(gui.getSound());
+				previus.setVisible(true);
+			}
+		};
+
+		return back;
 	}
 
-	private void send() {
+	public void sendListener() {
 
 		ActionListener send = new ActionListener() {
 
@@ -151,21 +270,26 @@ public class Controller {
 
 					menu.getThread().interrupt();
 					human.setCardSelected();
-					if(((HumanPlayer) human).isHavePlayed())
-					menu.getThread().setClick(1);
+					if (((HumanPlayer) human).isHavePlayed())
+						menu.getThread().setClick(1);
 				}
 			}
 		};
 		gui.getGame().getSend().addActionListener(send);
 	}
 
-	private void deck(int x, int y) {
+	public void deckCreator(int x, int y) {
 
-		this.deck = new HashMap<Card, JButton>();
+		this.deck = new HashMap<Card, CardButton>();
 
 		for (Card s : human.getDeck()) {
 
 			deck.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
+			deck.get(s).setVisible(true);
+			if (s.isSelected()) {
+				s.setSelected();
+			}
+			deck.get(s).repaint();
 
 			ActionListener a = new ActionListener() {
 
@@ -177,7 +301,7 @@ public class Controller {
 						human.getCardsListTemp().add(s);
 						human.setCardSelected();
 						s.setSelected();
-						gui.getGame().cardSelected(true, deck.get(s));
+						deck.get(s).cardSelected(true);
 						menu.getSound().playMusic("card_flip.wav");
 						((HumanPlayer) human).setCardPlayed(s);
 					}
@@ -189,7 +313,7 @@ public class Controller {
 						s.setSelected();
 						((HumanPlayer) human).setCardPlayed(null);
 						menu.getSound().playMusic("card_flip.wav");
-						gui.getGame().cardSelected(false, deck.get(s));
+						deck.get(s).cardSelected(false);
 					}
 				}
 			};
@@ -199,21 +323,37 @@ public class Controller {
 		}
 	}
 
-	public synchronized void gameAdvisor(String txt) {
+	public void restartGame() {
 
-		gui.getGame().getGameAdvisor().setText(txt);
+		int a = game.getTeams().get(0).getTotalPoints();
+		int b = game.getTeams().get(1).getTotalPoints();
+
+		if (a > b && a >= 21 || b > a && b >= 21) {
+
+			gameAdvisor("PARTITA FINITA!");
+		} else {
+
+			game.start();
+			gui.game().repaint();
+			game.changeIndex();
+			cardsOnBoard.clear();
+			sendListener();
+			deckCreator(30, 309);
+		}
 	}
 
-	public synchronized void cardsOnBoard(ArrayList<Card> temp, int x, int y) {
+	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
 
 		for (Card s : temp) {
 
-			if (this.cardsOnBoard.get(s) == null) {
+			if (cardsOnBoard.get(s) == null) {
 
-				if (s.isSelected() == true)
+				if (s.isSelected())
 					s.setSelected();
 
-				this.cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
+				cardsOnBoard.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
+				cardsOnBoard.get(s).setVisible(true);
+				cardsOnBoard.get(s).repaint();
 
 				ActionListener a = new ActionListener() {
 
@@ -231,7 +371,7 @@ public class Controller {
 								human.getCardsListTemp().add(s);
 								s.setSelected();
 								menu.getSound().playMusic("card_flip.wav");
-								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 
 							else {
@@ -239,7 +379,7 @@ public class Controller {
 								human.getCardsListTemp().remove(s);
 								s.setSelected();
 								menu.getSound().playMusic("card_flip.wav");
-								gui.getGame().cardSelected(s.isSelected(), cardsOnBoard.get(s));
+								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 						}
 					}
@@ -256,6 +396,16 @@ public class Controller {
 		}
 	}
 
+	public synchronized void gameAdvisor(String txt) {
+
+		gui.getGame().getGameAdvisor().setText(txt);
+	}
+
+	public void personalAdvisor(String txt) {
+
+		gui.getGame().getGameAdvisor().setText(txt);
+	}
+
 	private void selectError() {
 
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
@@ -263,31 +413,16 @@ public class Controller {
 	}
 
 	public void sendError() {
+
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(
 				"ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");
 	}
 
-	public synchronized void scopa(Player player) {
+	public synchronized void scopaAlert(Player player) {
 
 		menu.getSound().playMusic("applause.wav");
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(player.getNickname() + " FA SCOPA!");
-	}
-
-	private void back() {
-		
-		ActionListener back = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				gui.getMultiPlayer().setVisible(false);
-				gui.getMainMenu().add(gui.getSound());
-				gui.getMainMenu().setVisible(true);
-			}
-		};
-		
-		gui.getMultiPlayer().getBack().addActionListener(back);
 	}
 }

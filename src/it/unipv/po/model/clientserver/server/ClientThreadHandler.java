@@ -1,10 +1,16 @@
 package it.unipv.po.model.clientserver.server;
 
 import java.net.*;
+import java.awt.Color;
 import java.io.*;
 
+import it.unipv.po.controller.Controller;
+import it.unipv.po.model.clientserver.message.Message;
+import it.unipv.po.model.game.ScoponeGame;
+import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.types.HumanPlayer;
 import it.unipv.po.model.game.player.types.Player;
+import it.unipv.po.model.game.player.types.TypePlayer;
 
 /**
  * Questa classe rappresenta il server nei confronti di un unico client E' un
@@ -16,90 +22,263 @@ import it.unipv.po.model.game.player.types.Player;
  */
 public class ClientThreadHandler extends Thread {
 
-	private BufferedReader inputFromClient;
-	private BufferedReader inputFromThisClientHandler;
-	private PrintWriter outputToClient;
+	private ObjectInputStream is;
+	private ObjectOutputStream os;
 	private Socket socket;
-	private MainServer mainServer;
-	private Player player;
+	private Player p;
+	private ScoponeGame g;
+	private Controller controller;
+	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
+						// della giocata
+
+//_______________________COSTRUTTORE_____________________________
+
+	public ClientThreadHandler(Socket socket) {
+
+		this.socket = socket;
+	}
+
+//______________________GETTERS%SETTERS__________________________
 
 	public Player getPlayer() {
 
-		return player;
+		return p;
 
 	}
 
-	public void sendAMessage(String message) {
-
-		outputToClient.println(message);
-
+	public int getClick() {
+		return click;
 	}
 
-	public MainServer getMainServer() {
-		return mainServer;
+	public void setClick(int click) {
+		this.click = click;
 	}
 
-	private void setPlayer(Player player) {
+	private void setPlayer(Player p) {
 
-		this.player = player;
+		this.p = p;
 
-	}
-
-	public ClientThreadHandler(Socket socket, MainServer server) {
-
-		this.setSocket(socket);
-		this.mainServer = server;
 	}
 
 	public Socket getSocket() {
 		return socket;
 	}
+	
+	public void setController(Controller controller) {
+		this.controller = controller;
+	}	
 
-	private void setSocket(Socket socket) {
-		this.socket = socket;
-	}
+//________________________METODI____________________
 
-	public String getInfo() {
 
-		return "////////INFO " + this.getName() + "////////\nASSOCIATED PLAYER: " + this.player.getNickname() + "\n";
-	}
 
 	/**
 	 * Quando si avvia, il thread crea i collegamenti TCP con il client che si è
 	 * connesso correttamente al server e ci comunica
 	 */
 	@Override
-	public void run() {
+	public synchronized void run() {
 
 		try {
 
-			inputFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			outputToClient = new PrintWriter(socket.getOutputStream(), true);
-			inputFromThisClientHandler = new BufferedReader(new InputStreamReader(System.in));
+			this.p = new HumanPlayer(controller.getMenu().getTxt());
+			this.os = new ObjectOutputStream(socket.getOutputStream());
 
-			while (true) {
-
-				// Da rivedere, perchè non riesco a far arrivarel'esecuzione qui
-				while (inputFromClient.readLine() != null) {
-
-					this.setPlayer(new HumanPlayer(inputFromClient.readLine()));
-					mainServer.addPlayer(player);
-					System.out.println("Player creato e aggiunto correttamente al Server.");
-
-				}
-
-				socket.close();
-				inputFromClient.close();
-				outputToClient.close();
-				inputFromThisClientHandler.close();
-
-				this.interrupt();
-				mainServer.removeThreadHandler(this);
-			}
+			setPlayer(p);
+			controller.setHuman(p);
+			Message message = new Message();
+			message.setPlayer(p);
+			os.writeObject(message);
+			os.flush();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
+		}
+	}
+
+	public void startGame() {
+		while (true) {
+			checkTurn();
+			play();
+			updateBoard();
+			endTurn();
+		}
+	}
+
+	private synchronized void updateBoard() {
+
+		controller.cardsOnBoardCreator(g.getCardsOnBoard(), controller.getX(), 48);
+		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
+
+		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
+			deckAction();
+		}
+
+		if (p.getCardsListTemp().size() > 1) {
+			boardAction();
+
+			try {
+				sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (p.isScopa()) {
+
+				controller.scopaAlert(p);
+				p.setScopa();
+
+				try {
+					sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Se l'indice del giocatore è == al turno, allora tocca a lui
+	 */
+	synchronized public boolean checkTurn() {
+		while (g.getTurn() != p.getPlayerIndex())
+			try {
+				notifyAll();
+			} catch (Exception e) {
+			}
+
+		return true;
+	}
+
+	/**
+	 * Il giocatore gioca una carta
+	 */
+	synchronized public boolean play() {
+
+		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
+
+			setClick(0);
+
+			try {
+				sleep(300);
+				controller.personalAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
+				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
+				sleep(1000);
+				counter();
+			} catch (InterruptedException e) {
+
+				if (!g.playerActionMonitoring(p)) {
+
+					try {
+						controller.sendError();
+						p.setCardSelected();
+						sleep(10000);
+					} catch (InterruptedException e1) {
+
+						g.playerActionMonitoring(p);
+					}
+				}
+
+				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+						+ ((HumanPlayer) p).getCardPlayed());
+
+				return true;
+			}
+
+			g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+
+			return true;
+		}
+
+		else {
+
+			try {
+				sleep(500);// 2000
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			g.playerActionMonitoring(p, g.getCardsOnBoard());
+
+			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+
+			return true;
+		}
+	}
+
+	/**
+	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
+	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
+	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
+	 */
+	synchronized public void endTurn() {
+
+		try {
+			sleep(1000); // 3000
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
+
+			g.endGame();
+			controller.gameAdvisor("Punti team A: " + g.getTeams().get(0).getTotalPoints() + " | Punti team B: "
+					+ g.getTeams().get(1).getTotalPoints());
+			try {
+				sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
+			try {
+				sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			p.getCardsListTemp().clear();
+			controller.restartGame();
+			notifyAll();
+		}
+
+		else {
+
+			p.getCardsListTemp().clear();
+			g.nextTurn();
+			notifyAll();
+		}
+	}
+
+	private void deckAction() {
+
+		controller.getDeck().get(((HumanPlayer) p).getCardPlayed()).setVisible(false);
+	}
+
+	private void boardAction() {
+
+		for (Card s : p.getCardsListTemp()) {
+
+			if (controller.getCardsOnBoard().get(s) != null) {
+
+				try {
+					controller.getCardsOnBoard().get(s).setVisible(false);
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+
+	private void counter() throws InterruptedException {
+
+		for (int i = 20; i >= 0; i--) {
+
+			controller.personalAdvisor(String.valueOf(i));
+			wait(1000);
 		}
 	}
 }

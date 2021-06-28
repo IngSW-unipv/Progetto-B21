@@ -1,5 +1,6 @@
 package it.unipv.po.model.game.player.types;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.unipv.po.model.game.cards.Card;
@@ -9,8 +10,9 @@ import it.unipv.po.model.game.player.Actions;
  * 
  * @author Giuseppe Lentini
  */
-public abstract class Player implements Actions {
+public abstract class Player implements Actions, Serializable {
 
+	private static final long serialVersionUID = -3954006175628361968L;
 	private String nickname;
 	private ArrayList<Card> deck;
 	private int teamIndex;

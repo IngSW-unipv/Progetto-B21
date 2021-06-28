@@ -40,4 +40,17 @@ public class CardButton extends JButton {
 		setBounds(x, y, 65, 113);
 		setVisible(true);
 	}
+
+	public void cardSelected(boolean temp) {
+
+		if (temp) {
+
+			setBounds(getBounds().x, getBounds().y - 30, 65, 113);
+		}
+
+		else {
+
+			setBounds(getBounds().x, getBounds().y + 30, 65, 113);
+		}
+	}
 }

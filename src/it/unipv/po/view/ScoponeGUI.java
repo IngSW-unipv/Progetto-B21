@@ -6,23 +6,25 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import it.unipv.po.view.imagesLoader.ImagesLoader;
-import it.unipv.po.view.labels.GameGUI;
-import it.unipv.po.view.labels.MainMenuGUI;
-import it.unipv.po.view.labels.MultiPlayerMenuGUI;
+import it.unipv.po.view.labels.CreaLobbyUI;
+import it.unipv.po.view.labels.EntraLobbyUI;
+import it.unipv.po.view.labels.GameUI;
+import it.unipv.po.view.labels.MainMenuUI;
+import it.unipv.po.view.labels.MultiPlayerMenuUI;
 import it.unipv.po.view.menuElements.sound.SoundButton;
 
 public class ScoponeGUI extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	private MainMenuGUI mainMenu;
-	private GameGUI game;
-	private MultiPlayerMenuGUI multiPlayer;
+	private MainMenuUI mainMenu;
+	private GameUI game;
+	private MultiPlayerMenuUI multiPlayer;
+	private CreaLobbyUI creaLobby;
+	private EntraLobbyUI entraLobby;
 	private boolean mainCreated;
 	private boolean multiPlayerCreated;
+	private boolean creaLobbyCreated;
+	private boolean entraLobbyCreated;
 	private ImagesLoader loader;
 	private SoundButton sound;
 
@@ -30,18 +32,20 @@ public class ScoponeGUI extends JFrame {
 	public ScoponeGUI() {
 		super();
 
-		mainCreated = false;
-		multiPlayerCreated = false;
+		this.mainCreated = false;
+		this.multiPlayerCreated = false;
+		this.creaLobbyCreated = false;
+		this.entraLobbyCreated = false;
 		create();
 		mainMenu();
 	}
 
 //____________________GETTERS&SETTERS_______________
-	public MainMenuGUI getMainMenu() {
+	public MainMenuUI getMainMenu() {
 		return mainMenu;
 	}
 
-	public void setMainMenu(MainMenuGUI mainMenu) {
+	public void setMainMenu(MainMenuUI mainMenu) {
 		this.mainMenu = mainMenu;
 	}
 
@@ -61,19 +65,19 @@ public class ScoponeGUI extends JFrame {
 		this.mainCreated = mainCreated;
 	}
 
-	public GameGUI getGame() {
+	public GameUI getGame() {
 		return game;
 	}
 
-	public void setGame(GameGUI game) {
+	public void setGame(GameUI game) {
 		this.game = game;
 	}
 
-	public MultiPlayerMenuGUI getMultiPlayer() {
+	public MultiPlayerMenuUI getMultiPlayer() {
 		return multiPlayer;
 	}
 
-	public void setMultiPlayer(MultiPlayerMenuGUI multiPlayer) {
+	public void setMultiPlayer(MultiPlayerMenuUI multiPlayer) {
 		this.multiPlayer = multiPlayer;
 	}
 
@@ -85,7 +89,23 @@ public class ScoponeGUI extends JFrame {
 		this.multiPlayerCreated = multiPlayerCreated;
 	}
 
-	// ___________________METODI_________________________
+	public CreaLobbyUI getCreaLobby() {
+		return creaLobby;
+	}
+
+	public void setCreaLobby(CreaLobbyUI creaLobby) {
+		this.creaLobby = creaLobby;
+	}
+
+	public EntraLobbyUI getEntraLobby() {
+		return entraLobby;
+	}
+
+	public void setEntraLobby(EntraLobbyUI entraLobby) {
+		this.entraLobby = entraLobby;
+	}
+
+	// ________________________METODI_______________________
 	private void create() {
 
 		setTitle("Scopone Scientifico");
@@ -116,7 +136,7 @@ public class ScoponeGUI extends JFrame {
 
 		else {
 
-			this.mainMenu = new MainMenuGUI(loader);
+			this.mainMenu = new MainMenuUI(loader);
 			sound.setVisible(true);
 			add(sound);
 			add(mainMenu);
@@ -125,20 +145,32 @@ public class ScoponeGUI extends JFrame {
 		}
 	}
 
-	public GameGUI game() {
+	public GameUI game() {
 
-		this.game = new GameGUI(loader);
-		setGame(game);
-		sound.setVisible(true);
-		add(sound);
-		add(game);
-		repaint();
+		if (getGame() == null) {
+			this.game = new GameUI(loader);
+			setGame(game);
+			sound.setVisible(true);
+			add(sound);
+			add(game);
+			repaint();
+		}
 
+		else {
+
+			remove(game);
+			this.game = new GameUI(loader);
+			setGame(game);
+			sound.setVisible(true);
+			add(sound);
+			add(game);
+			repaint();
+		}
 		return game;
 	}
-	
-	public MultiPlayerMenuGUI multiPlayer() {
-		
+
+	public MultiPlayerMenuUI multiPlayer() {
+
 		if (multiPlayerCreated) {
 
 			getMultiPlayer().setVisible(true);
@@ -149,13 +181,55 @@ public class ScoponeGUI extends JFrame {
 		}
 
 		else {
-			this.multiPlayer = new MultiPlayerMenuGUI(loader);
+			this.multiPlayer = new MultiPlayerMenuUI(loader);
 			setMultiPlayer(multiPlayer);
 			add(sound);
 			add(multiPlayer);
 			repaint();
 		}
-		
+
 		return multiPlayer;
+	}
+
+	public CreaLobbyUI creaLobby() {
+
+		if (creaLobbyCreated) {
+
+			getCreaLobby().setVisible(true);
+			sound.setVisible(true);
+			add(sound);
+			add(getCreaLobby());
+			repaint();
+		}
+
+		else {
+			this.creaLobby = new CreaLobbyUI(loader);
+			setCreaLobby(creaLobby);
+			add(sound);
+			add(creaLobby);
+			repaint();
+		}
+		return creaLobby;
+	}
+
+	public EntraLobbyUI entraLobby() {
+
+		if (entraLobbyCreated) {
+
+			getEntraLobby().setVisible(true);
+			sound.setVisible(true);
+			add(sound);
+			add(getEntraLobby());
+			repaint();
+		}
+
+		else {
+			this.entraLobby = new EntraLobbyUI(loader);
+			setEntraLobby(entraLobby);
+			add(sound);
+			add(entraLobby);
+			repaint();
+		}
+		return entraLobby;
 	}
 }

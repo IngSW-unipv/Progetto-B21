@@ -6,13 +6,9 @@ import javax.swing.JLabel;
 import it.unipv.po.view.imagesLoader.ImagesLoader;
 import it.unipv.po.view.menuElements.buttons.*;
 
-public class MultiPlayerMenuGUI extends JLabel {
+public class MultiPlayerMenuUI extends JLabel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	private BufferedImage buffer;
 	private ImagesLoader loader;
 	private CreaLobbyButton creaLobby;
@@ -20,7 +16,7 @@ public class MultiPlayerMenuGUI extends JLabel {
 	private BackButton back;
 
 //_______________________COSTRUTTORE_______________________
-	public MultiPlayerMenuGUI(ImagesLoader loader) {
+	public MultiPlayerMenuUI(ImagesLoader loader) {
 		super();
 		this.loader = loader;
 		create();
