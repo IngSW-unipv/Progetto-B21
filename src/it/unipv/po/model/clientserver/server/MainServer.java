@@ -9,7 +9,6 @@ import it.unipv.po.model.game.*;
 import it.unipv.po.model.game.player.types.BotPlayer;
 import it.unipv.po.model.game.player.types.Player;
 import it.unipv.po.controller.Controller;
-import it.unipv.po.model.clientserver.client.*;
 import it.unipv.po.model.clientserver.message.Message;
 
 /**
@@ -29,7 +28,6 @@ public class MainServer extends Thread {
 	private Socket clientSocket = null;
 	private final int porta = 6789;
 	private int numberOfConnectedClients;
-	private ArrayList<ClientThreadHandler> clientHandlers; // Per memorizzare tutti i thread ed eventualmente ricevere
 	private ScoponeGame scopone;
 	private ArrayList<Player> players; // Per memorizzare tutti i giocatori attualmente connessi al server
 	private Controller controller;
@@ -64,7 +62,6 @@ public class MainServer extends Thread {
 
 		try {
 			this.clientSocket = server.accept();
-			this.is = new ObjectInputStream(clientSocket.getInputStream());
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			LocalDateTime now = LocalDateTime.now();
 			numberOfConnectedClients++;
@@ -89,23 +86,13 @@ public class MainServer extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		try {
-			addPlayer();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
 
-	public ScoponeGame createGame() {
+	public synchronized ScoponeGame createGame() {
 
 		if (numberOfConnectedClients < 4) {
 			for (int i = 0; i <= 3 - numberOfConnectedClients; i++) {
@@ -116,13 +103,21 @@ public class MainServer extends Thread {
 		}
 
 		this.scopone = new ScoponeGame(players);
-		startGame();
 
 		return scopone;
 	}
 
 	public synchronized void startGame() {
-
+		
+		try {
+			addPlayer();
+		} catch (ClassNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		try {
 			this.os = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -136,6 +131,8 @@ public class MainServer extends Thread {
 			message.setStart(true);
 			os.writeObject(message);
 			os.flush();
+			
+			createGame();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,6 +141,8 @@ public class MainServer extends Thread {
 
 	private synchronized void addPlayer() throws ClassNotFoundException, IOException {
 
+		this.is = new ObjectInputStream(clientSocket.getInputStream());
+		
 		boolean temp = true;
 
 		while (temp) {

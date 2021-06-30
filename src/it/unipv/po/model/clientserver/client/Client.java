@@ -73,8 +73,9 @@ public class Client extends Thread {
 		ClientThreadHandler clientThread = new ClientThreadHandler(socket);
 		clientThread.start();
 		clientThread.setController(controller);
-
-		while (((Message) ois.readObject()).isStart() == false) {
+		
+		
+		while (((Message) ois.readObject()).isStart() != false) {
 
 			if (controller.getGui().getEntraLobby() != null)
 				controller.getGui().getEntraLobby().setVisible(false);

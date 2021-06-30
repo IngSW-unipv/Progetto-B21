@@ -191,12 +191,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				server.createGame();
 				server.startGame();
-				gui.getCreaLobby().setVisible(false);
-				gui.game();
-				sendListener();
-				deckCreator(30, 309);
 			}
 		};
 

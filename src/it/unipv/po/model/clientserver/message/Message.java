@@ -3,6 +3,7 @@ package it.unipv.po.model.clientserver.message;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
 import it.unipv.po.model.game.player.types.Player;
 
@@ -13,12 +14,15 @@ public class Message implements Serializable {
 	private boolean start;
 	private ArrayList<Card> cards;
 	private Player player;
+	private ScoponeGame scopone;
 
 	public Message() {
 		super();
 		this.start = false;
 		this.cards = new ArrayList<Card>();
 		this.player = null;
+		this.scopone = null;
+		
 	}
 
 	public boolean isStart() {
@@ -43,5 +47,9 @@ public class Message implements Serializable {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public void setScopone(ScoponeGame scopone) {
+		this.scopone = scopone;
 	}
 }
