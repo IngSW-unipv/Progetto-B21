@@ -27,7 +27,7 @@ public class SinglePlayerButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button1.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/button1.png");
 		ImageIcon singlePImg = new ImageIcon(buffer);
 		setBounds(200, 189, 382, 105);
 		setIcon(singlePImg);

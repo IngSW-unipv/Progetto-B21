@@ -53,7 +53,7 @@ public class GameUI extends JLabel {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/table.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/table.png");
 		ImageIcon game = new ImageIcon(buffer);
 		setIcon(game);
 		setBounds(0, 0, 800, 500);

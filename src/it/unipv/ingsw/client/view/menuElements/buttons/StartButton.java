@@ -24,7 +24,7 @@ public class StartButton extends JButton{
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/creaLobby.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/creaLobby.png");
 		ImageIcon multiPImg = new ImageIcon(buffer);
 		setBounds(350, 300, 100, 50);
 		setIcon(multiPImg);

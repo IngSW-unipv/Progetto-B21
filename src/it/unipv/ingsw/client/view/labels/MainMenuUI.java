@@ -61,7 +61,7 @@ public class MainMenuUI extends JLabel {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/background.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/background.png");
 		ImageIcon image = new ImageIcon(buffer);
 		setIcon(image);
 		setBounds(0, 0, 800, 500);

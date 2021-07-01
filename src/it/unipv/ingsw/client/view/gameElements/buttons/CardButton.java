@@ -31,7 +31,7 @@ public class CardButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/deckGraphics/" + txt + ".png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/deckGraphics/" + txt + ".png");
 		ImageIcon card = new ImageIcon(buffer);
 		setIcon(card);
 		setOpaque(true);

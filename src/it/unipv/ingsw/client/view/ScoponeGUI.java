@@ -114,7 +114,7 @@ public class ScoponeGUI extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setIconImage(
-				Toolkit.getDefaultToolkit().getImage(ScoponeGUI.class.getResource("/it/unipv/po/images/logo.png")));
+				Toolkit.getDefaultToolkit().getImage(ScoponeGUI.class.getResource("/it/unipv/ingsw/client/images/logo.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setVisible(true);

@@ -25,7 +25,7 @@ public class SoundButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/audioON.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/audioON.png");
 		ImageIcon soundSet = new ImageIcon(buffer);
 		setIcon(soundSet);
 		setBounds(730, 15, 50, 50);
@@ -38,12 +38,12 @@ public class SoundButton extends JButton {
 
 		switch (i) {
 		case 0:
-			this.buffer = loader.uploadImage("/it/unipv/po/images/audioON.png");
+			this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/audioON.png");
 			ImageIcon soundSet = new ImageIcon(buffer);
 			setIcon(soundSet);
 			break;
 		case 1:
-			this.buffer = loader.uploadImage("/it/unipv/po/images/audioOFF.png");
+			this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/audioOFF.png");
 			ImageIcon soundSet2 = new ImageIcon(buffer);
 			setIcon(soundSet2);
 			break;

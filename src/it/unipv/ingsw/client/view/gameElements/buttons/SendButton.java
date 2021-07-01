@@ -27,7 +27,7 @@ public class SendButton extends JButton{
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/invio.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/invio.png");
 		ImageIcon multiPImg = new ImageIcon(buffer);
 		setBounds(750, 309, 30, 113);
 		setIcon(multiPImg);

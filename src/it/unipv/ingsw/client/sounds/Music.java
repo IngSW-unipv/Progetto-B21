@@ -32,7 +32,7 @@ public class Music {
 	public void playMusic(String txt) {
 
 		try {
-			AudioInputStream audio = AudioSystem.getAudioInputStream(new File("it/unipv/ingsw/client/sounds/" + txt));
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File("/it/unipv/ingsw/client/sounds/" + txt));
 			this.hit = AudioSystem.getClip();
 			hit.open(audio);
 			hit.start();

@@ -27,7 +27,7 @@ public class CreaLobbyButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/creaLobby.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/creaLobby.png");
 		ImageIcon creaLobby = new ImageIcon(buffer);
 		setBounds(200, 189, 382, 105);
 		setIcon(creaLobby);

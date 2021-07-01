@@ -27,7 +27,7 @@ public class BackButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/back.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/back.png");
 		ImageIcon back = new ImageIcon(buffer);
 		setBounds(10, 15, 60, 60);
 		setIcon(back);

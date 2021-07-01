@@ -27,7 +27,7 @@ public class MultiPlayerButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/po/images/button2.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/button2.png");
 		ImageIcon multiPImg = new ImageIcon(buffer);
 		setBounds(200, 309, 382, 105);
 		setIcon(multiPImg);
