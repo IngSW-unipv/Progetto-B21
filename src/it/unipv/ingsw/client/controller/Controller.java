@@ -10,11 +10,11 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 
 import it.unipv.ingsw.client.controller.menu.Main;
-import it.unipv.ingsw.client.model.clientserver.server.MainServer;
-import it.unipv.ingsw.client.model.game.ScoponeGame;
+import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.MainServer;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
@@ -22,7 +22,7 @@ public class Controller {
 
 	private Main menu;
 	private ScoponeGUI gui;
-	private ScoponeGame game;
+	private Game game;
 	private Player human;
 	private HashMap<Card, CardButton> deck;
 	private HashMap<Card, CardButton> cardsOnBoard;
@@ -66,7 +66,7 @@ public class Controller {
 		return server;
 	}
 
-	public void setGame(ScoponeGame game) {
+	public void setGame(Game game) {
 		this.game = game;
 	}
 	

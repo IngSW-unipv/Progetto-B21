@@ -1,12 +1,11 @@
-package it.unipv.ingsw.client.model.clientserver.client;
+package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
 
 import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.net.*;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.clientserver.message.*;
-import it.unipv.ingsw.client.model.clientserver.server.ClientThreadHandler;
 
 /**
  * Semplice client che permette la scambio di messaggi con un server

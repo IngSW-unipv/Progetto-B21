@@ -1,10 +1,9 @@
-package it.unipv.ingsw.client.model.clientserver.server;
+package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
 
 import java.net.*;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.clientserver.message.Message;
-import it.unipv.ingsw.client.model.game.ScoponeGame;
+import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
@@ -27,7 +26,7 @@ public class ClientThreadHandler extends Thread {
 	private ObjectOutputStream os;
 	private Socket socket;
 	private Player p;
-	private ScoponeGame g;
+	private Game g;
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata

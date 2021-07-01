@@ -1,11 +1,10 @@
-package it.unipv.ingsw.client.model.clientserver.server;
+package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
 
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.clientserver.message.Message;
 import it.unipv.ingsw.client.model.game.*;
 import it.unipv.ingsw.client.model.game.player.types.BotPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
@@ -30,7 +29,7 @@ public class MainServer extends Thread {
 	private Socket clientSocket = null;
 	private final int porta = 6789;
 	private int numberOfConnectedClients;
-	private ScoponeGame scopone;
+	private Game scopone;
 	private ArrayList<Player> players; // Per memorizzare tutti i giocatori attualmente connessi al server
 	private Controller controller;
 	private ObjectInputStream is;
@@ -94,7 +93,7 @@ public class MainServer extends Thread {
 		this.controller = controller;
 	}
 
-	public synchronized ScoponeGame createGame() {
+	public synchronized Game createGame() {
 
 		if (numberOfConnectedClients < 4) {
 			for (int i = 0; i <= 3 - numberOfConnectedClients; i++) {
@@ -104,7 +103,7 @@ public class MainServer extends Thread {
 			}
 		}
 
-		this.scopone = new ScoponeGame(players);
+		this.scopone = new Game(players);
 
 		return scopone;
 	}

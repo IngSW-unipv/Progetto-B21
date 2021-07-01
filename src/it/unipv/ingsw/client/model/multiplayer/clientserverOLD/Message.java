@@ -1,9 +1,9 @@
-package it.unipv.ingsw.client.model.clientserver.message;
+package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.ScoponeGame;
+import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.Player;
 
@@ -14,7 +14,7 @@ public class Message implements Serializable {
 	private boolean start;
 	private ArrayList<Card> cards;
 	private Player player;
-	private ScoponeGame scopone;
+	private Game scopone;
 
 	public Message() {
 		super();
@@ -49,7 +49,7 @@ public class Message implements Serializable {
 		this.player = player;
 	}
 
-	public void setScopone(ScoponeGame scopone) {
+	public void setScopone(Game scopone) {
 		this.scopone = scopone;
 	}
 }

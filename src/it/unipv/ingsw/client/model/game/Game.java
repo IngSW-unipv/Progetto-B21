@@ -15,7 +15,7 @@ import it.unipv.ingsw.client.model.game.player.types.*;
  * 
  * @author gruppo B
  */
-public class ScoponeGame {
+public class Game {
 
 	private ArrayList<Card> cardsOnBoard;
 	private ArrayList<Card> deck;
@@ -27,7 +27,7 @@ public class ScoponeGame {
 	private boolean firstRound;
 
 //__________________COSTRUTTORE____________________ 
-	public ScoponeGame(ArrayList<Player> players) {
+	public Game(ArrayList<Player> players) {
 
 		this.players = players;
 

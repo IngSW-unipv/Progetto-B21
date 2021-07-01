@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
-import it.unipv.ingsw.client.model.clientserver.client.Client;
-import it.unipv.ingsw.client.model.clientserver.server.MainServer;
-import it.unipv.ingsw.client.model.game.ScoponeGame;
+import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
+import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.Client;
+import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.MainServer;
 import it.unipv.ingsw.client.sounds.Music;
 
 public class Main {
 
-	private ScoponeGame scopone;
+	private Game game;
 	private Music music;
 	private String txt;
 	private Controller controller;
@@ -41,12 +41,12 @@ public class Main {
 		return music;
 	}
 
-	public ScoponeGame getScopone() {
-		return scopone;
+	public Game getGame() {
+		return game;
 	}
 
-	public void setScopone(ScoponeGame scopone) {
-		this.scopone = scopone;
+	public void setGame(Game scopone) {
+		this.game = scopone;
 	}
 
 	public Controller getController() {
@@ -73,7 +73,7 @@ public class Main {
 		this.sound = click;
 	}
 
-	public ScoponeGame singlePlayer() {
+	public Game singlePlayer() {
 
 		this.players = new ArrayList<Player>();
 		HumanPlayer human = new HumanPlayer(txt);
@@ -83,20 +83,20 @@ public class Main {
 		players.add(new BotPlayer());
 		players.add(new BotPlayer());
 
-		this.scopone = new ScoponeGame(players);
+		this.game = new Game(players);
 		this.sound = new Music();
 
-		PlayerThread t1 = new PlayerThread(scopone, players.get(0), controller);
+		PlayerThread t1 = new PlayerThread(game, players.get(0), controller);
 		setThread(t1);
-		PlayerThread t2 = new PlayerThread(scopone, players.get(1), controller);
-		PlayerThread t3 = new PlayerThread(scopone, players.get(2), controller);
-		PlayerThread t4 = new PlayerThread(scopone, players.get(3), controller);
+		PlayerThread t2 = new PlayerThread(game, players.get(1), controller);
+		PlayerThread t3 = new PlayerThread(game, players.get(2), controller);
+		PlayerThread t4 = new PlayerThread(game, players.get(3), controller);
 		t1.start();
 		t2.start();
 		t3.start();
 		t4.start();
 
-		return scopone;
+		return game;
 	}
 
 	public MainServer creaLobby() {

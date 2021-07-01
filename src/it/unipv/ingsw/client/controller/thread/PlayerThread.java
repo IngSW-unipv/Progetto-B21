@@ -3,7 +3,7 @@ package it.unipv.ingsw.client.controller.thread;
 import java.awt.Color;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.game.ScoponeGame;
+import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
@@ -20,12 +20,12 @@ import it.unipv.ingsw.client.model.game.player.types.TypePlayer;
 
 public class PlayerThread extends Thread {
 	private Player p;
-	private ScoponeGame g;
+	private Game g;
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
 
-	public PlayerThread(ScoponeGame g, Player p, Controller controller) {
+	public PlayerThread(Game g, Player p, Controller controller) {
 		this.p = p;
 		this.g = g;
 		this.controller = controller;
