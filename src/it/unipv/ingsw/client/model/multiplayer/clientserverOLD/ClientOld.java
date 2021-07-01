@@ -13,7 +13,7 @@ import it.unipv.ingsw.client.controller.Controller;
  * @author Vito Avanzato
  *
  */
-public class Client extends Thread {
+public class ClientOld extends Thread {
 
 	private Socket socket;
 	private Controller controller;
@@ -23,7 +23,7 @@ public class Client extends Thread {
 	private ObjectInputStream ois;
 
 //_____________________COSTRUTTORE____________________
-	public Client(Controller controller, String serverName) {
+	public ClientOld(Controller controller, String serverName) {
 
 		this.controller = controller;
 		this.serverName = serverName;

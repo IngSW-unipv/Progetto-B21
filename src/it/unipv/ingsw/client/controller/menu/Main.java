@@ -7,7 +7,7 @@ import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
-import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.Client;
+import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.ClientOld;
 import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.MainServer;
 import it.unipv.ingsw.client.sounds.Music;
 
@@ -110,7 +110,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		Client client = new Client(controller, server.getHostName());
+		ClientOld client = new ClientOld(controller, server.getHostName());
 		client.start();
 			
 		return server;
