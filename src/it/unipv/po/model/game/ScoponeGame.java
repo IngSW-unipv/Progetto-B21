@@ -66,20 +66,16 @@ public class ScoponeGame {
 	public synchronized int getTurn() {
 		return turn;
 	}
-	
+
 	public boolean isFirstRound() {
 		return firstRound;
 	}
 
 	public void setFirstRound(boolean firstRound) {
 		this.firstRound = firstRound;
-	}	
+	}
 
 // ______________________METODI_________________________*/
-
-
-
-
 
 	/**
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
@@ -115,7 +111,6 @@ public class ScoponeGame {
 		Team a = new Team();
 		Team b = new Team();
 
-		
 		players.get(0).setPlayerIndex(1);
 		players.get(0).setTeamIndex(0);
 		players.get(1).setPlayerIndex(2);
@@ -233,7 +228,7 @@ public class ScoponeGame {
 	 * (Per thread) Questo metodo fa fare un azione ad un giocatore bot o umano
 	 * 
 	 */
-	public synchronized boolean playerActionMonitoring(Player player, ArrayList<Card> cardsOnBoard) {
+	public synchronized boolean playerActionMonitoring(Player player) {
 
 		switch (player.playCard(cardsOnBoard).size()) {
 
@@ -269,7 +264,7 @@ public class ScoponeGame {
 
 			else {
 
-				playerActionMonitoring(player, cardsOnBoard);
+				playerActionMonitoring(player);
 
 				return false;
 			}
@@ -280,7 +275,7 @@ public class ScoponeGame {
 	 * Questa funzione permette di monitorare la giocata di un giocatore umano che
 	 * interagisce tramite la GUI
 	 */
-	public synchronized boolean playerActionMonitoring(Player player) {
+	public synchronized boolean playerActionMonitoring(HumanPlayer player) {
 
 		int counter = 0;
 
@@ -294,7 +289,7 @@ public class ScoponeGame {
 
 				if (counter == player.getCardsListTemp().get(0).getValue()) {
 
-					((HumanPlayer) player).setHavePlayed(false);
+					player.setHavePlayed(false);
 					return false;
 				}
 
@@ -302,7 +297,7 @@ public class ScoponeGame {
 
 					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
 
-						((HumanPlayer) player).setHavePlayed(false);
+						player.setHavePlayed(false);
 						return false;
 					}
 				}
@@ -310,7 +305,7 @@ public class ScoponeGame {
 
 			getCardsOnBoard().addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			((HumanPlayer) player).setHavePlayed(true);
+			player.setHavePlayed(true);
 
 			return true;
 
@@ -336,14 +331,14 @@ public class ScoponeGame {
 					player.setScopa();
 				}
 
-				((HumanPlayer) player).setHavePlayed(true);
+				player.setHavePlayed(true);
 
 				return true;
 			}
 
 			else {
 
-				((HumanPlayer) player).setHavePlayed(false);
+				player.setHavePlayed(false);
 
 				return false;
 			}
@@ -372,7 +367,7 @@ public class ScoponeGame {
 		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 	}
-	
+
 	public synchronized void changeIndex() {
 
 		for (int i = 3; i >= 0; i--) {
@@ -385,9 +380,9 @@ public class ScoponeGame {
 			getPlayers().get(i).setPlayerIndex(t);
 		}
 	}
-	
+
 	public String ToString() {
-		
+
 		return "Scopone";
 	}
 }

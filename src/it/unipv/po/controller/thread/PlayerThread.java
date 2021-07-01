@@ -115,10 +115,10 @@ public class PlayerThread extends Thread {
 				controller.personalAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 				sleep(1000);
-				counter();
+				counter(20);
 			} catch (InterruptedException e) {
 
-				if (!g.playerActionMonitoring(p)) {
+				if (!g.playerActionMonitoring((HumanPlayer) p)) {
 
 					try {
 						controller.sendError();
@@ -126,7 +126,7 @@ public class PlayerThread extends Thread {
 						sleep(10000);
 					} catch (InterruptedException e1) {
 
-						g.playerActionMonitoring(p);
+						g.playerActionMonitoring((HumanPlayer) p);
 					}
 				}
 
@@ -136,7 +136,7 @@ public class PlayerThread extends Thread {
 				return true;
 			}
 
-			g.playerActionMonitoring(p, g.getCardsOnBoard());
+			g.playerActionMonitoring(p);
 
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
@@ -147,12 +147,12 @@ public class PlayerThread extends Thread {
 		else {
 
 			try {
-				sleep(500);//2000
+				sleep(500);// 2000
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			g.playerActionMonitoring(p, g.getCardsOnBoard());
+			g.playerActionMonitoring(p);
 
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
@@ -169,7 +169,7 @@ public class PlayerThread extends Thread {
 	synchronized public void endTurn() {
 
 		try {
-			sleep(1000); //3000
+			sleep(1000); // 3000
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -177,6 +177,10 @@ public class PlayerThread extends Thread {
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 
 			g.endGame();
+			for (Card s : g.getCardsOnBoard()) {
+				controller.getCardsOnBoard().get(s).setVisible(false);
+			}
+			
 			controller.gameAdvisor("Punti team A: " + g.getTeams().get(0).getTotalPoints() + " | Punti team B: "
 					+ g.getTeams().get(1).getTotalPoints());
 			try {
@@ -184,16 +188,23 @@ public class PlayerThread extends Thread {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
-			controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
-			try {
-				sleep(10000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
 			p.getCardsListTemp().clear();
-			controller.restartGame();
-			notifyAll();
+
+			if (controller.verifyGame()) {
+
+				controller.gameAdvisor("PARTITA FINITA!");
+			} else {
+				controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
+				try {
+					sleep(2000);
+					counter(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				controller.restartGame();
+			}
 		}
 
 		else {
@@ -223,12 +234,24 @@ public class PlayerThread extends Thread {
 		}
 	}
 
-	private void counter() throws InterruptedException {
+	private void counter(int t) throws InterruptedException {
 
-		for (int i = 20; i >= 0; i--) {
+		if (t == 20) {
 
-			controller.personalAdvisor(String.valueOf(i));
-			wait(1000);
+			for (int i = t; i >= 0; i--) {
+
+				controller.personalAdvisor(String.valueOf(i));
+				wait(1000);
+			}
+		}
+
+		else {
+
+			for (int i = t; i >= 0; i--) {
+
+				controller.gameAdvisor(String.valueOf(i));
+				wait(1000);
+			}
 		}
 	}
 }

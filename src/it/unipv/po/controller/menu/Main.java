@@ -20,6 +20,7 @@ public class Main {
 	private Music sound;
 	private ArrayList<Player> players;
 	private MainServer server;
+	private ArrayList<PlayerThread> threads;
 
 	public Main() {
 		super();
@@ -71,10 +72,19 @@ public class Main {
 	public void setSound(Music click) {
 		this.sound = click;
 	}
+	
+	public ArrayList<PlayerThread> getThreads() {
+		return threads;
+	}
+
+	public void setThreads(ArrayList<PlayerThread> threads) {
+		this.threads = threads;
+	}
 
 	public ScoponeGame singlePlayer() {
 
 		this.players = new ArrayList<Player>();
+		this.threads = new ArrayList<PlayerThread>();
 		HumanPlayer human = new HumanPlayer(txt);
 
 		players.add(human);
@@ -94,6 +104,11 @@ public class Main {
 		t2.start();
 		t3.start();
 		t4.start();
+
+		threads.add(t1);
+		threads.add(t2);
+		threads.add(t3);
+		threads.add(t4);
 
 		return scopone;
 	}

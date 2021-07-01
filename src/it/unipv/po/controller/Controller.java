@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JLabel;
 import it.unipv.po.controller.menu.Main;
+import it.unipv.po.controller.thread.PlayerThread;
 import it.unipv.po.model.clientserver.server.MainServer;
 import it.unipv.po.model.game.ScoponeGame;
 import it.unipv.po.model.game.cards.Card;
@@ -68,7 +69,7 @@ public class Controller {
 	public void setGame(ScoponeGame game) {
 		this.game = game;
 	}
-	
+
 	public Main getMenu() {
 		return menu;
 	}
@@ -320,20 +321,35 @@ public class Controller {
 
 	public void restartGame() {
 
+		for (int i = 0; i < 3; i++) {
+
+			try {
+				menu.getThreads().get(i);
+				PlayerThread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		cardsOnBoard.clear();
+		game.start();
+		gui.game().repaint();
+		sendListener();
+		deckCreator(30, 309);
+		game.changeIndex();
+	}
+
+	public boolean verifyGame() {
+
 		int a = game.getTeams().get(0).getTotalPoints();
 		int b = game.getTeams().get(1).getTotalPoints();
 
 		if (a > b && a >= 21 || b > a && b >= 21) {
 
-			gameAdvisor("PARTITA FINITA!");
+			return true;
 		} else {
 
-			game.start();
-			gui.game().repaint();
-			game.changeIndex();
-			cardsOnBoard.clear();
-			sendListener();
-			deckCreator(30, 309);
+			return false;
 		}
 	}
 
