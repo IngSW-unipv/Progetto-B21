@@ -105,7 +105,7 @@ public class PlayerThread extends Thread {
 	/**
 	 * Il giocatore gioca una carta
 	 */
-	public synchronized  boolean play() {
+	public synchronized boolean play() {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 

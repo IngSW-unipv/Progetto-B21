@@ -1,14 +1,13 @@
 package it.unipv.ingsw.client.view.labels;
 
-import java.awt.Color;
-import java.awt.TextField;
+
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.MultiPlayerButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.SinglePlayerButton;
+import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
 public class MainMenuUI extends JLabel {
 
@@ -21,7 +20,7 @@ public class MainMenuUI extends JLabel {
 	private ImagesLoader loader;
 	private SinglePlayerButton single;
 	private MultiPlayerButton multi;
-	private TextField nickname;
+	private TextArea nickname;
 
 //_______________________COSTRUTTORE_______________________
 	public MainMenuUI(ImagesLoader loader) {
@@ -49,13 +48,13 @@ public class MainMenuUI extends JLabel {
 		this.multi = multi;
 	}
 	
-	public TextField getNickname() {
+	public TextArea getNickname() {
 		return nickname;
 	}
 
-	public void setNickname(TextField nickname) {
+	public void setNickname(TextArea nickname) {
 		this.nickname = nickname;
-	}	
+	}
 
 	// _______________________METODI____________________________
 
@@ -72,20 +71,15 @@ public class MainMenuUI extends JLabel {
 
 		// singlePlayer
 		this.single = new SinglePlayerButton(loader);
-		setSingle(single);
 		add(single);
 
 		// multiPlayer
 		this.multi = new MultiPlayerButton(loader);
-		setMulti(multi);
 		add(multi);
 		
 		//nickname
-		this.nickname = new TextField();
-		nickname.setBackground(Color.WHITE);
-		nickname.setBounds(345, 170, 110, 20);
+		this.nickname = new TextArea(345, 170, 110, 20);
 		nickname.setText("inserire nickname");
-		nickname.setVisible(true);
 		add(nickname);
 	}
 }
