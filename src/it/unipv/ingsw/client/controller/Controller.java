@@ -144,7 +144,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (menu.getTxt() == null) {
+				if (menu.getTxt() == null || menu.getTxt().length()==0) {
 					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 						    "Specificare il proprio username prima di continuare!",
@@ -165,7 +165,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (menu.getTxt() == null) {
+				if (menu.getTxt() == null || menu.getTxt().length()==0) {
 					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 						    "Specificare il proprio username prima di continuare!",
