@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
+package it.unipv.ingsw.client.controller.thread;
 
 import java.net.*;
 
@@ -17,7 +17,7 @@ import java.io.*;
  * thread che viene creato e avviato ogni qualvolta un client si connette al
  * server e dovrebbe gestire l'input dal cliente e inviargli messaggi.
  * 
- * @author Vito Avanzato
+ * 
  *
  */
 public class ClientThreadHandler extends Thread {

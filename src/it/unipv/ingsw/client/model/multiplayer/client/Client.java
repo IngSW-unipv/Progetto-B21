@@ -25,14 +25,16 @@ public class Client implements RemoteClientInterface{
 	/*
 	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client
 	 */
-	public void connect(String hostname) {
+	public boolean connect(String hostname) {
 		try {
 			RemoteClientInterface clientStub = (RemoteClientInterface) UnicastRemoteObject.exportObject(this, 0);
 			Registry registry = LocateRegistry.getRegistry(hostname, 6499);
 			RemoteServerInterface serverStub = (RemoteServerInterface) registry.lookup("ScoponeServer");
 			handler = serverStub.registerClient(clientStub);
+			return true;
 		} catch (RemoteException | NotBoundException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

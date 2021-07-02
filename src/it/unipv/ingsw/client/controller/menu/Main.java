@@ -1,40 +1,46 @@
 package it.unipv.ingsw.client.controller.menu;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
-import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.ClientOld;
-import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.MainServer;
+import it.unipv.ingsw.client.model.multiplayer.Lobby;
+import it.unipv.ingsw.client.model.multiplayer.client.Client;
 import it.unipv.ingsw.client.sounds.Music;
 
 public class Main {
 
 	private Game game;
 	private Music music;
-	private String txt;
+	private String nickname;
 	private Controller controller;
-	private PlayerThread thread;
 	private Music sound;
-	private ArrayList<Player> players;
-	private MainServer server;
+	private Lobby lobby;
+	private HumanPlayer player;
+	private Client client;
+	private PlayerThread playerThread;
 
 	public Main() {
-		super();
-
 		this.music = new Music();
 		music.playMusic("music.wav");
 	}
-
+	
+	public PlayerThread getPlayerThread() {
+		return playerThread;
+	}
+	
 	public String getTxt() {
-		return txt;
+		return nickname;
 	}
 
 	public void setTxt(String txt) {
-		this.txt = txt;
+		this.nickname = txt;
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 
 	public Music getMusic() {
@@ -57,14 +63,6 @@ public class Main {
 		this.controller = controller;
 	}
 
-	public PlayerThread getThread() {
-		return thread;
-	}
-
-	public void setThread(PlayerThread thread) {
-		this.thread = thread;
-	}
-
 	public Music getSound() {
 		return sound;
 	}
@@ -73,50 +71,42 @@ public class Main {
 		this.sound = click;
 	}
 
-	public Game singlePlayer() {
-
-		this.players = new ArrayList<Player>();
-		HumanPlayer human = new HumanPlayer(txt);
-
-		players.add(human);
-		players.add(new BotPlayer());
-		players.add(new BotPlayer());
-		players.add(new BotPlayer());
-
-		this.game = new Game(players);
-		this.sound = new Music();
-
-		PlayerThread t1 = new PlayerThread(game, players.get(0), controller);
-		setThread(t1);
-		PlayerThread t2 = new PlayerThread(game, players.get(1), controller);
-		PlayerThread t3 = new PlayerThread(game, players.get(2), controller);
-		PlayerThread t4 = new PlayerThread(game, players.get(3), controller);
-		t1.start();
-		t2.start();
-		t3.start();
-		t4.start();
-
-		return game;
-	}
-
-	public MainServer creaLobby() {
-
-		try {
-			this.server = new MainServer();
-			server.start();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void singleplayer() {
+		player = new HumanPlayer(nickname);
+		ArrayList<Player> p = new ArrayList<Player>();
+		p.add(player);
+		game = new Game(p);
+		sound = new Music();
+		game.start();
+		PlayerThread[] threads = new PlayerThread[4];
+		for (int i = 0; i < 4; i++) {
+			threads[i] = new PlayerThread(game, game.getPlayers().get(i), controller);
 		}
-		
-		ClientOld client = new ClientOld(controller, server.getHostName());
-		client.start();
+		this.playerThread = threads[0];
+			for (int i = 0; i < 4; i++) {
+			threads[i].start();
+		}
 			
-		return server;
+		
+	}
+	
+	public void multiplayer() {
+		client = new Client(player);
+	}
+	
+	public boolean connectToServer(String hostname) {
+		return client.connect(hostname);
+	}
+	
+	public Lobby creaLobby() {
+		lobby = new Lobby(player);
+		Client client = new Client(player);
+		return lobby;
 	}
 
 	public void entraLobby() {
-
+		
 	}
+
+
 }
