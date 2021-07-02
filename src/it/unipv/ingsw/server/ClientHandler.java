@@ -60,22 +60,20 @@ public class ClientHandler implements RemoteHandlerInterface{
 	@Override
 	public void startGame() {
 		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void playCard(Card playedCard) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 
 	@Override
 	public void removeFromBoard(ArrayList<Card> takenCards) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
+
 
 
 	@Override
