@@ -92,7 +92,7 @@ public class PlayerThread extends Thread {
 	/**
 	 * Se l'indice del giocatore è == al turno, allora tocca a lui
 	 */
-	synchronized public boolean checkTurn() {
+	public synchronized  boolean checkTurn() {
 		while (g.getTurn() != p.getPlayerIndex())
 			try {
 				notifyAll();
@@ -105,7 +105,7 @@ public class PlayerThread extends Thread {
 	/**
 	 * Il giocatore gioca una carta
 	 */
-	synchronized public boolean play() {
+	public synchronized boolean play() {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 
@@ -167,7 +167,7 @@ public class PlayerThread extends Thread {
 	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
 	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
 	 */
-	synchronized public void endTurn() {
+	public synchronized void endTurn() {
 
 		try {
 			sleep(1000); // 3000

@@ -37,7 +37,7 @@ public class ScoponeServer implements RemoteServerInterface {
 	public RemoteHandlerInterface registerClient(RemoteClientInterface client) throws RemoteException {
 		Player newPlayer = new HumanPlayer(client.getPlayerName());
 		players.add(newPlayer);
-		System.out.println("Added player "+newPlayer.toString());
+		System.out.println("Added player "+newPlayer.getNickname());
 		
 		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(new ClientHandler(client), 0);
 		return handler;

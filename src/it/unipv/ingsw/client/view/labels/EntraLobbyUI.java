@@ -7,7 +7,9 @@ import javax.swing.JLabel;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.BackButton;
+import it.unipv.ingsw.client.view.menuElements.buttons.CreaButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.StartButton;
+import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
 public class EntraLobbyUI extends JLabel {
 
@@ -17,6 +19,9 @@ public class EntraLobbyUI extends JLabel {
 	private StartButton start;
 	private BackButton back;
 	private JLabel advisor;
+	private JLabel players;
+	private CreaButton crea;
+	private TextArea nomeLobby;
 
 //__________________COSTRUTTORE___________________
 
@@ -52,7 +57,19 @@ public class EntraLobbyUI extends JLabel {
 		this.advisor = advisor;
 	}
 
-	// ________________METODI__________________________
+	public JLabel getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(JLabel players) {
+		this.players = players;
+	}
+	
+	public CreaButton getCrea() {
+		return crea;
+	}
+
+	// ______________________METODI______________________
 	private void create() {
 
 		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/background.png");
@@ -65,12 +82,27 @@ public class EntraLobbyUI extends JLabel {
 		add(start);
 
 		this.back = new BackButton(loader);
-		setBack(back);
 		add(back);
-		
+
+		// advisor
 		this.advisor = new JLabel();
 		advisor.setBounds(0, 442, 800, 20);
 		advisor.setOpaque(true);
 		add(advisor);
+
+		// players
+		this.players = new JLabel();
+		players.setBounds(250, 250, 300, 100);
+		players.setOpaque(true);
+		add(players);
+		
+		//crea
+		this.crea = new CreaButton(loader);
+		add(crea);
+		
+		//nomeLobby
+		this.nomeLobby = new TextArea(250, 190, 120, 20);
+		nomeLobby.setText("inserire nome lobby");
+		add(nomeLobby);
 	}
 }
