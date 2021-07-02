@@ -8,6 +8,7 @@ import it.unipv.ingsw.client.model.game.player.Actions;
 
 /**
  * 
+ * Classe astratta che definisce il giocatore generico che parteciperà alla partita * 
  * @author Giuseppe Lentini
  */
 public abstract class Player implements Actions, Serializable {
