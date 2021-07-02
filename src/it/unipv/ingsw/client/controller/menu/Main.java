@@ -99,8 +99,8 @@ public class Main {
 		return client.connect(hostname);
 	}
 	
-	public void creaLobby() {
-		client.makeLobby();
+	public String creaLobby() {
+		return client.makeLobby();
 	}
 
 	public boolean entraLobby(String code) {

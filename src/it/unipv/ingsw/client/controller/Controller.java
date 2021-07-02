@@ -14,9 +14,9 @@ import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.client.model.multiplayer.Lobby;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
+import it.unipv.ingsw.server.Lobby;
 
 public class Controller {
 

@@ -1,17 +1,27 @@
 package it.unipv.ingsw.server;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 
 public class ClientHandler implements RemoteHandlerInterface{
 	RemoteClientInterface client;
+	Lobby lobby;
+	Player player;
 	
 	
-	public ClientHandler(RemoteClientInterface client) {
+	public ClientHandler(RemoteClientInterface client, ScoponeServer server) {
 		this.client = client;
+		try {
+			player = new HumanPlayer(client.getPlayerName());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -44,16 +54,18 @@ public class ClientHandler implements RemoteHandlerInterface{
 	}
 
 	@Override
-	public boolean makeLobby() {
-		// TODO Auto-generated method stub
-		return false;
+	public String makeLobby() {
+		lobby = new Lobby(player);
+		String code = lobby.toString().substring(lobby.toString().length()-5);
+		lobby.setCode(code);
+		
+		return code;
 	}
 
 
 	@Override
 	public boolean joinLobby(String lobbyCode) {
-		// TODO Auto-generated method stub
-		return false;
+		return true; ////sistemare
 	}
 
 

@@ -53,8 +53,8 @@ public class Client implements RemoteClientInterface{
 	/*
 	 * Creazione della lobby
 	 */
-	public void makeLobby() {
-		handler.makeLobby();
+	public String makeLobby() {
+		return handler.makeLobby();
 	}
 	
 	/*

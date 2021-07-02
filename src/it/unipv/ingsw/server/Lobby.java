@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.multiplayer;
+package it.unipv.ingsw.server;
 
 import java.util.ArrayList;
 

@@ -6,7 +6,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
 import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
@@ -15,11 +14,11 @@ import it.unipv.ingsw.server.utils.RemoteServerInterface;
 public class ScoponeServer implements RemoteServerInterface {
 	Registry registry;
 	private ArrayList<Player> players;
-	private ArrayList<Game> games;
+	private ArrayList<Lobby> lobbies;
 	
 	public ScoponeServer() {
 		players = new ArrayList<Player>();
-		games = new ArrayList<Game>();
+		lobbies = new ArrayList<Lobby>();
 		try {
 			registry = LocateRegistry.createRegistry(6499);
 		} catch (RemoteException e) {
@@ -32,6 +31,18 @@ public class ScoponeServer implements RemoteServerInterface {
 	public Registry getRegistry() {
 		return registry;
 	}
+	
+	public boolean removeLobby() {
+		return true;//sistemare
+	}
+	
+	public void addLobby() {
+		//sistemare
+	}
+	
+	public boolean checkLobbyCode() {
+		return false;//sistemare
+	}
 
 	@Override
 	public RemoteHandlerInterface registerClient(RemoteClientInterface client) throws RemoteException {
@@ -39,7 +50,7 @@ public class ScoponeServer implements RemoteServerInterface {
 		players.add(newPlayer);
 		System.out.println("Added player "+newPlayer.getNickname());
 		
-		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(new ClientHandler(client), 0);
+		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(new ClientHandler(client, this), 0);
 		return handler;
 	}
 	
