@@ -1,7 +1,7 @@
 package it.unipv.ingsw.client.model.game;
 
 /**
- * Questa classe esegue i calcoli relativi alla partita.
+ * Questa classe esegue i calcoli relativi alla partita. AAA
  * 
  * @author Luca Furfaro, Giuseppe Lentini
  */
