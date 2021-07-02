@@ -3,7 +3,6 @@ package it.unipv.ingsw.client.model.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.cards.Suit;
 import it.unipv.ingsw.client.model.game.player.team.Team;
@@ -29,11 +28,7 @@ public class Game {
 //__________________COSTRUTTORE____________________ 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
-		if (players.size() < 4) {
-			for (int i = 4-players.size(); i > 0; i--) {
-				this.players.add(new BotPlayer());
-			}
-		}
+
 		initialize();
 		makeTeam();
 		createDeck();
@@ -80,6 +75,14 @@ public class Game {
 	 */
 
 	private void initialize() {
+		
+		
+		if (players.size() < 4) {
+			for (int i = 4-players.size(); i > 0; i--) {
+				this.players.add(new BotPlayer());
+			}
+		}
+		
 		cardsOnBoard = new ArrayList<Card>();
 		teams = new ArrayList<Team>();
 		deck = new ArrayList<Card>();
@@ -93,7 +96,6 @@ public class Game {
 		shuffle();
 		giveCards();
 		nextTurn();
-		
 	}
 
 	/**
@@ -361,21 +363,19 @@ public class Game {
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
+		turn = 0;
+		changeIndex();
 	}
-/* non serve cambiare gli indici, basta far iniziare la partita un turno più avanti
-	public synchronized void changeIndex() {
 
+	private synchronized void changeIndex() {
 		for (int i = 3; i >= 0; i--) {
-
 			int t = getPlayers().get(i).getPlayerIndex() - 1;
-
 			if (t == 0)
 				t = 4;
-
 			getPlayers().get(i).setPlayerIndex(t);
 		}
 	}
-*/
+	
 	public String ToString() {
 
 		return "Scopone";

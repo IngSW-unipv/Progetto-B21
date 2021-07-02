@@ -92,7 +92,7 @@ public class CreaLobbyUI extends JLabel {
 
 		// players
 		this.players = new JLabel();
-		players.setBounds(250, 250, 300, 100);
+		players.setBounds(250, 240, 300, 100);
 		players.setOpaque(true);
 		add(players);
 		
