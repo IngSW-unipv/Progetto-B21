@@ -13,7 +13,35 @@ public class ClientHandler implements RemoteHandlerInterface{
 	public ClientHandler(RemoteClientInterface client) {
 		this.client = client;
 	}
-
+	
+	
+	public void sendMessage(String msg) {
+		client.printMessage(msg);
+	}
+	
+	public void requestMove() {
+		client.play();
+	}
+	
+	public void setHand(ArrayList<Card> hand) {
+		client.setHand(hand);
+	}
+	
+	public void setCardsOnBoard(ArrayList<Card> board) {
+		client.setCardsOnBoard(board);
+	}
+	
+	public void notifyGameStart() {
+		client.openGameView();
+	}
+	
+	public void notifyGameEnd() {
+		client.openLobbyView();
+	}
+	
+	public void disconnectFromLobby() {
+		client.disconnect();
+	}
 
 	@Override
 	public boolean makeLobby() {
@@ -45,6 +73,13 @@ public class ClientHandler implements RemoteHandlerInterface{
 
 	@Override
 	public void removeFromBoard(ArrayList<Card> takenCards) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void nextTurn() {
 		// TODO Auto-generated method stub
 		
 	}

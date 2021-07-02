@@ -98,7 +98,7 @@ public class Controller {
 	}
 
 	private void startMultiPlayer() {
-
+		menu.multiplayer();
 		gui.getMainMenu().setVisible(false);
 		gui.multiPlayer();
 		creaLobbyListener();
@@ -110,16 +110,22 @@ public class Controller {
 
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
-		this.lobby = menu.creaLobby();
+		menu.creaLobby();
+		
 		creaLobbyStartListener();
-		gui.getCreaLobby().getAdvisor().setText("||DATI DA COMUNICARE|| ip: "); //schermata da cambiare
+		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); //schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	private void startEntraLobby() {
-
+		String string = "Lobby creata";
+		if (menu.entraLobby("codiceeeee") == false) {    //il codice è da prendere da una label nella gui
+			string = "Lobby non creata";
+		}
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
+		
+		gui.getCreaLobby().getAdvisor().setText(string); //schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 

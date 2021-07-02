@@ -3,6 +3,7 @@ package it.unipv.ingsw.client.controller.menu;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
+import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
@@ -92,20 +93,20 @@ public class Main {
 	
 	public void multiplayer() {
 		client = new Client(player);
+		MultiplayerThread thread = new MultiplayerThread(client, controller);
+		client.setMultiplayerThread(thread);
 	}
 	
 	public boolean connectToServer(String hostname) {
 		return client.connect(hostname);
 	}
 	
-	public Lobby creaLobby() {
-		lobby = new Lobby(player);
-		Client client = new Client(player);
-		return lobby;
+	public void creaLobby() {
+		client.makeLobby();
 	}
 
-	public void entraLobby() {
-		
+	public boolean entraLobby(String code) {
+		return client.joinLobby(code);
 	}
 
 

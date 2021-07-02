@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 
@@ -16,12 +17,23 @@ import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
 public class Client implements RemoteClientInterface{
 	private RemoteHandlerInterface handler;
+	private MultiplayerThread thread;
 	private Player player;
+	private ArrayList<Card> board;
+	
 	
 	public Client(Player player) {
 		this.player = player;
 	}
 	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public void setMultiplayerThread(MultiplayerThread thread) {
+		this.thread = thread;
+	}
+
 	/*
 	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client
 	 */
@@ -41,8 +53,8 @@ public class Client implements RemoteClientInterface{
 	/*
 	 * Creazione della lobby
 	 */
-	public boolean makeLobby() {
-		return handler.makeLobby();
+	public void makeLobby() {
+		handler.makeLobby();
 	}
 	
 	/*
@@ -67,6 +79,11 @@ public class Client implements RemoteClientInterface{
 		handler.removeFromBoard(takenCards);
 	}
 	
+	public void nextTurn() {
+		handler.nextTurn();
+	}
+	
+	
 	/*
 	 * E' passato all'handler il nome del giocatore
 	 */
@@ -74,13 +91,58 @@ public class Client implements RemoteClientInterface{
 	public String getPlayerName() throws RemoteException {
 		return player.getNickname();
 	}
+	
+	public void setCardsOnBoard(ArrayList<Card> cards) {
+		board = cards;
+	}
+	
+	public ArrayList<Card> getCardsOnBoard() {
+		return board;
+	}
 
-/////////////// testing
-	public static void main(String args[]) {
-		Player p = new HumanPlayer("Pippo");
-		Client c = new Client(p);
-		c.connect("localhost");
-		System.out.println(c.handler.toString());
+
+	@Override
+	public void printMessage(String msg) {
+		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void play() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setHand(ArrayList<Card> hand) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void openGameView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void openLobbyView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+/////////////// testing
+public static void main(String args[]) {
+Player p = new HumanPlayer("Pippo");
+Client c = new Client(p);
+c.connect("localhost");
+System.out.println(c.handler.toString());
+
+}
 }

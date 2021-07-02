@@ -12,8 +12,6 @@ public interface RemoteHandlerInterface extends Remote{
 	void startGame();
 	void playCard(Card playedCard);
 	void removeFromBoard(ArrayList<Card> takenCards);
-
-	
-	
+	void nextTurn();
 	
 }

@@ -8,7 +8,7 @@ import it.unipv.ingsw.client.model.game.cards.Card;
  * Questa classe permette ad un giocatore umano di effettuare le sue mosse.
  * 
  * 
- * @author Paolo Falzone, Giuseppe Lentini
+ * 
  */
 
 //____________________COSTRUTTORE_________________
