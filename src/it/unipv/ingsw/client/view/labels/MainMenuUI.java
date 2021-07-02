@@ -60,7 +60,7 @@ public class MainMenuUI extends JLabel {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/background.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/background_2.png");
 		ImageIcon image = new ImageIcon(buffer);
 		setIcon(image);
 		setBounds(0, 0, 800, 500);
@@ -79,7 +79,7 @@ public class MainMenuUI extends JLabel {
 		
 		//nickname
 		this.nickname = new TextArea(345, 170, 110, 20);
-		nickname.setText("inserire nickname");
+		//nickname.setText("inserire nickname");
 		add(nickname);
 	}
 }
