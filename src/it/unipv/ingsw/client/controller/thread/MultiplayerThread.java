@@ -11,14 +11,12 @@ import it.unipv.ingsw.client.model.multiplayer.client.Client;
 public class MultiplayerThread extends Thread{
 	private Client client;
 	private Controller controller;
-	private Player player;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
 
 	public MultiplayerThread(Client cl, Controller co) {
 		client = cl;
 		controller = co;
-		player = cl.getPlayer();
 		click = 0;
 	}
 
@@ -31,7 +29,7 @@ public class MultiplayerThread extends Thread{
 	}
 
 	public Player getPlayer() {
-		return player;
+		return client.getPlayer();
 	}
 	
 	/**
@@ -49,36 +47,36 @@ public class MultiplayerThread extends Thread{
 			if (!playerActionMonitoring()) {
 				try {
 					controller.sendError();
-					player.setCardSelected();
+					client.getPlayer().setCardSelected();
 					sleep(10000);
 				} catch (InterruptedException e1) {
 					playerActionMonitoring();
 				}
 			}
-			controller.gameAdvisor("||GIOCATORE " + player.getPlayerIndex() + "|| " + player.getNickname() + " gioca " + ((HumanPlayer) player).getCardPlayed());
+			controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname() + " gioca " + ((HumanPlayer) client.getPlayer()).getCardPlayed());
 			return true;
 			}
 		playerActionMonitoring();
-		controller.gameAdvisor("||GIOCATORE " + player.getPlayerIndex() + "|| " + player.getNickname() + " gioca " 
-								+ player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
+		controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname() + " gioca " 
+								+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
 		return true;
 	}
 
 
-	private void updateBoard() {
+	public void updateBoard() {
 		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		deckAction();
-		if (player.getCardsListTemp().size() > 1) {
+		if (client.getPlayer().getCardsListTemp().size() > 1) {
 			boardAction();
 			try {
 				sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (player.isScopa()) {
-				controller.scopaAlert(player);
-				player.setScopa();
+			if (client.getPlayer().isScopa()) {
+				controller.scopaAlert(client.getPlayer());
+				client.getPlayer().setScopa();
 				try {
 					sleep(3000);
 				} catch (InterruptedException e) {
@@ -95,22 +93,22 @@ public class MultiplayerThread extends Thread{
 	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
 	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
 	 */
-	synchronized public void endTurn() {
+	public void endTurn() {
 		try {
 			sleep(1000); // 3000
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		player.getCardsListTemp().clear();
+		client.getPlayer().getCardsListTemp().clear();
 		client.nextTurn();
 	}
 
 	private void deckAction() {
-		controller.getDeck().get(((HumanPlayer) player).getCardPlayed()).setVisible(false);
+		controller.getDeck().get(((HumanPlayer) client.getPlayer()).getCardPlayed()).setVisible(false);
 	}
 
 	private void boardAction() {
-		for (Card s : player.getCardsListTemp()) {
+		for (Card s : client.getPlayer().getCardsListTemp()) {
 			if (controller.getCardsOnBoard().get(s) != null) {
 				try {
 					controller.getCardsOnBoard().get(s).setVisible(false);
@@ -135,48 +133,54 @@ public class MultiplayerThread extends Thread{
 		}
 	}
 	
+	public void writeMessage(String str) {
+		controller.gameAdvisor(str);
+	}
 	
-	public synchronized boolean playerActionMonitoring() {
+	
+	public boolean playerActionMonitoring() {
 		int counter = 0;
-		switch (player.getCardsListTemp().size()) {
+		switch (client.getPlayer().getCardsListTemp().size()) {
 		case 1: // caso nel cui il giocatore non fa una presa
 			for (Card table : client.getCardsOnBoard()) {
 				counter += table.getValue();
-				if (counter == player.getCardsListTemp().get(0).getValue()) {
-					((HumanPlayer) player).setHavePlayed(false);
+				if (counter == client.getPlayer().getCardsListTemp().get(0).getValue()) {
+					((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 					return false;
 				}
 				else {
-					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
-						((HumanPlayer) player).setHavePlayed(false);
+					if (client.getPlayer().getCardsListTemp().get(0).getValue() == table.getValue()) {
+						((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 						return false;
 					}
 				}
 			}
-			client.getCardsOnBoard().addAll(player.getCardsListTemp());
-			player.getDeck().removeAll(player.getCardsListTemp());
-			((HumanPlayer) player).setHavePlayed(true);
+			client.getCardsOnBoard().addAll(client.getPlayer().getCardsListTemp());
+			client.getPlayer().getDeck().removeAll(client.getPlayer().getCardsListTemp());
+			((HumanPlayer) client.getPlayer()).setHavePlayed(true);
 			return true;
 			
 		default: // caso nel cui il giocatore fa una presa
 			int temp = 0;
-			int valueCardPlayed = player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue();
-			for (int i = 0; i < player.getCardsListTemp().size() - 1; i++) {
-				temp += player.getCardsListTemp().get(i).getValue();
+			int valueCardPlayed = client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1).getValue();
+			for (int i = 0; i < client.getPlayer().getCardsListTemp().size() - 1; i++) {
+				temp += client.getPlayer().getCardsListTemp().get(i).getValue();
 			}
 			if (temp == valueCardPlayed) {
-				client.getCardsOnBoard().removeAll(player.getCardsListTemp());
-				player.getDeck().remove(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
+				client.getCardsOnBoard().removeAll(client.getPlayer().getCardsListTemp());
+				client.getPlayer().getDeck().remove(client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
 				if (client.getCardsOnBoard().isEmpty()) {
-					player.setScopa();
+					client.getPlayer().setScopa();
 				}
-				((HumanPlayer) player).setHavePlayed(true);
+				((HumanPlayer) client.getPlayer()).setHavePlayed(true);
 				return true;
 			}
 			else {
-				((HumanPlayer) player).setHavePlayed(false);
+				((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 				return false;
 			}
 		}
 	}
+	
+
 }

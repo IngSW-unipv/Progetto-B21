@@ -7,7 +7,6 @@ import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
-import it.unipv.ingsw.client.model.multiplayer.Lobby;
 import it.unipv.ingsw.client.model.multiplayer.client.Client;
 import it.unipv.ingsw.client.sounds.Music;
 
@@ -18,7 +17,6 @@ public class Main {
 	private String nickname;
 	private Controller controller;
 	private Music sound;
-	private Lobby lobby;
 	private HumanPlayer player;
 	private Client client;
 	private PlayerThread playerThread;

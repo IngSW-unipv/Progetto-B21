@@ -103,37 +103,41 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void printMessage(String msg) {
-		// TODO Auto-generated method stub
-		
+		thread.writeMessage(msg);
 	}
 
 	@Override
 	public void play() {
-		// TODO Auto-generated method stub
-		
+		ArrayList<Card> taken = board;
+		ArrayList<Card> played = player.getDeck();
+		thread.play();
+		thread.updateBoard();
+		taken.removeAll(board);
+		played.removeAll(played);
+		makePlay(played.get(0), taken);
+		thread.endTurn();
 	}
 
 	@Override
 	public void setHand(ArrayList<Card> hand) {
-		// TODO Auto-generated method stub
-		
+		player.setDeck(hand);
 	}
 
 	@Override
 	public void openGameView() {
-		// TODO Auto-generated method stub
+		//la partita è iniziata, quindi si passa dalla visione della lobby a quella della partita
 		
 	}
 
 	@Override
 	public void openLobbyView() {
-		// TODO Auto-generated method stub
+		//la partita è finita, quindi si passa dalla visione della partita a quella della lobby
 		
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		//disconessione dalla partita, si torna al menù
 		
 	}
 
