@@ -1,7 +1,8 @@
 package it.unipv.ingsw.client.model.game;
 
 /**
- * Questa classe esegue i calcoli relativi alla partita. AAA
+ * Questa classe esegue i calcoli relativi alla partita. Oltre a calcolare il final score assegnando i punti in base
+ * ai denari, carte e settebello, ha una funziona che ordina le carte in modo da poter calcolare la primiera.
  * 
  * @author Luca Furfaro, Giuseppe Lentini
  */
@@ -81,6 +82,14 @@ public class Calculator {
 		b.setTotalPoints(scoreB + b.getTotalPoints());
 
 	}
+	
+	/**
+	 * 
+	 * Metodo che accetta un array di cards e lo ordina in base al primiera value, per ogni seme. 
+	 * 
+	 * @param arraylist cards
+	 * @return
+	 */
 
 	static int calculatePrimiera(ArrayList<Card> cards) {
 
