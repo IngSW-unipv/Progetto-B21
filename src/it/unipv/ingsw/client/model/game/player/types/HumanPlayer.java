@@ -51,8 +51,8 @@ public class HumanPlayer extends Player {
 
 
 	/**
-	 * Questa � la stessa funzione del botPlayer. serve nel caso il giocatore umano
-	 * non fa mosse.
+	 * Questa è la stessa funzione del botPlayer. Serve nel caso in cui il giocatore umano
+	 * non faccia mosse.
 	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
