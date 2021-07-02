@@ -1,5 +1,4 @@
 package it.unipv.ingsw.client.controller;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +7,7 @@ import java.awt.event.TextListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import it.unipv.ingsw.client.controller.menu.Main;
 import it.unipv.ingsw.client.model.game.Game;
@@ -145,7 +145,11 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				if (menu.getTxt() == null) {
-					gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+					JOptionPane.showMessageDialog(gui.getMainMenu(),
+						    "Specificare il proprio username prima di continuare!",
+						    "Attenzione",
+						    JOptionPane.WARNING_MESSAGE);
 				} else
 					startSinglePlayer();
 			}
@@ -162,7 +166,11 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				if (menu.getTxt() == null) {
-					gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+					JOptionPane.showMessageDialog(gui.getMainMenu(),
+						    "Specificare il proprio username prima di continuare!",
+						    "Attenzione",
+						    JOptionPane.WARNING_MESSAGE);
 				} else
 					startMultiPlayer();
 			}
