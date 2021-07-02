@@ -38,7 +38,7 @@ public class HumanPlayer extends Player {
 		this.cardPlayed = cardPlayed;
 	}
 	
-	public boolean isHavePlayed() {
+	public boolean hasPlayed() {
 		return havePlayed;
 	}
 

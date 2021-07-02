@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.multiplayer.clientserverOLD;
+package it.unipv.ingsw.client.controller.thread;
 
 import java.io.Serializable;
 import java.util.ArrayList;

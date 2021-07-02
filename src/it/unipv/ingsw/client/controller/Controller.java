@@ -14,7 +14,7 @@ import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.client.model.multiplayer.clientserverOLD.MainServer;
+import it.unipv.ingsw.client.model.multiplayer.Lobby;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
@@ -23,11 +23,11 @@ public class Controller {
 	private Main menu;
 	private ScoponeGUI gui;
 	private Game game;
-	private Player human;
+	private Player player;
 	private HashMap<Card, CardButton> deck;
 	private HashMap<Card, CardButton> cardsOnBoard;
 	private int x;
-	private MainServer server;
+	private Lobby lobby;
 
 //___________________COSTRUTTORE_______________________
 	public Controller(Main menu, ScoponeGUI gui) {
@@ -62,8 +62,8 @@ public class Controller {
 		return gui;
 	}
 
-	public MainServer getServer() {
-		return server;
+	public Lobby getLobby() {
+		return lobby;
 	}
 
 	public void setGame(Game game) {
@@ -75,7 +75,7 @@ public class Controller {
 	}
 
 	public void setHuman(Player human) {
-		this.human = human;
+		this.player = human;
 	}
 
 	// _______________________METODI___________________________
@@ -88,9 +88,9 @@ public class Controller {
 	}
 
 	private void startSinglePlayer() {
-
-		this.game = menu.singlePlayer();
-		this.human = menu.getThread().getP();
+		menu.singleplayer();
+		this.game = menu.getGame();
+		this.player = menu.getPlayer();
 		gui.getMainMenu().setVisible(false);
 		gui.game();
 		sendListener();
@@ -110,9 +110,9 @@ public class Controller {
 
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
-		this.server = menu.creaLobby();
+		this.lobby = menu.creaLobby();
 		creaLobbyStartListener();
-		gui.getCreaLobby().getAdvisor().setText("||DATI DA COMUNICARE|| ip: " + server.getHostName());
+		gui.getCreaLobby().getAdvisor().setText("||DATI DA COMUNICARE|| ip: "); //schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
@@ -192,7 +192,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				server.startGame();
+				lobby.startGame();
 			}
 		};
 
@@ -261,12 +261,12 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (human.getCardsListTemp().size() != 0 && menu.getThread().getClick() == 0) {
+				if (player.getCardsListTemp().size() != 0 && menu.getPlayerThread().getClick() == 0) {
 
-					menu.getThread().interrupt();
-					human.setCardSelected();
-					if (((HumanPlayer) human).isHavePlayed())
-						menu.getThread().setClick(1);
+					menu.getPlayerThread().interrupt();
+					player.setCardSelected();
+					if (((HumanPlayer) player).hasPlayed())
+						menu.getPlayerThread().setClick(1);
 				}
 			}
 		};
@@ -277,7 +277,7 @@ public class Controller {
 
 		this.deck = new HashMap<Card, CardButton>();
 
-		for (Card s : human.getDeck()) {
+		for (Card s : player.getDeck()) {
 
 			deck.put(s, gui.getGame().cardsBuilder(x, y, s.toString()));
 			deck.get(s).setVisible(true);
@@ -291,22 +291,22 @@ public class Controller {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					if (s.isSelected() == false && human.isCardSelected() == false) {
+					if (s.isSelected() == false && player.isCardSelected() == false) {
 
-						human.getCardsListTemp().add(s);
-						human.setCardSelected();
+						player.getCardsListTemp().add(s);
+						player.setCardSelected();
 						s.setSelected();
 						deck.get(s).cardSelected(true);
 						menu.getSound().playMusic("card_flip.wav");
-						((HumanPlayer) human).setCardPlayed(s);
+						((HumanPlayer) player).setCardPlayed(s);
 					}
 
-					else if (s.isSelected() == true && human.isCardSelected() == true) {
+					else if (s.isSelected() == true && player.isCardSelected() == true) {
 
-						human.getCardsListTemp().remove(s);
-						human.setCardSelected();
+						player.getCardsListTemp().remove(s);
+						player.setCardSelected();
 						s.setSelected();
-						((HumanPlayer) human).setCardPlayed(null);
+						((HumanPlayer) player).setCardPlayed(null);
 						menu.getSound().playMusic("card_flip.wav");
 						deck.get(s).cardSelected(false);
 					}
@@ -339,7 +339,6 @@ public class Controller {
 		gui.game().repaint();
 		sendListener();
 		deckCreator(30, 309);
-		game.changeIndex();
 	}
 	
 	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
@@ -360,7 +359,7 @@ public class Controller {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						if (human.isCardSelected()) {
+						if (player.isCardSelected()) {
 							selectError();
 						}
 
@@ -368,7 +367,7 @@ public class Controller {
 
 							if (s.isSelected() == false) {
 
-								human.getCardsListTemp().add(s);
+								player.getCardsListTemp().add(s);
 								s.setSelected();
 								menu.getSound().playMusic("card_flip.wav");
 								cardsOnBoard.get(s).cardSelected(s.isSelected());
@@ -376,7 +375,7 @@ public class Controller {
 
 							else {
 
-								human.getCardsListTemp().remove(s);
+								player.getCardsListTemp().remove(s);
 								s.setSelected();
 								menu.getSound().playMusic("card_flip.wav");
 								cardsOnBoard.get(s).cardSelected(s.isSelected());

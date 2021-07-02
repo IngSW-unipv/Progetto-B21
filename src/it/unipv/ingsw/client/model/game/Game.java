@@ -3,6 +3,7 @@ package it.unipv.ingsw.client.model.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.cards.Suit;
 import it.unipv.ingsw.client.model.game.player.team.Team;
@@ -24,17 +25,18 @@ public class Game {
 	private ArrayList<Player> players;
 	private int turn;
 	private int teamIndex;
-	private boolean firstRound;
 
 //__________________COSTRUTTORE____________________ 
 	public Game(ArrayList<Player> players) {
-
 		this.players = players;
-
-		create();
+		if (players.size() < 4) {
+			for (int i = 4-players.size(); i > 0; i--) {
+				this.players.add(new BotPlayer());
+			}
+		}
+		initialize();
 		makeTeam();
 		createDeck();
-		start();
 	}
 
 //__________________________GETTERS & SETTERS______________ 
@@ -68,13 +70,6 @@ public class Game {
 		return turn;
 	}
 
-	public boolean isFirstRound() {
-		return firstRound;
-	}
-
-	public void setFirstRound(boolean firstRound) {
-		this.firstRound = firstRound;
-	}
 
 // ______________________METODI_________________________*/
 
@@ -84,21 +79,21 @@ public class Game {
 	 * dei giocatori.
 	 */
 
-	private void create() {
-
-		this.cardsOnBoard = new ArrayList<Card>();
-		this.teams = new ArrayList<Team>();
-		this.deck = new ArrayList<Card>();
-		this.shuffledDeck = new ArrayList<Card>();
+	private void initialize() {
+		cardsOnBoard = new ArrayList<Card>();
+		teams = new ArrayList<Team>();
+		deck = new ArrayList<Card>();
+		shuffledDeck = new ArrayList<Card>();
+		turn = 0;
+		
 	}
 
 	public void start() {
 
 		shuffle();
 		giveCards();
-
-		this.turn = 1;
-		setFirstRound(true);
+		nextTurn();
+		
 	}
 
 	/**
@@ -367,7 +362,7 @@ public class Game {
 		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 	}
-
+/* non serve cambiare gli indici, basta far iniziare la partita un turno più avanti
 	public synchronized void changeIndex() {
 
 		for (int i = 3; i >= 0; i--) {
@@ -380,7 +375,7 @@ public class Game {
 			getPlayers().get(i).setPlayerIndex(t);
 		}
 	}
-
+*/
 	public String ToString() {
 
 		return "Scopone";
