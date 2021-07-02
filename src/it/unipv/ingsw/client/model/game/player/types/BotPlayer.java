@@ -5,21 +5,24 @@ import java.util.ArrayList;
 import it.unipv.ingsw.client.model.game.cards.Card;
 
 /**
- * Questa classe permette l'uso di intelligenza artificiale semplice, con il Bot
+ * Questa classe permette l'uso di un'intelligenza artificiale semplice, con il Bot
  * che gioca una carta a caso tra quelle a disposizione.
  * 
  * @author Giuseppe Lentini
  */
 public class BotPlayer extends Player {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	public BotPlayer() {
 		super("bot");
 	}
+	
+	/**
+	 * 
+	 * Metodo che permette al bot di giocare una carta ed effettuare una presa.
+	 * 
+	 */
 
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
@@ -40,6 +43,15 @@ public class BotPlayer extends Player {
 
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param cardsOnBoard
+	 * 
+	 * Metodo privato che permette al bot di effettuare una presa.
+	 * 
+	 * @return
+	 */
 
 	private int makePresa(ArrayList<Card> cardsOnBoard) {
 

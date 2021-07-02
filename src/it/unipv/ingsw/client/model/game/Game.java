@@ -9,8 +9,8 @@ import it.unipv.ingsw.client.model.game.player.team.Team;
 import it.unipv.ingsw.client.model.game.player.types.*;
 
 /**
- * Questa classe modellizza il tavolo di gioco. Ho dato le funzioni principali
- * al tavolo in quanto visto come l'ambiente di gioco e gestore della
+ * Questa classe modellizza il tavolo di gioco. Possiede le funzioni principali
+ * in quanto visto come l'ambiente di gioco e gestore della
  * distribuzione delle carte ai giocatori e dell'avvio della partita.
  * 
  * @author gruppo B
@@ -34,7 +34,7 @@ public class Game {
 		createDeck();
 	}
 
-//__________________________GETTERS & SETTERS______________ 
+//__________________________GETTERS & SETTERS__________________________
 
 	public synchronized ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -69,8 +69,10 @@ public class Game {
 // ______________________METODI_________________________*/
 
 	/**
+	 * Questo metodo ha il compito di inizializzare i vari componenti che verranno utilizzati nella partita.
+	 * *******************************************************************************
 	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
-	 * carte, si danno ai giocatori, si inizializza il turno, e si startano i thread
+	 * carte, le si danno ai giocatori, si inizializza il turno, e si startano i thread
 	 * dei giocatori.
 	 */
 
@@ -99,7 +101,7 @@ public class Game {
 	}
 
 	/**
-	 * Questo metodo crea i team e li memorizza.
+	 * Questo metodo crea due team e li memorizza.
 	 * 
 	 * 
 	 */
@@ -129,7 +131,7 @@ public class Game {
 	}
 
 	/**
-	 * questo metodo crea il deck di gioco. Il primo for distribuisce i semi, il
+	 * Questo metodo crea il deck di gioco. Il primo for distribuisce i semi, il
 	 * secondo i valori. Il secondo for parte da 1 per motivi di costruzione del
 	 * deck.
 	 */
@@ -193,8 +195,8 @@ public class Game {
 	}
 
 	/**
-	 * Questa funzione da le carte ai players. si occupa di dividere il deck in 4
-	 * subdeck e di assegnarli.
+	 * Questo metodo dà le carte ai players. Si occupa di dividere il deck in 4
+	 * subdeck e di assegnarli ai quattro giocatori.
 	 */
 	private void giveCards() {
 
@@ -222,7 +224,7 @@ public class Game {
 	}
 
 	/*
-	 * (Per thread) Questo metodo fa fare un azione ad un giocatore bot o umano
+	 * (Per thread) Questo metodo fa eseguire un azione ad un giocatore bot o umano
 	 * 
 	 */
 	public synchronized boolean playerActionMonitoring(Player player) {
@@ -374,10 +376,5 @@ public class Game {
 				t = 4;
 			getPlayers().get(i).setPlayerIndex(t);
 		}
-	}
-	
-	public String ToString() {
-
-		return "Scopone";
 	}
 }
