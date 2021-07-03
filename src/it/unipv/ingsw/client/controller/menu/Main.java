@@ -1,43 +1,47 @@
 package it.unipv.ingsw.client.controller.menu;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
-import it.unipv.ingsw.client.controller.thread.PlayerThread;
+import it.unipv.ingsw.client.controller.thread.SingleplayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
 import it.unipv.ingsw.client.model.multiplayer.client.Client;
 import it.unipv.ingsw.client.sounds.Music;
+import it.unipv.ingsw.server.Lobby;
 
 public class Main {
 
 	private Game game;
 	private Music music;
 	private String nickname;
+	private String nomeLobby;
 	private Controller controller;
 	private Music sound;
 	private HumanPlayer player;
 	private Client client;
-	private PlayerThread playerThread;
+	private SingleplayerThread playerThread;
+	private SingleplayerThread[] threads;
 
 	public Main() {
 		this.music = new Music();
 		music.playMusic("music.wav");
 	}
-	
-	public PlayerThread getPlayerThread() {
+
+	public SingleplayerThread getPlayerThread() {
 		return playerThread;
 	}
-	
-	public String getTxt() {
+
+	public String getNickname() {
 		return nickname;
 	}
 
-	public void setTxt(String txt) {
+	public void setNickname(String txt) {
 		this.nickname = txt;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
@@ -70,6 +74,26 @@ public class Main {
 		this.sound = click;
 	}
 
+	public SingleplayerThread[] getThreads() {
+		return threads;
+	}
+
+	public void setThreads(SingleplayerThread[] threads) {
+		this.threads = threads;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public String getNomeLobby() {
+		return nomeLobby;
+	}
+
+	public void setNomeLobby(String nomeLobby) {
+		this.nomeLobby = nomeLobby;
+	}
+
 	public void singleplayer() {
 		player = new HumanPlayer(nickname);
 		ArrayList<Player> p = new ArrayList<Player>();
@@ -77,35 +101,33 @@ public class Main {
 		game = new Game(p);
 		sound = new Music();
 		game.start();
-		PlayerThread[] threads = new PlayerThread[4];
+		this.threads = new SingleplayerThread[4];
 		for (int i = 0; i < 4; i++) {
-			threads[i] = new PlayerThread(game, game.getPlayers().get(i), controller);
+			threads[i] = new SingleplayerThread(game, game.getPlayers().get(i), controller);
 		}
 		this.playerThread = threads[0];
-			for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			threads[i].start();
 		}
-			
-		
 	}
-	
+
 	public void multiplayer() {
+		player = new HumanPlayer(nickname);
 		client = new Client(player);
 		MultiplayerThread thread = new MultiplayerThread(client, controller);
 		client.setMultiplayerThread(thread);
+		client.connect("localhost");
 	}
-	
+
 	public boolean connectToServer(String hostname) {
 		return client.connect(hostname);
 	}
-	
-	public String creaLobby() {
-		return client.makeLobby();
+
+	public Lobby creaLobby() throws RemoteException {
+		return client.makeLobby(nomeLobby);
 	}
 
 	public boolean entraLobby(String code) {
 		return client.joinLobby(code);
 	}
-
-
 }

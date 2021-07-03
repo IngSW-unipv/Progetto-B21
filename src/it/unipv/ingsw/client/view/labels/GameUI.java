@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 
 import it.unipv.ingsw.client.view.gameElements.buttons.*;
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
+import it.unipv.ingsw.client.view.menuElements.buttons.BackButton;
 
 public class GameUI extends JLabel {
 
@@ -19,6 +20,7 @@ public class GameUI extends JLabel {
 	private SendButton send;
 	private JLabel gameAdvisor;
 	private JLabel teamAdvisor;
+	private BackButton back;
 
 	public GameUI(ImagesLoader loader) {
 		super();
@@ -51,6 +53,14 @@ public class GameUI extends JLabel {
 		this.teamAdvisor = teamAdvisor;
 	}
 
+	public BackButton getBack() {
+		return back;
+	}
+
+	public void setBack(BackButton back) {
+		this.back = back;
+	}
+
 	private void create() {
 
 		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/table.png");
@@ -67,6 +77,11 @@ public class GameUI extends JLabel {
 		// invio
 		this.send = new SendButton(loader);
 		add(send);
+		
+		//back
+		this.back = new BackButton(loader);
+		back.setEnabled(false);
+		add(back);
 
 		// chat
 		this.gameAdvisor = new JLabel();

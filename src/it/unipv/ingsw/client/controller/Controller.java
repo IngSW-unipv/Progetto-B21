@@ -1,9 +1,11 @@
 package it.unipv.ingsw.client.controller;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JLabel;
@@ -12,6 +14,7 @@ import javax.swing.JOptionPane;
 import it.unipv.ingsw.client.controller.menu.Main;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.team.Team;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.client.view.ScoponeGUI;
@@ -27,6 +30,7 @@ public class Controller {
 	private HashMap<Card, CardButton> deck;
 	private HashMap<Card, CardButton> cardsOnBoard;
 	private int x;
+	private Team winner;
 	private Lobby lobby;
 
 //___________________COSTRUTTORE_______________________
@@ -36,7 +40,7 @@ public class Controller {
 		this.gui = gui;
 		this.cardsOnBoard = new HashMap<Card, CardButton>();
 
-		x = 30;
+		x = 80;
 
 		startMainMenu();
 	}
@@ -69,13 +73,21 @@ public class Controller {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-	
+
 	public Main getMenu() {
 		return menu;
 	}
 
 	public void setHuman(Player human) {
 		this.player = human;
+	}
+
+	public Team getWinner() {
+		return winner;
+	}
+
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
 	}
 
 	// _______________________METODI___________________________
@@ -87,17 +99,20 @@ public class Controller {
 		soundListener();
 	}
 
-	private void startSinglePlayer() {
+	private void startGame() {
+
 		menu.singleplayer();
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
 		gui.getMainMenu().setVisible(false);
 		gui.game();
+		gui.getGame().getBack().addActionListener(backListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
 		deckCreator(30, 309);
 	}
 
 	private void startMultiPlayer() {
+
 		menu.multiplayer();
 		gui.getMainMenu().setVisible(false);
 		gui.multiPlayer();
@@ -110,22 +125,23 @@ public class Controller {
 
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
-		menu.creaLobby();
-		
 		creaLobbyStartListener();
-		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); //schermata da cambiare
+		makeLobbyListener();
+		lobbyNameListener();
+		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	private void startEntraLobby() {
+
 		String string = "Lobby creata";
-		if (menu.entraLobby("codiceeeee") == false) {    //il codice è da prendere da una label nella gui
+		if (menu.entraLobby("codiceeeee") == false) { // il codice è da prendere da una label nella gui
 			string = "Lobby non creata";
 		}
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
-		
-		gui.getCreaLobby().getAdvisor().setText(string); //schermata da cambiare
+
+		gui.getCreaLobby().getAdvisor().setText(string); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
@@ -136,11 +152,25 @@ public class Controller {
 			@Override
 			public void textValueChanged(TextEvent e) {
 
-				menu.setTxt(gui.getMainMenu().getNickname().getText());
+				menu.setNickname(gui.getMainMenu().getNickname().getText());
 			}
 		};
 
 		gui.getMainMenu().getNickname().addTextListener(nickname);
+	}
+
+	private void lobbyNameListener() {
+
+		TextListener lobby = new TextListener() {
+
+			@Override
+			public void textValueChanged(TextEvent e) {
+
+				menu.setNomeLobby(gui.getCreaLobby().getNomeLobby().getText());
+			}
+		};
+
+		gui.getCreaLobby().getNomeLobby().addTextListener(lobby);
 	}
 
 	private void singlePlayerListener() {
@@ -150,14 +180,13 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (menu.getTxt() == null || menu.getTxt().length()==0) {
-					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+				if (menu.getNickname() == null || menu.getNickname().length() == 0) {
+					// gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
-						    "Specificare il proprio username prima di continuare!",
-						    "Attenzione",
-						    JOptionPane.WARNING_MESSAGE);
+							"Specificare il proprio username prima di continuare!", "Attenzione",
+							JOptionPane.WARNING_MESSAGE);
 				} else
-					startSinglePlayer();
+					startGame();
 			}
 		};
 
@@ -171,12 +200,11 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (menu.getTxt() == null || menu.getTxt().length()==0) {
-					//gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
+				if (menu.getNickname() == null || menu.getNickname().length() == 0) {
+					// gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
-						    "Specificare il proprio username prima di continuare!",
-						    "Attenzione",
-						    JOptionPane.WARNING_MESSAGE);
+							"Specificare il proprio username prima di continuare!", "Attenzione",
+							JOptionPane.WARNING_MESSAGE);
 				} else
 					startMultiPlayer();
 			}
@@ -206,11 +234,41 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				lobby.startGame();
+				if (menu.getNomeLobby() == null || menu.getNomeLobby().length() == 0) {
+					JOptionPane.showMessageDialog(gui.getMainMenu(),
+							"Specificare il nome della lobby prima di continuare!", "Attenzione",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					lobby.startGame();
+				}
 			}
 		};
 
 		gui.getCreaLobby().getStart().addActionListener(start);
+	}
+
+	private void makeLobbyListener() {
+
+		ActionListener makeLobby = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (menu.getNomeLobby() == null || menu.getNomeLobby().length() == 0) {
+					JOptionPane.showMessageDialog(gui.getMainMenu(),
+							"Specificare il nome della lobby prima di continuare!", "Attenzione",
+							JOptionPane.WARNING_MESSAGE);
+				} else
+					try {
+						setLobby(menu.creaLobby());
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			}
+		};
+
+		gui.getCreaLobby().getCrea().addActionListener(makeLobby);
 	}
 
 	private void entraLobbyListener() {
@@ -337,8 +395,13 @@ public class Controller {
 		int a = game.getTeams().get(0).getTotalPoints();
 		int b = game.getTeams().get(1).getTotalPoints();
 
-		if (a > b && a >= 21 || b > a && b >= 21) {
+		if (a > b && a >= 21) {
+			winner = game.getTeams().get(0);
 
+			return true;
+		} else if (b > a && b >= 21) {
+
+			winner = game.getTeams().get(1);
 			return true;
 		} else {
 
@@ -347,14 +410,15 @@ public class Controller {
 	}
 
 	public void restartGame() {
-		
+
 		cardsOnBoard.clear();
+		setX(80);
 		game.start();
 		gui.game().repaint();
 		sendListener();
 		deckCreator(30, 309);
 	}
-	
+
 	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
 
 		for (Card s : temp) {
@@ -402,8 +466,8 @@ public class Controller {
 				gui.getGame().repaint();
 
 				setX(x += 70);
-				if (getX() > 720) {
-					setX(30);
+				if (getX() > 680) {
+					setX(80);
 				}
 			}
 		}

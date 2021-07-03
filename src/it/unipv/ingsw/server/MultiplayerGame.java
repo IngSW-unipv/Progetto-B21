@@ -1,5 +1,6 @@
 package it.unipv.ingsw.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +12,9 @@ import it.unipv.ingsw.server.handlers.BotHandler;
 import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.handlers.Handler;
 
-public class MultiplayerGame extends Thread{
+public class MultiplayerGame extends Thread implements Serializable{
+
+	private static final long serialVersionUID = 134145645597310184L;
 	private ArrayList<Card> board;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;

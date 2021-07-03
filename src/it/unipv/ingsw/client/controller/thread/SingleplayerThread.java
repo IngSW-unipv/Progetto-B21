@@ -18,14 +18,14 @@ import it.unipv.ingsw.client.model.game.player.types.TypePlayer;
  * 
  */
 
-public class PlayerThread extends Thread {
+public class SingleplayerThread extends Thread {
 	private Player p;
 	private Game g;
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
 
-	public PlayerThread(Game g, Player p, Controller controller) {
+	public SingleplayerThread(Game g, Player p, Controller controller) {
 		this.p = p;
 		this.g = g;
 		this.controller = controller;
@@ -92,7 +92,7 @@ public class PlayerThread extends Thread {
 	/**
 	 * Se l'indice del giocatore è == al turno, allora tocca a lui
 	 */
-	public synchronized  boolean checkTurn() {
+	public synchronized boolean checkTurn() {
 		while (g.getTurn() != p.getPlayerIndex())
 			try {
 				notifyAll();
@@ -192,8 +192,8 @@ public class PlayerThread extends Thread {
 			p.getCardsListTemp().clear();
 
 			if (controller.verifyGame()) {
-
-				controller.gameAdvisor("PARTITA FINITA!");
+				controller.getGui().getGame().getBack().setEnabled(true);
+				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname());
 			} else {
 				controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
 				try {

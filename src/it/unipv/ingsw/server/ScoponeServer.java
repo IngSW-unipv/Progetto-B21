@@ -25,9 +25,7 @@ public class ScoponeServer implements RemoteServerInterface {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	
+	}	
 	
 	public Registry getRegistry() {
 		return registry;
@@ -41,6 +39,7 @@ public class ScoponeServer implements RemoteServerInterface {
 	
 	public void addLobby(Lobby lobby) {
 		lobbies.put(lobby.getCode(), lobby);
+		System.out.println("lobby added. lobby name: " + lobby.getCode());
 	}
 	
 	public boolean checkLobbyCode(String code) {

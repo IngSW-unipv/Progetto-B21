@@ -12,6 +12,7 @@ import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 
 import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.server.Lobby;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
@@ -42,7 +43,7 @@ public class Client implements RemoteClientInterface{
 			RemoteClientInterface clientStub = (RemoteClientInterface) UnicastRemoteObject.exportObject(this, 0);
 			Registry registry = LocateRegistry.getRegistry(hostname, 6499);
 			RemoteServerInterface serverStub = (RemoteServerInterface) registry.lookup("ScoponeServer");
-			handler = serverStub.registerClient(clientStub);
+			this.handler = serverStub.registerClient(clientStub);
 			return true;
 		} catch (RemoteException | NotBoundException e) {
 			e.printStackTrace();
@@ -53,31 +54,53 @@ public class Client implements RemoteClientInterface{
 	/*
 	 * Creazione della lobby
 	 */
-	public String makeLobby() {
-		return handler.makeLobby();
+	public Lobby makeLobby(String txt) throws RemoteException {
+			return handler.makeLobby(txt);
 	}
 	
 	/*
 	 * Partecipazione ad una lobby già esistente
 	 */
 	public boolean joinLobby(String lobbyCode) {
-		return handler.joinLobby(lobbyCode);
+		try {
+			return handler.joinLobby(lobbyCode);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/*
 	 * Si fa iniziare la partita
 	 */
-	public void startGame() {
-		handler.startGame();
+	public void startGame()  {
+		try {
+			handler.startGame();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/*
 	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le carte takenCards
 	 */
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
-		handler.playCard(playedCard);
+		try {
+			handler.playCard(playedCard);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		takenCards.add(playedCard);
-		handler.removeFromBoard(takenCards);
+		try {
+			handler.removeFromBoard(takenCards);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -124,20 +147,23 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void openGameView() {
-		//la partita è iniziata, quindi si passa dalla visione della lobby a quella della partita
-		
+
+		@SuppressWarnings("unused")
+		int i = 0;
 	}
 
 	@Override
 	public void openLobbyView() {
-		//la partita è finita, quindi si passa dalla visione della partita a quella della lobby
-		
+
+		@SuppressWarnings("unused")
+		int i = 0;
 	}
 
 	@Override
 	public void disconnect() {
-		//disconessione dalla partita, si torna al menù
-		
+
+		@SuppressWarnings("unused")
+		int i = 0;
 	}
 
 /////////////// testing

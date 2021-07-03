@@ -9,17 +9,17 @@ import it.unipv.ingsw.client.model.game.cards.Card;
 public interface RemoteClientInterface extends Remote{
 	public String getPlayerName() throws RemoteException;
 
-	public void printMessage(String msg);
+	public void printMessage(String msg) throws RemoteException;
 
-	public void play();
+	public void play() throws RemoteException;
 
-	public void setHand(ArrayList<Card> hand);
+	public void setHand(ArrayList<Card> hand) throws RemoteException;
 
-	public void setCardsOnBoard(ArrayList<Card> board);
+	public void setCardsOnBoard(ArrayList<Card> board) throws RemoteException;
 
-	public void openGameView();
+	public void openGameView() throws RemoteException;
 
-	public void openLobbyView();
+	public void openLobbyView() throws RemoteException;
 
-	public void disconnect();
+	public void disconnect() throws RemoteException;
 }

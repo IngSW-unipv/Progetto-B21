@@ -10,7 +10,7 @@ import it.unipv.ingsw.server.MultiplayerGame;
 import it.unipv.ingsw.server.ScoponeServer;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 
-public class ClientHandler implements RemoteHandlerInterface, Handler{
+public class ClientHandler implements RemoteHandlerInterface, Handler {
 	private RemoteClientInterface client;
 	private ScoponeServer server;
 	private String lobbyCode;
@@ -58,39 +58,73 @@ public class ClientHandler implements RemoteHandlerInterface, Handler{
 	}
 	
 	public void sendMessage(String msg) {
-		client.printMessage(msg);
+		try {
+			client.printMessage(msg);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void requestMove() {
-		client.play();
+		try {
+			client.play();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void setHand(ArrayList<Card> hand) {
-		client.setHand(hand);
+		try {
+			client.setHand(hand);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void setCardsOnBoard(ArrayList<Card> board) {
-		client.setCardsOnBoard(board);
+		try {
+			client.setCardsOnBoard(board);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void notifyGameStart() {
-		client.openGameView();
+		try {
+			client.openGameView();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void notifyGameEnd() {
-		client.openLobbyView();
+		try {
+			client.openLobbyView();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void disconnectFromLobby() {
-		client.disconnect();
+		try {
+			client.disconnect();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public String makeLobby() {
-		Lobby lobby = new Lobby(this);
-		lobbyCode = lobby.getCode();
-		server.lobbies.put(lobbyCode,lobby);
-		return lobbyCode;
+	public Lobby makeLobby(String txt) {
+		Lobby lobby = new Lobby(this, txt);
+		server.addLobby(lobby);
+		return lobby;
 	}
 
 
@@ -122,9 +156,4 @@ public class ClientHandler implements RemoteHandlerInterface, Handler{
 		game.remove(takenCards);
 		
 	}
-
-
-
-
-
 }

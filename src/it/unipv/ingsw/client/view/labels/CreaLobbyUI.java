@@ -69,6 +69,14 @@ public class CreaLobbyUI extends JLabel {
 		return crea;
 	}
 
+	public TextArea getNomeLobby() {
+		return nomeLobby;
+	}
+
+	public void setNomeLobby(TextArea nomeLobby) {
+		this.nomeLobby = nomeLobby;
+	}
+
 	// ______________________METODI______________________
 	private void create() {
 

@@ -1,19 +1,24 @@
 package it.unipv.ingsw.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.server.handlers.ClientHandler;
 
-public class Lobby extends Thread{
+public class Lobby extends Thread implements Serializable{
+
+	private static final long serialVersionUID = 2723652664412273354L;
 	private ArrayList<ClientHandler> players;
 	private MultiplayerGame game;
 	private String code;
 	
-	public Lobby(ClientHandler p1) {
+	public Lobby(ClientHandler p1, String txt) {
 		game = null;
 		players = new ArrayList<ClientHandler>();
 		players.add(p1);
-		code = p1.getNickname() + (int) (Math.random()*999);
+		code = txt;
+		
+		System.out.println("lobby created");
 	}
 
 	public ArrayList<ClientHandler> getPlayers() {
@@ -43,7 +48,7 @@ public class Lobby extends Thread{
 	}
 	
 	public synchronized boolean startGame() {
-		if (game != null) {
+		if (game == null) {
 			game = new MultiplayerGame(players);
 			for (ClientHandler p : players) {
 				p.setGame(game);
@@ -52,6 +57,7 @@ public class Lobby extends Thread{
 				p.notifyGameStart();
 			}
 			game.start();
+			System.out.println("start game");
 			return true;
 		}
 		return false;
