@@ -15,7 +15,7 @@ import it.unipv.ingsw.client.model.game.player.team.Team;
 
 public class Calculator {
 
-	static void finalScore(Team a, Team b) {
+	public static void finalScore(Team a, Team b) {
 
 		int scoreA = 0;
 		int scoreB = 0;

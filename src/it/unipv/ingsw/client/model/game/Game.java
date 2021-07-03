@@ -28,7 +28,6 @@ public class Game {
 //__________________COSTRUTTORE____________________ 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
-
 		initialize();
 		makeTeam();
 		createDeck();

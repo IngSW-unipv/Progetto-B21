@@ -76,13 +76,9 @@ public class Client implements RemoteClientInterface{
 	 */
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
 		handler.playCard(playedCard);
+		takenCards.add(playedCard);
 		handler.removeFromBoard(takenCards);
 	}
-	
-	public void nextTurn() {
-		handler.nextTurn();
-	}
-	
 	
 	/*
 	 * E' passato all'handler il nome del giocatore
@@ -94,6 +90,7 @@ public class Client implements RemoteClientInterface{
 	
 	public void setCardsOnBoard(ArrayList<Card> cards) {
 		board = cards;
+		thread.updateBoard();
 	}
 	
 	public ArrayList<Card> getCardsOnBoard() {
@@ -104,6 +101,7 @@ public class Client implements RemoteClientInterface{
 	@Override
 	public void printMessage(String msg) {
 		thread.writeMessage(msg);
+		//refresh the view
 	}
 
 	@Override
@@ -121,6 +119,7 @@ public class Client implements RemoteClientInterface{
 	@Override
 	public void setHand(ArrayList<Card> hand) {
 		player.setDeck(hand);
+		thread.updateBoard();
 	}
 
 	@Override

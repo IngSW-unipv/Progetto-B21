@@ -5,20 +5,21 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import it.unipv.ingsw.client.model.game.player.types.*;
 import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
+import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
 public class ScoponeServer implements RemoteServerInterface {
-	Registry registry;
-	private ArrayList<Player> players;
-	private ArrayList<Lobby> lobbies;
+	private Registry registry;
+	private ArrayList<ClientHandler> players;
+	public HashMap<String,Lobby> lobbies;
 	
 	public ScoponeServer() {
-		players = new ArrayList<Player>();
-		lobbies = new ArrayList<Lobby>();
+		players = new ArrayList<ClientHandler>();
+		lobbies = new HashMap<String,Lobby>();
 		try {
 			registry = LocateRegistry.createRegistry(6499);
 		} catch (RemoteException e) {
@@ -32,25 +33,26 @@ public class ScoponeServer implements RemoteServerInterface {
 		return registry;
 	}
 	
-	public boolean removeLobby() {
-		return true;//sistemare
+	public boolean removeLobby(String code) {
+		boolean bool = lobbies.containsKey(code);
+		lobbies.remove(code);
+		return bool;
 	}
 	
-	public void addLobby() {
-		//sistemare
+	public void addLobby(Lobby lobby) {
+		lobbies.put(lobby.getCode(), lobby);
 	}
 	
-	public boolean checkLobbyCode() {
-		return false;//sistemare
+	public boolean checkLobbyCode(String code) {
+		return lobbies.containsKey(code);
 	}
 
 	@Override
 	public RemoteHandlerInterface registerClient(RemoteClientInterface client) throws RemoteException {
-		Player newPlayer = new HumanPlayer(client.getPlayerName());
+		ClientHandler newPlayer = new ClientHandler(client, this);
 		players.add(newPlayer);
 		System.out.println("Added player "+newPlayer.getNickname());
-		
-		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(new ClientHandler(client, this), 0);
+		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(newPlayer, 0);
 		return handler;
 	}
 	

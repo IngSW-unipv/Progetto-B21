@@ -100,7 +100,6 @@ public class MultiplayerThread extends Thread{
 			e.printStackTrace();
 		}
 		client.getPlayer().getCardsListTemp().clear();
-		client.nextTurn();
 	}
 
 	private void deckAction() {

@@ -18,8 +18,6 @@ public class Team {
 	private int totalPoints;
 
 	public Team() {
-		super();
-
 		players = new ArrayList<Player>();
 		cardsCollected = new ArrayList<Card>();
 		numScope = 0;
