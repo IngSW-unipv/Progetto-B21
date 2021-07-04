@@ -134,7 +134,7 @@ public class Controller {
 		creaLobbyStartListener();
 		makeLobbyListener();
 		creaLobbyNameListener();
-		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
+		gui.getCreaLobby().getAdvisor().setText("questa ï¿½ una LOBBY"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
@@ -279,7 +279,7 @@ public class Controller {
 				} else
 					try {
 						if (!menu.creaLobby()) {
-							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
+							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby giï¿½ esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (RemoteException e1) {
@@ -534,16 +534,21 @@ public class Controller {
 	}
 
 	private void selectError() {
-
-		gui.getGame().getGameAdvisor().setForeground(Color.RED);
-		gameAdvisor("ERRORE: selezionare prima la carta da prendere");
+		JOptionPane.showMessageDialog(gui.getMainMenu(),
+				"Selezionare prima la carta da prendere", "Attenzione", //in caso di tentativo di presa SINGOLA nell'ordine di selezione sbagliato
+				JOptionPane.WARNING_MESSAGE);
+		/*gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		gameAdvisor("ERRORE: selezionare prima la carta da prendere");*/
 	}
 
 	public void sendError() {
-
-		gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		JOptionPane.showMessageDialog(gui.getMainMenu(),
+				"Mossa non consentita.", "Attenzione", //in caso di mossa sbagliata o tentativo di presa MULTIPLA selezionando una carta che ""attacca""
+				JOptionPane.WARNING_MESSAGE);
+		/*gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(
-				"ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");
+				"ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");*/
+		
 	}
 
 	public synchronized void scopaAlert(Player player) {
