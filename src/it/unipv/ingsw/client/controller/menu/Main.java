@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
+import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.controller.thread.SingleplayerThread;
 import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
@@ -21,7 +22,7 @@ public class Main {
 	private Music sound;
 	private HumanPlayer player;
 	private Client client;
-	private SingleplayerThread playerThread;
+	private PlayerThread playerThread;
 	private SingleplayerThread[] threads;
 
 	public Main() {
@@ -29,7 +30,7 @@ public class Main {
 		music.playMusic("music.wav");
 	}
 
-	public SingleplayerThread getPlayerThread() {
+	public PlayerThread getPlayerThread() {
 		return playerThread;
 	}
 
@@ -111,10 +112,11 @@ public class Main {
 	}
 
 	public void multiplayer() {
+		sound = new Music();
 		player = new HumanPlayer(nickname);
 		client = new Client(player);
-		MultiplayerThread thread = new MultiplayerThread(client, controller);
-		client.setMultiplayerThread(thread);
+		this.playerThread = new MultiplayerThread(client, controller);
+		client.setMultiplayerThread((MultiplayerThread) playerThread);
 		client.connect("localhost");
 	}
 

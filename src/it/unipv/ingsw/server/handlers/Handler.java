@@ -24,4 +24,6 @@ public interface Handler {
 	
 	String getNickname();
 
+	void notifyGameStart();
+
 }

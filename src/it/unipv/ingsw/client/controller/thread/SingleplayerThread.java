@@ -18,7 +18,7 @@ import it.unipv.ingsw.client.model.game.player.types.TypePlayer;
  * 
  */
 
-public class SingleplayerThread extends Thread {
+public class SingleplayerThread extends Thread implements PlayerThread {
 	private Player p;
 	private Game g;
 	private Controller controller;
@@ -193,7 +193,7 @@ public class SingleplayerThread extends Thread {
 
 			if (controller.verifyGame()) {
 				controller.getGui().getGame().getBack().setEnabled(true);
-				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname());
+				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((g.getTeams().indexOf(controller.getWinner())==0)?"A":"B"));
 			} else {
 				controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
 				try {

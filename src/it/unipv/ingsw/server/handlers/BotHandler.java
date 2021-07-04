@@ -62,4 +62,7 @@ public class BotHandler implements Handler{
 		return nickname;
 	}
 
+	@Override
+	public void notifyGameStart() {}
+
 }

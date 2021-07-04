@@ -370,7 +370,9 @@ public class Controller {
 						player.setCardSelected();
 						s.setSelected();
 						deck.get(s).cardSelected(true);
-						menu.getSound().playMusic("card_flip.wav");
+						try {
+							menu.getSound().playMusic("card_flip.wav");
+						} catch (Exception ex) {} 
 						((HumanPlayer) player).setCardPlayed(s);
 					}
 
@@ -380,7 +382,9 @@ public class Controller {
 						player.setCardSelected();
 						s.setSelected();
 						((HumanPlayer) player).setCardPlayed(null);
-						menu.getSound().playMusic("card_flip.wav");
+						try {
+							menu.getSound().playMusic("card_flip.wav");
+						} catch (Exception ex) {}
 						deck.get(s).cardSelected(false);
 					}
 				}
@@ -448,7 +452,9 @@ public class Controller {
 
 								player.getCardsListTemp().add(s);
 								s.setSelected();
-								menu.getSound().playMusic("card_flip.wav");
+								try {
+									menu.getSound().playMusic("card_flip.wav");
+								} catch (Exception ex) {}
 								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 
@@ -456,7 +462,9 @@ public class Controller {
 
 								player.getCardsListTemp().remove(s);
 								s.setSelected();
-								menu.getSound().playMusic("card_flip.wav");
+								try {
+									menu.getSound().playMusic("card_flip.wav");
+								} catch (Exception ex) {}
 								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 						}
@@ -498,8 +506,9 @@ public class Controller {
 	}
 
 	public synchronized void scopaAlert(Player player) {
-
-		menu.getSound().playMusic("applause.wav");
+		try {
+			menu.getSound().playMusic("applause.wav");
+		} catch (Exception ex) {}
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(player.getNickname() + " FA SCOPA!");
 	}

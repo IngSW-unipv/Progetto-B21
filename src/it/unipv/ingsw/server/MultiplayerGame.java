@@ -113,6 +113,9 @@ public class MultiplayerGame extends Thread{
 				shuffle();
 				giveCards();
 				nextTurn();
+				for (Handler p : players) {
+					p.notifyGameStart();
+				}
 			} else {
 				System.out.println("@"+toString()+": " + "turn " + turn);
 				for (Handler p : players) {

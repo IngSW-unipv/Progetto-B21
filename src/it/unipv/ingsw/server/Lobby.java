@@ -53,9 +53,6 @@ public class Lobby extends Thread implements Serializable{
 			for (ClientHandler p : players) {
 				p.setGame(game);
 			}
-			for (ClientHandler p : players) {
-				p.notifyGameStart();
-			}
 			System.out.println("Starting game" + game.toString());
 			try {
 				sleep(1000);

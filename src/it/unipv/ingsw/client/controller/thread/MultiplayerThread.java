@@ -8,7 +8,7 @@ import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.client.model.multiplayer.client.Client;
 
-public class MultiplayerThread extends Thread{
+public class MultiplayerThread extends Thread implements PlayerThread {
 	private Client client;
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio

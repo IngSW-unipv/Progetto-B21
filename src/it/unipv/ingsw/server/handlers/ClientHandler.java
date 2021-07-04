@@ -70,7 +70,6 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.play();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,7 +78,6 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.setHand(hand);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
