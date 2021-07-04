@@ -484,7 +484,8 @@ public class Controller {
 					public void actionPerformed(ActionEvent e) {
 
 						if (player.isCardSelected()) {
-							selectError();
+							//selectError();
+							System.out.println("XXXXXXX");
 						}
 
 						else {
@@ -533,13 +534,13 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	private void selectError() {
+	/*private void selectError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
-				"Selezionare prima la carta da prendere", "Attenzione", //in caso di tentativo di presa SINGOLA nell'ordine di selezione sbagliato
+				"Selezionare prima la carta da prendere", "Attenzione", 
 				JOptionPane.WARNING_MESSAGE);
-		/*gui.getGame().getGameAdvisor().setForeground(Color.RED);
-		gameAdvisor("ERRORE: selezionare prima la carta da prendere");*/
-	}
+		//gui.getGame().getGameAdvisor().setForeground(Color.RED);
+		//gameAdvisor("ERRORE: selezionare prima la carta da prendere");
+	}*/
 
 	public void sendError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),

@@ -24,6 +24,8 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
+	public final static int WAITINGSECONDS=20;
+	public final static int WAITINGNEXTHANDSECONDS=10; //hand=smazzata
 
 	public SingleplayerThread(Game g, Player p, Controller controller) {
 		this.p = p;
@@ -113,32 +115,36 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			try {
 				sleep(300);
-				controller.personalAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
+				controller.personalAdvisor("E' il tuo turno: hai "+WAITINGSECONDS+" secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 				sleep(1000);
-				counter(20);
-			} catch (InterruptedException e) {
+				counter(WAITINGSECONDS);
+			} catch (InterruptedException e) { //se l'utente preme il pulsante INVIO
 
-				if (!g.playerActionMonitoring((HumanPlayer) p)) {
+				if (!g.playerActionMonitoring((HumanPlayer) p)) { //e se sbaglia
 
-					try {
+					/*try {
 						controller.sendError();
 						p.setCardSelected();
 						sleep(10000);
 					} catch (InterruptedException e1) {
 
 						g.playerActionMonitoring((HumanPlayer) p);
-					}
+											
+					}*/
+					p.setCardSelected();
+					controller.sendError();
+					p.getCardsListTemp().clear();
+					play();
 				}
-
+				//se invece va tutto bene
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
 				return true;
 			}
-
-			g.playerActionMonitoring(p);
-
+			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
+			if(g.playerActionMonitoring((Player)p))
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
@@ -193,12 +199,13 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			if (controller.verifyGame()) {
 				controller.getGui().getGame().getBack().setEnabled(true);
-				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((g.getTeams().indexOf(controller.getWinner())==0)?"A":"B"));
+				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
+				controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((controller.getWinner().getPlayers().get(0).getTeamIndex()==0)?"A":"B"));
 			} else {
-				controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
+				controller.gameAdvisor("La partita ricomincia tra "+WAITINGNEXTHANDSECONDS+" secondi.");
 				try {
 					sleep(2000);
-					counter(10);
+					counter(WAITINGNEXTHANDSECONDS);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -237,7 +244,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 	private void counter(int t) throws InterruptedException {
 
-		if (t == 20) {
+		if (t == WAITINGSECONDS) {
 
 			for (int i = t; i >= 0; i--) {
 
