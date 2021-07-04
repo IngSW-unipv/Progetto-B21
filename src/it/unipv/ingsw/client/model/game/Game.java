@@ -80,7 +80,7 @@ public class Game {
 		
 		if (players.size() < 4) {
 			for (int i = 4-players.size(); i > 0; i--) {
-				this.players.add(new BotPlayer());
+				this.players.add(new BotPlayer(((i%2==0)?"botA":"botB")));
 			}
 		}
 		
@@ -194,7 +194,7 @@ public class Game {
 	}
 
 	/**
-	 * Questo metodo dà le carte ai players. Si occupa di dividere il deck in 4
+	 * Questo metodo dï¿½ le carte ai players. Si occupa di dividere il deck in 4
 	 * subdeck e di assegnarli ai quattro giocatori.
 	 */
 	private void giveCards() {
@@ -355,8 +355,8 @@ public class Game {
 
 	/*
 	 * (Per thread) La partita finisce. Vengono calcolati i punti finali e mostrati
-	 * all'utente. turn viene messo a zero così i thread non possono attivarsi
-	 * finchè non inizia una nuova partita.
+	 * all'utente. turn viene messo a zero cosï¿½ i thread non possono attivarsi
+	 * finchï¿½ non inizia una nuova partita.
 	 * 
 	 */
 	public synchronized void endGame() {
