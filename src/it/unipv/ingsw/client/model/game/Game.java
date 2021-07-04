@@ -120,9 +120,9 @@ public class Game {
 		players.get(3).setTeamIndex(1);
 
 		a.getPlayers().add(players.get(0));
-		a.getPlayers().add(players.get(1));
+		a.getPlayers().add(players.get(2));
 
-		b.getPlayers().add(players.get(2));
+		b.getPlayers().add(players.get(1));
 		b.getPlayers().add(players.get(3));
 
 		teams.add(a);
