@@ -131,6 +131,7 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		if (server.checkLobbyCode(code)) {
 			server.lobbies.get(code).addPlayer(this);
 			lobbyCode = code;
+			System.out.println("new player in lobby " + this.getNickname());
 			return true;
 		}
 		return false;

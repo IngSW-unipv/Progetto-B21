@@ -96,7 +96,8 @@ public class Controller {
 		try {
 			gui.getCreaLobby().setVisible(false);
 			gui.entraLobby().setVisible(false);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		gui.game();
 		gui.getGame().getBack().addActionListener(backListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
@@ -110,7 +111,8 @@ public class Controller {
 		try {
 			gui.getCreaLobby().setVisible(false);
 			gui.entraLobby().setVisible(false);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		gui.multiPlayer();
 		creaLobbyListener();
 		entraLobbyListener();
@@ -123,22 +125,18 @@ public class Controller {
 		gui.creaLobby();
 		creaLobbyStartListener();
 		makeLobbyListener();
-		lobbyNameListener();
+		creaLobbyNameListener();
 		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	public void startEntraLobby() {
 
-		String string = "Lobby creata";
-		if (menu.entraLobby("codiceeeee") == false) { // il codice è da prendere da una label nella gui
-			string = "Lobby non creata";
-		}
 		gui.getMultiPlayer().setVisible(false);
-		gui.creaLobby();
-
-		gui.getCreaLobby().getAdvisor().setText(string); // schermata da cambiare
-		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
+		gui.entraLobby();
+		entraLobbyNameListener();
+		joinLobbyListener();
+		gui.getEntraLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	private void nicknameListener() {
@@ -155,7 +153,7 @@ public class Controller {
 		gui.getMainMenu().getNickname().addTextListener(nickname);
 	}
 
-	private void lobbyNameListener() {
+	private void creaLobbyNameListener() {
 
 		TextListener lobby = new TextListener() {
 
@@ -167,6 +165,20 @@ public class Controller {
 		};
 
 		gui.getCreaLobby().getNomeLobby().addTextListener(lobby);
+	}
+	
+	private void entraLobbyNameListener() {
+
+		TextListener lobby = new TextListener() {
+
+			@Override
+			public void textValueChanged(TextEvent e) {
+
+				menu.setNomeLobby(gui.getEntraLobby().getNomeLobby().getText());
+			}
+		};
+
+		gui.getEntraLobby().getNomeLobby().addTextListener(lobby);
 	}
 
 	private void singlePlayerListener() {
@@ -259,9 +271,8 @@ public class Controller {
 				} else
 					try {
 						if (!menu.creaLobby()) {
-							JOptionPane.showMessageDialog(gui.getMainMenu(),
-									"Nome della lobby già esistente", "Attenzione",
-									JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
+									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
@@ -270,6 +281,28 @@ public class Controller {
 		};
 
 		gui.getCreaLobby().getCrea().addActionListener(makeLobby);
+	}
+
+	private void joinLobbyListener() {
+
+		ActionListener joinLobby = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (menu.getNomeLobby() == null || menu.getNomeLobby().length() == 0) {
+					JOptionPane.showMessageDialog(gui.getMainMenu(),
+							"Specificare il nome della lobby prima di continuare!", "Attenzione",
+							JOptionPane.WARNING_MESSAGE);
+			}
+				else {
+					
+					menu.getClient().joinLobby(menu.getNomeLobby());
+				}
+		}
+		
+	};
+		gui.getEntraLobby().getCrea().addActionListener(joinLobby);
 	}
 
 	private void entraLobbyListener() {
