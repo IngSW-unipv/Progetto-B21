@@ -24,8 +24,8 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
-	public final static int WAITINGSECONDS=20;
-	public final static int WAITINGNEXTHANDSECONDS=10; //hand=smazzata
+	
+	private int seconds = 20;
 
 	public SingleplayerThread(Game g, Player p, Controller controller) {
 		this.p = p;
@@ -115,23 +115,14 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			try {
 				sleep(300);
-				controller.personalAdvisor("E' il tuo turno: hai "+WAITINGSECONDS+" secondi per fare una mossa");
+				controller.personalAdvisor("E' il tuo turno: hai "+seconds+" secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 				sleep(1000);
-				counter(WAITINGSECONDS);
+				counter(seconds);
 			} catch (InterruptedException e) { //se l'utente preme il pulsante INVIO
 
 				if (!g.playerActionMonitoring((HumanPlayer) p)) { //e se sbaglia
 
-					/*try {
-						controller.sendError();
-						p.setCardSelected();
-						sleep(10000);
-					} catch (InterruptedException e1) {
-
-						g.playerActionMonitoring((HumanPlayer) p);
-											
-					}*/
 					p.setCardSelected();
 					controller.sendError();
 					p.getCardsListTemp().clear();
@@ -141,6 +132,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
+				seconds = 20;
 				return true;
 			}
 			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
@@ -202,10 +194,10 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
 				controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((controller.getWinner().getPlayers().get(0).getTeamIndex()==0)?"A":"B"));
 			} else {
-				controller.gameAdvisor("La partita ricomincia tra "+WAITINGNEXTHANDSECONDS+" secondi.");
+				controller.gameAdvisor("La partita ricomincia tra "+10+" secondi.");
 				try {
 					sleep(2000);
-					counter(WAITINGNEXTHANDSECONDS);
+					counter(10);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -244,10 +236,11 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 	private void counter(int t) throws InterruptedException {
 
-		if (t == WAITINGSECONDS) {
+		if (t == seconds) {
 
 			for (int i = t; i >= 0; i--) {
 
+				seconds = i;
 				controller.personalAdvisor(String.valueOf(i));
 				wait(1000);
 			}
