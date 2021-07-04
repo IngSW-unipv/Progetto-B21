@@ -17,6 +17,9 @@ public class BotPlayer extends Player {
 	public BotPlayer() {
 		super("bot");
 	}
+	public BotPlayer(String name) {
+		super(name);
+	}
 	
 	/**
 	 * 
