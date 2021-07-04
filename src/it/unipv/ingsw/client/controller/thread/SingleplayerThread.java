@@ -13,8 +13,8 @@ import it.unipv.ingsw.client.model.game.player.types.TypePlayer;
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza
  * fare differenze tra bot e umani
  * 
- * @param g è il game a cui si riferisce
- * @param p è il player a cui si riferisce
+ * @param g ï¿½ il game a cui si riferisce
+ * @param p ï¿½ il player a cui si riferisce
  * 
  */
 
@@ -45,7 +45,7 @@ public class SingleplayerThread extends Thread {
 	}
 
 	/**
-	 * Ogni giocatore fa 3 cose: controlla se è il suo turno; gioca una carta;
+	 * Ogni giocatore fa 3 cose: controlla se ï¿½ il suo turno; gioca una carta;
 	 * finisce il turno.
 	 */
 	public void run() {
@@ -90,7 +90,7 @@ public class SingleplayerThread extends Thread {
 	}
 
 	/**
-	 * Se l'indice del giocatore è == al turno, allora tocca a lui
+	 * Se l'indice del giocatore ï¿½ == al turno, allora tocca a lui
 	 */
 	public synchronized boolean checkTurn() {
 		while (g.getTurn() != p.getPlayerIndex())
@@ -165,7 +165,7 @@ public class SingleplayerThread extends Thread {
 	/**
 	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
 	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
-	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
+	 * partita finisce, cioï¿½ se il giocatore di indice 4 non ha piï¿½ carte in mano.
 	 */
 	public synchronized void endTurn() {
 
@@ -193,7 +193,7 @@ public class SingleplayerThread extends Thread {
 
 			if (controller.verifyGame()) {
 				controller.getGui().getGame().getBack().setEnabled(true);
-				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname());
+				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((g.getTeams().indexOf(controller.getWinner())==0)?"A":"B"));
 			} else {
 				controller.gameAdvisor("La partita ricomincia tra 10 secondi.");
 				try {
