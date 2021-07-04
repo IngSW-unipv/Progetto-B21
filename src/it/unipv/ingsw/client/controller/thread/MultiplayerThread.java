@@ -31,7 +31,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	public Player getPlayer() {
 		return client.getPlayer();
 	}
-	
+
 	/**
 	 * Il giocatore gioca una carta
 	 */
@@ -53,15 +53,17 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 					playerActionMonitoring();
 				}
 			}
-			controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname() + " gioca " + ((HumanPlayer) client.getPlayer()).getCardPlayed());
+			controller.gameAdvisor(
+					"||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname()
+							+ " gioca " + ((HumanPlayer) client.getPlayer()).getCardPlayed());
 			return true;
-			}
+		}
 		playerActionMonitoring();
-		controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname() + " gioca " 
-								+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+		controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| "
+				+ client.getPlayer().getNickname() + " gioca "
+				+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
 		return true;
 	}
-
 
 	public void updateBoard() {
 		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
@@ -87,12 +89,11 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		}
 	}
 
-
-
 	/**
-	 * Il giocatore finisce il turno, quindi viene incrementato il contatore client.turn
-	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
-	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in mano.
+	 * Il giocatore finisce il turno, quindi viene incrementato il contatore
+	 * client.turn e si passa il controllo al giocatore successivo. Bisogna
+	 * controllare se la partita finisce, cioè se il giocatore di indice 4 non ha
+	 * più carte in mano.
 	 */
 	public void endTurn() {
 		try {
@@ -124,20 +125,18 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 				controller.personalAdvisor(String.valueOf(i));
 				wait(1000);
 			}
-		}
-		else {
+		} else {
 			for (int i = t; i >= 0; i--) {
 				controller.gameAdvisor(String.valueOf(i));
 				wait(1000);
 			}
 		}
 	}
-	
+
 	public void writeMessage(String str) {
 		controller.gameAdvisor(str);
 	}
-	
-	
+
 	public boolean playerActionMonitoring() {
 		int counter = 0;
 		switch (client.getPlayer().getCardsListTemp().size()) {
@@ -147,8 +146,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 				if (counter == client.getPlayer().getCardsListTemp().get(0).getValue()) {
 					((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 					return false;
-				}
-				else {
+				} else {
 					if (client.getPlayer().getCardsListTemp().get(0).getValue() == table.getValue()) {
 						((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 						return false;
@@ -159,23 +157,24 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			client.getPlayer().getDeck().removeAll(client.getPlayer().getCardsListTemp());
 			((HumanPlayer) client.getPlayer()).setHavePlayed(true);
 			return true;
-			
+
 		default: // caso nel cui il giocatore fa una presa
 			int temp = 0;
-			int valueCardPlayed = client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1).getValue();
+			int valueCardPlayed = client.getPlayer().getCardsListTemp()
+					.get(client.getPlayer().getCardsListTemp().size() - 1).getValue();
 			for (int i = 0; i < client.getPlayer().getCardsListTemp().size() - 1; i++) {
 				temp += client.getPlayer().getCardsListTemp().get(i).getValue();
 			}
 			if (temp == valueCardPlayed) {
 				client.getCardsOnBoard().removeAll(client.getPlayer().getCardsListTemp());
-				client.getPlayer().getDeck().remove(client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+				client.getPlayer().getDeck().remove(
+						client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
 				if (client.getCardsOnBoard().isEmpty()) {
 					client.getPlayer().setScopa();
 				}
 				((HumanPlayer) client.getPlayer()).setHavePlayed(true);
 				return true;
-			}
-			else {
+			} else {
 				((HumanPlayer) client.getPlayer()).setHavePlayed(false);
 				return false;
 			}
@@ -189,12 +188,5 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 
 	public void setLobbyViewVisible() {
 		controller.startEntraLobby();
-		
 	}
-	
-	
-	
-	
-	
-
 }

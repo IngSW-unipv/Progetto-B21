@@ -93,9 +93,14 @@ public class Controller {
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
 		gui.getMainMenu().setVisible(false);
+		
+		
 		try {
 			gui.getCreaLobby().setVisible(false);
-			gui.entraLobby().setVisible(false);
+		} catch (Exception e) {
+		}
+		try {
+		gui.getEntraLobby().setVisible(false);
 		} catch (Exception e) {
 		}
 		gui.game();
@@ -110,7 +115,10 @@ public class Controller {
 		gui.getMainMenu().setVisible(false);
 		try {
 			gui.getCreaLobby().setVisible(false);
-			gui.entraLobby().setVisible(false);
+		} catch (Exception e) {
+		}
+		try {
+		gui.getEntraLobby().setVisible(false);
 		} catch (Exception e) {
 		}
 		gui.multiPlayer();

@@ -49,7 +49,6 @@ public class Lobby extends Thread implements Serializable{
 	
 	public synchronized boolean startGame() {
 		if (game == null) {
-			System.out.println(players.size());
 			game = new MultiplayerGame(players);
 			for (ClientHandler p : players) {
 				p.setGame(game);
