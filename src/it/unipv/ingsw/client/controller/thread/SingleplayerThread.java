@@ -140,6 +140,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
+			seconds = 20;
 			return true;
 		}
 
@@ -156,7 +157,6 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
-			seconds = 20;
 			return true;
 		}
 	}
