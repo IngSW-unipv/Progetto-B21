@@ -19,7 +19,7 @@ public interface RemoteClientInterface extends Remote{
 
 	public void openGameView() throws RemoteException;
 
-	public void openLobbyView() throws RemoteException;
+	public void openLobbyView(String lobbyCode) throws RemoteException;
 
 	public void disconnect() throws RemoteException;
 }

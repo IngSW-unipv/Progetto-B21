@@ -25,6 +25,7 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(String name) {
 		super(name);
 		havePlayed = false;
+		cardPlayed = null;
 
 	}
 

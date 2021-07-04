@@ -10,7 +10,6 @@ import it.unipv.ingsw.client.model.game.Game;
 import it.unipv.ingsw.client.model.game.player.types.*;
 import it.unipv.ingsw.client.model.multiplayer.client.Client;
 import it.unipv.ingsw.client.sounds.Music;
-import it.unipv.ingsw.server.Lobby;
 
 public class Main {
 
@@ -123,7 +122,7 @@ public class Main {
 		return client.connect(hostname);
 	}
 
-	public Lobby creaLobby() throws RemoteException {
+	public boolean creaLobby() throws RemoteException {
 		return client.makeLobby(nomeLobby);
 	}
 

@@ -9,10 +9,7 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-
 import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.server.Lobby;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
@@ -25,6 +22,7 @@ public class Client implements RemoteClientInterface{
 	
 	public Client(Player player) {
 		this.player = player;
+		this.board = new ArrayList<Card>();
 	}
 	
 	public Player getPlayer() {
@@ -54,8 +52,13 @@ public class Client implements RemoteClientInterface{
 	/*
 	 * Creazione della lobby
 	 */
-	public Lobby makeLobby(String txt) throws RemoteException {
-			return handler.makeLobby(txt);
+	public boolean makeLobby(String txt) {
+		try {	
+			return handler.makeNewLobby(txt);
+		} catch (RemoteException e) {
+		e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/*
@@ -79,7 +82,6 @@ public class Client implements RemoteClientInterface{
 		try {
 			handler.startGame();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -131,6 +133,7 @@ public class Client implements RemoteClientInterface{
 	public void play() {
 		ArrayList<Card> taken = board;
 		ArrayList<Card> played = player.getDeck();
+		openGameView();
 		thread.play();
 		thread.updateBoard();
 		taken.removeAll(board);
@@ -147,16 +150,12 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void openGameView() {
-
-		@SuppressWarnings("unused")
-		int i = 0;
+		thread.setGameViewVisible();
 	}
 
 	@Override
-	public void openLobbyView() {
-
-		@SuppressWarnings("unused")
-		int i = 0;
+	public void openLobbyView(String lobbyCode) {
+		thread.setLobbyViewVisible();
 	}
 
 	@Override
@@ -166,12 +165,4 @@ public class Client implements RemoteClientInterface{
 		int i = 0;
 	}
 
-/////////////// testing
-public static void main(String args[]) {
-Player p = new HumanPlayer("Pippo");
-Client c = new Client(p);
-c.connect("localhost");
-System.out.println(c.handler.toString());
-
-}
 }

@@ -1,12 +1,15 @@
 package it.unipv.ingsw.client.model.game.cards;
 
+import java.io.Serializable;
+
 /**
  * Questa classe modellizza la carta.
  * 
  * @author Giuseppe Lentini
  */
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>,Serializable {
 
+	private static final long serialVersionUID = 1123123123L;
 	private int value;
 	private Suit suit;
 	private int primieraValue;

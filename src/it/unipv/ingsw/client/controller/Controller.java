@@ -19,7 +19,6 @@ import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
-import it.unipv.ingsw.server.Lobby;
 
 public class Controller {
 
@@ -31,7 +30,6 @@ public class Controller {
 	private HashMap<Card, CardButton> cardsOnBoard;
 	private int x;
 	private Team winner;
-	private Lobby lobby;
 
 //___________________COSTRUTTORE_______________________
 	public Controller(Main menu, ScoponeGUI gui) {
@@ -66,10 +64,6 @@ public class Controller {
 		return gui;
 	}
 
-	public Lobby getLobby() {
-		return lobby;
-	}
-
 	public void setGame(Game game) {
 		this.game = game;
 	}
@@ -86,10 +80,6 @@ public class Controller {
 		return winner;
 	}
 
-	public void setLobby(Lobby lobby) {
-		this.lobby = lobby;
-	}
-
 	// _______________________METODI___________________________
 	private void startMainMenu() {
 
@@ -99,29 +89,35 @@ public class Controller {
 		soundListener();
 	}
 
-	private void startGame() {
-
-		menu.singleplayer();
+	public void startGame() {
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
 		gui.getMainMenu().setVisible(false);
+		try {
+			gui.getCreaLobby().setVisible(false);
+			gui.entraLobby().setVisible(false);
+		} catch (Exception e) {}
 		gui.game();
 		gui.getGame().getBack().addActionListener(backListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
 		deckCreator(30, 309);
 	}
 
-	private void startMultiPlayer() {
+	public void startMultiPlayer() {
 
 		menu.multiplayer();
 		gui.getMainMenu().setVisible(false);
+		try {
+			gui.getCreaLobby().setVisible(false);
+			gui.entraLobby().setVisible(false);
+		} catch (Exception e) {}
 		gui.multiPlayer();
 		creaLobbyListener();
 		entraLobbyListener();
 		gui.getMultiPlayer().getBack().addActionListener(backListener(gui.getMultiPlayer(), gui.getMainMenu()));
 	}
 
-	private void startCreaLobby() {
+	public void startCreaLobby() {
 
 		gui.getMultiPlayer().setVisible(false);
 		gui.creaLobby();
@@ -132,7 +128,7 @@ public class Controller {
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
-	private void startEntraLobby() {
+	public void startEntraLobby() {
 
 		String string = "Lobby creata";
 		if (menu.entraLobby("codiceeeee") == false) { // il codice è da prendere da una label nella gui
@@ -185,8 +181,10 @@ public class Controller {
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 							"Specificare il proprio username prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
-				} else
+				} else {
+					menu.singleplayer();
 					startGame();
+				}
 			}
 		};
 
@@ -239,7 +237,7 @@ public class Controller {
 							"Specificare il nome della lobby prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					lobby.startGame();
+					menu.getClient().startGame();
 				}
 			}
 		};
@@ -260,9 +258,12 @@ public class Controller {
 							JOptionPane.WARNING_MESSAGE);
 				} else
 					try {
-						setLobby(menu.creaLobby());
+						if (!menu.creaLobby()) {
+							JOptionPane.showMessageDialog(gui.getMainMenu(),
+									"Nome della lobby già esistente", "Attenzione",
+									JOptionPane.WARNING_MESSAGE);
+						}
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 			}

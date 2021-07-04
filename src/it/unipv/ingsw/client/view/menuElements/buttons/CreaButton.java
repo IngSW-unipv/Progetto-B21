@@ -27,7 +27,7 @@ public class CreaButton extends JButton {
 
 	private void create() {
 
-		setBounds(390, 189, 50, 20);
+		setBounds(505, 189, 60, 20);
 		setOpaque(true);
 		setContentAreaFilled(true);
 		setBorderPainted(true);

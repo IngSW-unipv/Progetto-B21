@@ -1,6 +1,5 @@
 package it.unipv.ingsw.server;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,9 +11,8 @@ import it.unipv.ingsw.server.handlers.BotHandler;
 import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.handlers.Handler;
 
-public class MultiplayerGame extends Thread implements Serializable{
+public class MultiplayerGame extends Thread{
 
-	private static final long serialVersionUID = 134145645597310184L;
 	private ArrayList<Card> board;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;
@@ -26,8 +24,11 @@ public class MultiplayerGame extends Thread implements Serializable{
 	
 	public MultiplayerGame(ArrayList<ClientHandler> p) {
 		initialize(p);
+		System.out.println("@"+toString()+": " + "correctly initialized");
 		makeTeam();
+		System.out.println("@"+toString()+": " + "teams created");
 		createDeck();
+		System.out.println("@"+toString()+": " + "deck created");
 	}
 
 	private void initialize(ArrayList<ClientHandler> p) {
@@ -102,28 +103,38 @@ public class MultiplayerGame extends Thread implements Serializable{
 	}
 
 	public void run() {
+		if (turn == -2) {
+			teams.get(0).getCardsCollected().clear();
+			teams.get(1).getCardsCollected().clear();
+			nextTurn();
+		}
 		while (turn != -2) {
 			if (turn == -1) {
-				teams.get(0).getCardsCollected().clear();
-				teams.get(1).getCardsCollected().clear();
 				shuffle();
 				giveCards();
 				nextTurn();
 			} else {
+				System.out.println("@"+toString()+": " + "turn " + turn);
 				for (Handler p : players) {
 					if (p.getTurnIndex() == (turn % 4)) {
 						players.get(turn % 4).requestMove();
 					}	
 				}
 				for (int i = 30; i > 0; i--) {
-					if (move = true)
+					if (move == true)
 						break;
 					try {
 						sleep(1000);
 					} catch (InterruptedException e) {}
 				}
 				//vengono usati i metodi play e remove da client remoti
+				if (move == false) {
+					interruptGame();
+				}
 				move = false;
+				try {
+					sleep(3000);
+				} catch (InterruptedException e) {}
 				nextTurn();
 			}
 		}
@@ -152,7 +163,7 @@ public class MultiplayerGame extends Thread implements Serializable{
 	private synchronized void nextTurn() {
 		turn++;
 		if (turn == 40) {
-			turn = -2;
+			turn = -1;
 			endRound();
 		}
 	}
@@ -165,6 +176,7 @@ public class MultiplayerGame extends Thread implements Serializable{
 		for (Handler p : players) {
 			if (p.getTurnIndex() != (turn % 4)) {
 				p.sendMessage("||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+				System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 			}
 		}
 	}
@@ -187,7 +199,12 @@ public class MultiplayerGame extends Thread implements Serializable{
 		}
 	}
 	
+	public synchronized void setMove() {
+		move = true;
+	}
+	
 	public synchronized void endRound() {
+		System.out.println("@"+toString()+": " + "fine round");
 		for (Handler p : players) {
 			if (p.getTurnIndex() == (turn % 4)) {
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(board);
@@ -196,9 +213,15 @@ public class MultiplayerGame extends Thread implements Serializable{
 		board.clear();
 		notifyBoardChange();
 		for (Handler p : players) {
-			p.sendMessage("Partita terminata");
+			p.sendMessage("Round terminato");
 		}
 		Calculator.finalScore(teams.get(0), teams.get(1));
+		try {
+			sleep(10000);
+		} catch (InterruptedException e) {}
+		if ((teams.get(0).getTotalPoints() >= 21 || teams.get(1).getTotalPoints() >= 21) && teams.get(0).getTotalPoints() != teams.get(1).getTotalPoints()) {
+			endGame();
+		}
 		changeIndex();
 	}
 	
@@ -211,9 +234,24 @@ public class MultiplayerGame extends Thread implements Serializable{
 		}
 	}
 	
-	public synchronized void interruptGame() {
-		turn = -2;
+	public synchronized void endGame() {
+		System.out.println("@"+toString()+": " + "fine partita");
+		int win = 0;
+		if (teams.get(0).getTotalPoints() < teams.get(1).getTotalPoints())
+			win = 1;
+		for (Handler p : players) {
+			if (p.getTeamIndex() == win) {
+				p.sendMessage("Hai vinto con" + teams.get(win).getTotalPoints() + " vs " + teams.get(1-win).getTotalPoints() + " punti.");
+			} else {
+				p.sendMessage("Hai perso con" + teams.get(1-win).getTotalPoints() + " vs " + teams.get(win).getTotalPoints() + " punti.");
+			}
+		}
+		turn = -3;
 	}
-
+	
+	public synchronized void interruptGame() {
+		turn = -3;
+		System.out.println("@"+toString()+": game interrupted" );
+	}
 
 }

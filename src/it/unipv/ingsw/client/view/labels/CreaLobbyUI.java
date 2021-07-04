@@ -100,7 +100,7 @@ public class CreaLobbyUI extends JLabel {
 
 		// players
 		this.players = new JLabel();
-		players.setBounds(250, 240, 300, 100);
+		players.setBounds(230, 240, 340, 100);
 		players.setOpaque(true);
 		add(players);
 		
@@ -109,7 +109,7 @@ public class CreaLobbyUI extends JLabel {
 		add(crea);
 		
 		//nomeLobby
-		this.nomeLobby = new TextArea(250, 190, 120, 20);
+		this.nomeLobby = new TextArea(310, 190, 180, 20);
 		nomeLobby.setText("inserire nome lobby");
 		add(nomeLobby);
 	}

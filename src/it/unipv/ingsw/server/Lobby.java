@@ -56,18 +56,21 @@ public class Lobby extends Thread implements Serializable{
 			for (ClientHandler p : players) {
 				p.notifyGameStart();
 			}
+			System.out.println("Starting game" + game.toString());
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {}
 			game.start();
-			System.out.println("start game");
 			return true;
 		}
 		return false;
 	}
 	
 	public synchronized boolean endGame() {
-		game.interruptGame();
+		game.endGame();
 		game = null;
 		for (ClientHandler p : players) {
-			p.notifyGameEnd();
+			p.notifyGameEnd(code);
 		}
 		for (ClientHandler p : players) {
 			p.setGame(game);

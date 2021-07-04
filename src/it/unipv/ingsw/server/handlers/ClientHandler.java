@@ -97,16 +97,14 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.openGameView();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void notifyGameEnd() {
+	public void notifyGameEnd(String lobbyCode) {
 		try {
-			client.openLobbyView();
+			client.openLobbyView(lobbyCode);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -115,16 +113,18 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.disconnect();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public Lobby makeLobby(String txt) {
+	public boolean makeNewLobby(String txt) {
+		boolean create;
 		Lobby lobby = new Lobby(this, txt);
-		server.addLobby(lobby);
-		return lobby;
+		create = server.addLobby(lobby);
+		if (create == true)
+			this.lobbyCode = lobby.getCode();
+		return create;
 	}
 
 
@@ -154,6 +154,6 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 	@Override
 	public void removeFromBoard(ArrayList<Card> takenCards) {
 		game.remove(takenCards);
-		
+		game.setMove();
 	}
 }

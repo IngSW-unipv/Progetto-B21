@@ -37,9 +37,13 @@ public class ScoponeServer implements RemoteServerInterface {
 		return bool;
 	}
 	
-	public void addLobby(Lobby lobby) {
+	public boolean addLobby(Lobby lobby) {
+		if (checkLobbyCode(lobby.getCode())) {
+			return false;
+		}
 		lobbies.put(lobby.getCode(), lobby);
-		System.out.println("lobby added. lobby name: " + lobby.getCode());
+		System.out.println("Lobby added. lobby name: " + lobby.getCode());
+		return true;
 	}
 	
 	public boolean checkLobbyCode(String code) {

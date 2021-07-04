@@ -66,7 +66,8 @@ public class MultiplayerThread extends Thread{
 	public void updateBoard() {
 		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
-		deckAction();
+		if (controller.getDeck().get(((HumanPlayer) client.getPlayer()).getCardPlayed()) != null)
+			deckAction();
 		if (client.getPlayer().getCardsListTemp().size() > 1) {
 			boardAction();
 			try {
@@ -180,6 +181,20 @@ public class MultiplayerThread extends Thread{
 			}
 		}
 	}
+
+	public void setGameViewVisible() {
+		controller.startGame();
+		updateBoard();
+	}
+
+	public void setLobbyViewVisible() {
+		controller.startEntraLobby();
+		
+	}
+	
+	
+	
+	
 	
 
 }
