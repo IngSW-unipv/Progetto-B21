@@ -114,10 +114,11 @@ public class Main {
 	public void multiplayer() {
 		sound = new Music();
 		player = new HumanPlayer(nickname);
-		client = new Client(player);
+		client = new Client(player, controller);
 		this.playerThread = new MultiplayerThread(client, controller);
 		client.setMultiplayerThread((MultiplayerThread) playerThread);
 		client.connect("localhost");
+		((MultiplayerThread) playerThread).start();
 	}
 
 	public boolean connectToServer(String hostname) {

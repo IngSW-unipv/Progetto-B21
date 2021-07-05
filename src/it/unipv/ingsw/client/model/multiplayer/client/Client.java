@@ -1,5 +1,6 @@
 package it.unipv.ingsw.client.model.multiplayer.client;
 
+import java.awt.Color;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -7,8 +8,10 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
 import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
@@ -16,13 +19,23 @@ import it.unipv.ingsw.server.utils.RemoteServerInterface;
 public class Client implements RemoteClientInterface{
 	private RemoteHandlerInterface handler;
 	private MultiplayerThread thread;
-	private Player player;
+	private HumanPlayer player;
 	private ArrayList<Card> board;
+	private Controller controller;
+	private boolean turn = false;
 	
-	
-	public Client(Player player) {
+	public Client(HumanPlayer player, Controller controller) {
 		this.player = player;
+		this.controller = controller;
 		this.board = new ArrayList<Card>();
+	}
+	
+	public synchronized void changeTurn() {
+		turn = !turn;
+	}
+	
+	public boolean getTurn() {
+		return turn;
 	}
 	
 	public Player getPlayer() {
@@ -93,14 +106,12 @@ public class Client implements RemoteClientInterface{
 		try {
 			handler.playCard(playedCard);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		takenCards.add(playedCard);
 		try {
 			handler.removeFromBoard(takenCards);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -114,6 +125,16 @@ public class Client implements RemoteClientInterface{
 	}
 	
 	public void setCardsOnBoard(ArrayList<Card> cards) {
+		controller.cardsOnBoardCreator(cards, controller.getX(), 48);
+		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
+		board.removeAll(cards);
+		for (Card s : board) {
+			if (controller.getCardsOnBoard().get(s) != null) {
+				try {
+					controller.getCardsOnBoard().get(s).setVisible(false);
+				} catch (Exception e) {}
+			}
+		}
 		board = cards;
 	}
 	
@@ -124,20 +145,13 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void printMessage(String msg) {
-		thread.writeMessage(msg);
-		//refresh the view
+		controller.gameAdvisor(msg);
 	}
 
 	@Override
-	public void play() {
-		ArrayList<Card> taken = board;
-		ArrayList<Card> played = player.getDeck();
-		thread.play();
-		thread.updateBoard();
-		taken.removeAll(board);
-		played.removeAll(played);
-		makePlay(played.get(0), taken);
-		thread.endTurn();
+	public synchronized void play() {
+		changeTurn();
+		thread.notifyAll();
 	}
 
 	@Override
@@ -147,12 +161,15 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void openGameView() {
-		thread.setGameViewVisible();
+		controller.startGame();
 	}
 
 	@Override
 	public void openLobbyView(String lobbyCode) {
-		thread.setLobbyViewVisible();
+		for (Card s : board) {
+			controller.getCardsOnBoard().get(s).setVisible(false);
+		}
+		controller.startEntraLobby();
 	}
 
 	@Override
@@ -161,5 +178,6 @@ public class Client implements RemoteClientInterface{
 		@SuppressWarnings("unused")
 		int i = 0;
 	}
+	
 
 }

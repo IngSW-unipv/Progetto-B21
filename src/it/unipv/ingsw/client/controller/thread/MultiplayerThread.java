@@ -1,6 +1,7 @@
 package it.unipv.ingsw.client.controller.thread;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.model.game.cards.Card;
@@ -13,6 +14,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
+	private int seconds = 20;
 
 	public MultiplayerThread(Client cl, Controller co) {
 		client = cl;
@@ -31,41 +33,66 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	public Player getPlayer() {
 		return client.getPlayer();
 	}
-
+	
+	
+	public void run() {
+		while (checkTurn()) {
+			ArrayList<Card> taken = new ArrayList<Card>();
+			ArrayList<Card> played = new ArrayList<Card>();
+			taken.addAll(client.getCardsOnBoard());
+			played.addAll(client.getPlayer().getDeck());
+			play();
+			updateBoard();
+			taken.removeAll(client.getCardsOnBoard());
+			played.removeAll(client.getPlayer().getDeck());
+			client.makePlay(played.get(0), taken);
+			endTurn();
+		}
+	}
+	
+	
+	public synchronized boolean checkTurn() {
+		while (client.getTurn() != true)
+			try {
+				notifyAll();
+			} catch (Exception e) {}
+		return true;
+	}
+	
 	/**
 	 * Il giocatore gioca una carta
 	 */
-	public boolean play() {
+	public synchronized boolean play() {
 		setClick(0);
 		try {
 			sleep(300);
-			controller.personalAdvisor("E' il tuo turno: hai 20 secondi per fare una mossa");
+			controller.personalAdvisor("E' il tuo turno: hai " + seconds + " secondi per fare una mossa");
 			controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 			sleep(1000);
-			counter(20);
+			counter(seconds);
 		} catch (InterruptedException e) {
 			if (!playerActionMonitoring()) {
-				try {
-					controller.sendError();
-					client.getPlayer().setCardSelected();
-					sleep(10000);
-				} catch (InterruptedException e1) {
-					playerActionMonitoring();
-				}
+				client.getPlayer().setCardSelected();
+				controller.sendError();
+				client.getPlayer().getCardsListTemp().clear();
+				play();
 			}
 			controller.gameAdvisor(
 					"||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname()
 							+ " gioca " + ((HumanPlayer) client.getPlayer()).getCardPlayed());
+			seconds = 20;
 			return true;
 		}
-		playerActionMonitoring();
+		automaticPlay();
 		controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| "
 				+ client.getPlayer().getNickname() + " gioca "
 				+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+		seconds = 20;
 		return true;
 	}
-
-	public void updateBoard() {
+	
+	
+	public synchronized void updateBoard() {
 		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		if (controller.getDeck().get(((HumanPlayer) client.getPlayer()).getCardPlayed()) != null)
@@ -95,13 +122,14 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	 * controllare se la partita finisce, cioè se il giocatore di indice 4 non ha
 	 * più carte in mano.
 	 */
-	public void endTurn() {
+	public synchronized void endTurn() {
 		try {
 			sleep(1000); // 3000
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		client.getPlayer().getCardsListTemp().clear();
+		client.changeTurn();
 	}
 
 	private void deckAction() {
@@ -119,9 +147,10 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		}
 	}
 
-	private void counter(int t) throws InterruptedException {
-		if (t == 20) {
+	private synchronized void counter(int t) throws InterruptedException {
+		if (t == seconds) {
 			for (int i = t; i >= 0; i--) {
+				seconds = i;
 				controller.personalAdvisor(String.valueOf(i));
 				wait(1000);
 			}
@@ -136,8 +165,34 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	public void writeMessage(String str) {
 		controller.gameAdvisor(str);
 	}
+	
+	public synchronized boolean automaticPlay() {
+		switch (client.getPlayer().playCard(client.getCardsOnBoard()).size()) {
+		case 1:
+			client.getCardsOnBoard().addAll(client.getPlayer().getCardsListTemp());
+			client.getPlayer().getDeck().removeAll(client.getPlayer().getCardsListTemp());
+			return true;
+		default:
+			int temp = 0;
+			for (int i = 0; i < client.getPlayer().getCardsListTemp().size() - 1; i++) {
+				temp += client.getPlayer().getCardsListTemp().get(i).getValue();
+			}
+			if (temp == client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1).getValue()) {
+				client.getCardsOnBoard().removeAll(client.getPlayer().getCardsListTemp());
+				client.getPlayer().getDeck().remove(client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+				if (client.getCardsOnBoard().isEmpty()) {
+					client.getPlayer().setScopa();
+				}
+				return true;
+			}
+			else {
+				automaticPlay();
+				return false;
+			}
+		}
+	}
 
-	public boolean playerActionMonitoring() {
+	public synchronized boolean playerActionMonitoring() {
 		int counter = 0;
 		switch (client.getPlayer().getCardsListTemp().size()) {
 		case 1: // caso nel cui il giocatore non fa una presa
@@ -181,12 +236,5 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		}
 	}
 
-	public void setGameViewVisible() {
-		controller.startGame();
-		updateBoard();
-	}
 
-	public void setLobbyViewVisible() {
-		controller.startEntraLobby();
-	}
 }

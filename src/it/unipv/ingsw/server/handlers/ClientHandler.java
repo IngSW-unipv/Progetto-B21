@@ -61,16 +61,14 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.printMessage(msg);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void requestMove() {
+	public synchronized void requestMove() {
 		try {
 			client.play();
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
 	}
 	
@@ -86,7 +84,6 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		try {
 			client.setCardsOnBoard(board);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

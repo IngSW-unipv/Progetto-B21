@@ -19,7 +19,6 @@ public class MultiplayerGame extends Thread{
 	private ArrayList<Team> teams;
 	private ArrayList<Handler> players;
 	private int turn;
-	@SuppressWarnings("unused")
 	private boolean move;
 	
 	public MultiplayerGame(ArrayList<ClientHandler> p) {
@@ -38,7 +37,7 @@ public class MultiplayerGame extends Thread{
 		}
 		if (players.size() < 4) {
 			for (int i = 4-players.size(); i > 0; i--) {
-				players.add(new BotHandler());
+				players.add(new BotHandler(this));
 			}
 		}
 		board = new ArrayList<Card>();
@@ -53,13 +52,13 @@ public class MultiplayerGame extends Thread{
 		Team team0 = new Team();
 		Team team1 = new Team();
 
-		players.get(0).setTurnIndex(1);
+		players.get(0).setTurnIndex(0);
 		players.get(0).setTeamIndex(0);
-		players.get(1).setTurnIndex(2);
+		players.get(1).setTurnIndex(1);
 		players.get(1).setTeamIndex(1);
-		players.get(2).setTurnIndex(3);
+		players.get(2).setTurnIndex(2);
 		players.get(2).setTeamIndex(0);
-		players.get(3).setTurnIndex(4);
+		players.get(3).setTurnIndex(3);
 		players.get(3).setTeamIndex(1);		
 		
 		teams.add(team0);
@@ -179,9 +178,12 @@ public class MultiplayerGame extends Thread{
 		for (Handler p : players) {
 			if (p.getTurnIndex() != (turn % 4)) {
 				p.sendMessage("||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
-				System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 			}
 		}
+		System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+		try {
+			wait(1000);
+		} catch (InterruptedException e) {}
 	}
 
 	private void notifyBoardChange() {
@@ -200,6 +202,9 @@ public class MultiplayerGame extends Thread{
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(takenCards);
 			}	
 		}
+		try {
+			wait(1000);
+		} catch (InterruptedException e) {}
 	}
 	
 	public synchronized void setMove() {
