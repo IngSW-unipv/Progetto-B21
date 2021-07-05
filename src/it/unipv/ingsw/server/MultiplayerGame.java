@@ -122,7 +122,7 @@ public class MultiplayerGame extends Thread{
 						players.get(turn % 4).requestMove();
 					}	
 				}
-				for (int i = 30; i > 0; i--) {
+				for (int i = 100; i > 0; i--) {
 					if (move == true)
 						break;
 					try {
@@ -173,6 +173,7 @@ public class MultiplayerGame extends Thread{
 	
 
 	public synchronized void play(Card playedCard) {
+		System.out.println("@"+toString()+": giocata la carta "+playedCard);
 		board.add(playedCard);
 		notifyBoardChange();
 		for (Handler p : players) {
@@ -181,20 +182,19 @@ public class MultiplayerGame extends Thread{
 			}
 		}
 		System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
-		try {
-			wait(1000);
-		} catch (InterruptedException e) {}
 	}
 
 	private void notifyBoardChange() {
 		for (Handler p : players) {
-			if (p.getTurnIndex() != (turn % 4)) {
+			if (p.getTurnIndex() != 50){//(turn % 4)) {
 				p.setCardsOnBoard(board);
 			}
 		}
 	}
 
 	public synchronized void remove(ArrayList<Card> takenCards) {
+		if (takenCards.size() == 0) 
+			return;
 		board.removeAll(takenCards);
 		notifyBoardChange();
 		for (Handler p : players) {
@@ -202,9 +202,11 @@ public class MultiplayerGame extends Thread{
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(takenCards);
 			}	
 		}
-		try {
-			wait(1000);
-		} catch (InterruptedException e) {}
+		System.out.print("@"+toString()+": rimosse le carte");
+		for (Card c : takenCards) {
+			System.out.print(" "+c.toString());
+		}
+		System.out.println();
 	}
 	
 	public synchronized void setMove() {

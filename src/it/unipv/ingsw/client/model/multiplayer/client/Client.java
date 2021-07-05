@@ -117,11 +117,14 @@ public class Client implements RemoteClientInterface{
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
 		try {
 			handler.playCard(playedCard);
-		} catch (RemoteException e) {}
-		takenCards.add(playedCard);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		try {
 			handler.removeFromBoard(takenCards);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -132,6 +135,7 @@ public class Client implements RemoteClientInterface{
 		return player.getNickname();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
 		controller.cardsOnBoardCreator(cards, controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
@@ -143,7 +147,7 @@ public class Client implements RemoteClientInterface{
 				} catch (Exception e) {}
 			}
 		}
-		board = cards;
+		board = (ArrayList<Card>) cards.clone();
 	}
 	
 	public ArrayList<Card> getCardsOnBoard() {

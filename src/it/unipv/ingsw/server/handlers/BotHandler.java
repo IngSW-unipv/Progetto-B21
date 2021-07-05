@@ -65,24 +65,21 @@ public class BotHandler implements Handler{
 	@Override
 	public void requestMove() {
 		ArrayList<Card> taken = new ArrayList<Card>();
-		ArrayList<Card> played = new ArrayList<Card>();
-		taken.addAll(board);
-		played.addAll(player.getDeck());
 		automaticPlay();
-		taken.removeAll(board);
-		played.removeAll(player.getDeck());
 		if (player.getCardsListTemp().size() != 1) { //se == true il giocatore non ha effettuato una presa
-			taken.addAll(played);
+			taken.addAll(player.getCardsListTemp());
 		}
-		game.play(played.get(0));
+		game.play(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
 		game.remove(taken);
 		game.setMove();
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setCardsOnBoard(ArrayList<Card> board) {
-		this.board = board;
+		this.board.clear();
+		this.board = (ArrayList<Card>) board.clone();
 		
 	}
 
