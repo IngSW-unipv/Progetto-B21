@@ -1,7 +1,6 @@
 package it.unipv.ingsw.client.controller.thread;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.model.game.cards.Card;
@@ -37,12 +36,12 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	
 	public void run() {
 		while (checkTurn()) {
-			ArrayList<Card> taken = new ArrayList<Card>();
+
 			play();
-			if (client.getPlayer().getCardsListTemp().size() != 1) { //se != 1 il giocatore ha effettuato una presa
-				taken.addAll(client.getPlayer().getCardsListTemp());
+			if (client.getPlayer().getCardsListTemp().size() == 1) { //se == true il giocatore non ha effettuato una presa
+				client.getPlayer().getCardsListTemp().clear();
 			}
-			client.makePlay(((HumanPlayer) client.getPlayer()).getCardPlayed(), taken);
+			client.makePlay(((HumanPlayer) client.getPlayer()).getCardPlayed(), client.getPlayer().getCardsListTemp());
 			updateBoard();
 			endTurn();
 		}

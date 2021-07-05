@@ -186,7 +186,7 @@ public class MultiplayerGame extends Thread{
 
 	private void notifyBoardChange() {
 		for (Handler p : players) {
-			if (p.getTurnIndex() != 50){//(turn % 4)) {
+			if (p.getTurnIndex() != (turn % 4)) {
 				p.setCardsOnBoard(board);
 			}
 		}
@@ -195,7 +195,16 @@ public class MultiplayerGame extends Thread{
 	public synchronized void remove(ArrayList<Card> takenCards) {
 		if (takenCards.size() == 0) 
 			return;
-		board.removeAll(takenCards);
+		@SuppressWarnings("unchecked")
+		ArrayList<Card> newBoard = (ArrayList<Card>) board.clone();
+		for (Card cb : board ) {
+			for (Card ct : takenCards) {
+				if (cb.getValue() == ct.getValue() && cb.getSuit().name() == ct.getSuit().name()) {
+					newBoard.remove(cb);
+				}
+			}
+		}
+		board = newBoard;
 		notifyBoardChange();
 		for (Handler p : players) {
 			if (p.getTurnIndex() == (turn % 4)) {

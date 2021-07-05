@@ -115,6 +115,7 @@ public class Client implements RemoteClientInterface{
 	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le carte takenCards
 	 */
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
+		board.removeAll(takenCards);
 		try {
 			handler.playCard(playedCard);
 		} catch (RemoteException e) {

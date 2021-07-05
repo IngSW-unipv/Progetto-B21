@@ -64,13 +64,14 @@ public class BotHandler implements Handler{
 
 	@Override
 	public void requestMove() {
-		ArrayList<Card> taken = new ArrayList<Card>();
+
 		automaticPlay();
-		if (player.getCardsListTemp().size() != 1) { //se == true il giocatore non ha effettuato una presa
-			taken.addAll(player.getCardsListTemp());
-		}
+
 		game.play(player.getCardsListTemp().get(player.getCardsListTemp().size() - 1));
-		game.remove(taken);
+		if (player.getCardsListTemp().size() == 1) { //se == true il giocatore non ha effettuato una presa
+			player.getCardsListTemp().clear();
+		}
+		game.remove(player.getCardsListTemp());
 		game.setMove();
 	}
 
