@@ -536,7 +536,7 @@ public class Controller {
 
 	private void selectError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
-				"Selezionare prima la carta da prendere", "Attenzione", 
+				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione", 
 				JOptionPane.WARNING_MESSAGE);
 
 	}
