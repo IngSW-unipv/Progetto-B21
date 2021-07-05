@@ -24,8 +24,9 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
-
-	private int seconds = 20;
+	public static final int TIMECONSTANT1=20; 
+	public static final int TIMECONSTANT2=10; 
+	private int seconds = TIMECONSTANT1;
 
 	public SingleplayerThread(Game g, Player p, Controller controller) {
 		this.p = p;
@@ -133,7 +134,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
-				seconds = 20;
+				seconds = TIMECONSTANT1;
 				return true;
 			}
 
@@ -145,10 +146,11 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				if(selected!=null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
 					p.setCardSelected();
 				((HumanPlayer)p).setHavePlayed(true);
+				setClick(1);
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 			}
-			seconds = 20;
+			seconds = TIMECONSTANT1;
 		}
 			
 			else {
@@ -220,10 +222,10 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
 				controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((controller.getWinner().getPlayers().get(0).getTeamIndex()==0)?"A":"B"));
 			} else {
-				controller.gameAdvisor("La partita ricomincia tra "+10+" secondi.");
+				controller.gameAdvisor("La partita ricomincia tra "+TIMECONSTANT2+" secondi.");
 				try {
 					sleep(2000);
-					counter(10);
+					counter(TIMECONSTANT2);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
