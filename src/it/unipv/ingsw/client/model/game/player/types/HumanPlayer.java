@@ -14,7 +14,6 @@ import it.unipv.ingsw.client.model.game.cards.Card;
 public class HumanPlayer extends Player {
 
 	//________________ATTRIBUTI________________
-	private static final long serialVersionUID = 1L;
 	private Card cardPlayed;
 	private boolean havePlayed;
 	

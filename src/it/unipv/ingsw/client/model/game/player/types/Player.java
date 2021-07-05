@@ -1,6 +1,5 @@
 package it.unipv.ingsw.client.model.game.player.types;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
@@ -11,10 +10,9 @@ import it.unipv.ingsw.client.model.game.player.Actions;
  * Classe astratta che definisce il giocatore generico che parteciperà alla partita * 
  * @author Giuseppe Lentini
  */
-public abstract class Player implements Actions, Serializable {
+public abstract class Player implements Actions{
 
 	//________________ATTRIBUTI________________
-	private static final long serialVersionUID = -3954006175628361968L;
 	private String nickname;
 	private ArrayList<Card> deck;
 	private int teamIndex;
