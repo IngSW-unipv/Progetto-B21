@@ -35,8 +35,9 @@ public class MultiplayerGame extends Thread{
 		for (ClientHandler ch : p) {
 			players.add(ch);
 		}
+		int k = players.size();
 		if (players.size() < 4) {
-			for (int i = 4-players.size(); i > 0; i--) {
+			for (int i = 4 - k; i > 0; i--) {
 				players.add(new BotHandler(this));
 			}
 		}
@@ -151,6 +152,7 @@ public class MultiplayerGame extends Thread{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void giveCards() {
 		ArrayList<Card> hand = new ArrayList<Card>();
 		for (int j = 0; j < 4; j++) {
@@ -158,7 +160,7 @@ public class MultiplayerGame extends Thread{
 			for (int i = 10*j; i < 10*(j+1); i++) {
 				hand.add(shuffledDeck.get(i));
 			}
-			players.get(j).setHand(hand);
+			players.get(j).setHand((ArrayList<Card>) hand.clone());
 		}
 	}
 	

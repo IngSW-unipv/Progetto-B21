@@ -12,13 +12,12 @@ import it.unipv.ingsw.client.model.game.cards.Card;
  */
 public class BotPlayer extends Player {
 	
-	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Crea un bot.
 	 */
 	public BotPlayer() {
-		super("bot");
+		super("Bot" + (int) (Math.random()*9999));
 	}
 	
 	/**
