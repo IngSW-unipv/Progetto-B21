@@ -23,7 +23,7 @@ public class Main {
 	private HumanPlayer player;
 	private Client client;
 	private PlayerThread playerThread;
-	private SingleplayerThread[] threads;
+	private Thread[] threads;
 
 	public Main() {
 		this.music = new Music();
@@ -75,7 +75,7 @@ public class Main {
 		this.sound = click;
 	}
 
-	public SingleplayerThread[] getThreads() {
+	public Thread[] getThreads() {
 		return threads;
 	}
 
@@ -101,20 +101,22 @@ public class Main {
 		p.add(player);
 		game = new Game(p);
 		game.start();
-		this.threads = new SingleplayerThread[4];
+		this.threads = new Thread[4];
 		for (int i = 0; i < 4; i++) {
 			threads[i] = new SingleplayerThread(game, game.getPlayers().get(i), controller);
 		}
-		this.playerThread = threads[0];
+		this.playerThread = (PlayerThread) threads[0];
 		for (int i = 0; i < 4; i++) {
 			threads[i].start();
 		}
 	}
 
 	public void multiplayer() {
+		this.threads = new Thread[4];
 		player = new HumanPlayer(nickname);
 		client = new Client(player, controller);
 		this.playerThread = new MultiplayerThread(client, controller);
+		threads[1] = (Thread) playerThread;
 		client.setMultiplayerThread((MultiplayerThread) playerThread);
 		client.connect("localhost");
 		((MultiplayerThread) playerThread).start();

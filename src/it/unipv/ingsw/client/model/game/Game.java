@@ -368,6 +368,8 @@ public class Game {
 		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 		turn = 0;
+		teams.get(0).getCardsCollected().clear();
+		teams.get(1).getCardsCollected().clear();
 		changeIndex();
 	}
 
