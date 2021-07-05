@@ -339,6 +339,7 @@ public class Controller {
 					menu.getMusic().getHit().stop();
 					menu.getMusic().setMusicOn(false);
 					gui.getSound().soundRefresh(1);
+					
 				}
 
 				else {
@@ -484,8 +485,7 @@ public class Controller {
 					public void actionPerformed(ActionEvent e) {
 
 						if (player.isCardSelected()) {
-							//selectError();
-							System.out.println("XXXXXXX");
+							selectError();
 						}
 
 						else {
@@ -534,22 +534,18 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	/*private void selectError() {
+	private void selectError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"Selezionare prima la carta da prendere", "Attenzione", 
 				JOptionPane.WARNING_MESSAGE);
-		//gui.getGame().getGameAdvisor().setForeground(Color.RED);
-		//gameAdvisor("ERRORE: selezionare prima la carta da prendere");
-	}*/
+
+	}
 
 	public void sendError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"Mossa non consentita.", "Attenzione", //in caso di mossa sbagliata o tentativo di presa MULTIPLA selezionando una carta che ""attacca""
 				JOptionPane.WARNING_MESSAGE);
-		/*gui.getGame().getGameAdvisor().setForeground(Color.RED);
-		gameAdvisor(
-				"ERRORE: mossa non consentita. Selezionare prima la carta da prendere. Hai 10 secondi per fare una mossa.");*/
-		
+	
 	}
 
 	public synchronized void scopaAlert(Player player) {
