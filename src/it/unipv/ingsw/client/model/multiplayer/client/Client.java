@@ -117,15 +117,11 @@ public class Client implements RemoteClientInterface{
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
 		try {
 			handler.playCard(playedCard);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 		takenCards.add(playedCard);
 		try {
 			handler.removeFromBoard(takenCards);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 	}
 	
 	/*

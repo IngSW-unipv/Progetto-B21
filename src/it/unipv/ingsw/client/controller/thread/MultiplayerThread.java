@@ -42,10 +42,13 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			taken.addAll(client.getCardsOnBoard());
 			played.addAll(client.getPlayer().getDeck());
 			play();
-			updateBoard();
 			taken.removeAll(client.getCardsOnBoard());
 			played.removeAll(client.getPlayer().getDeck());
+			if (client.getPlayer().getCardsListTemp().size() != 1) { //se == true il giocatore non ha effettuato una presa
+				taken.addAll(played);
+			}
 			client.makePlay(played.get(0), taken);
+			updateBoard();
 			endTurn();
 		}
 	}

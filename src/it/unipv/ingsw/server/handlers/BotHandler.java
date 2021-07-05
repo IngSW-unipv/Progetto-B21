@@ -71,7 +71,9 @@ public class BotHandler implements Handler{
 		automaticPlay();
 		taken.removeAll(board);
 		played.removeAll(player.getDeck());
-
+		if (player.getCardsListTemp().size() != 1) { //se == true il giocatore non ha effettuato una presa
+			taken.addAll(played);
+		}
 		game.play(played.get(0));
 		game.remove(taken);
 		game.setMove();
