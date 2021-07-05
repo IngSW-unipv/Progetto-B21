@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.MultiPlayerButton;
+import it.unipv.ingsw.client.view.menuElements.buttons.QuestionsButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.SinglePlayerButton;
 import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
@@ -21,17 +22,14 @@ public class MainMenuUI extends JLabel {
 	private SinglePlayerButton single;
 	private MultiPlayerButton multi;
 	private TextArea nickname;
-	private JButton domanda;
+	private QuestionsButton quest;
 
-//_______________________COSTRUTTORE_______________________
 	public MainMenuUI(ImagesLoader loader) {
 		super();
 		this.loader = loader;
 		create();
 		mainMenu();
 	}
-
-//_______________________GETTERS&SETTERS___________________
 
 	public SinglePlayerButton getSingle() {
 		return single;
@@ -57,10 +55,8 @@ public class MainMenuUI extends JLabel {
 		this.nickname = nickname;
 	}
 
-	// _______________________METODI____________________________
-
 	public JButton getDomanda() {
-		return domanda;
+		return quest;
 	}
 
 	private void create() {
@@ -74,29 +70,16 @@ public class MainMenuUI extends JLabel {
 
 	public void mainMenu() {
 
-		// singlePlayer
 		this.single = new SinglePlayerButton(loader);
 		add(single);
 
-		// multiPlayer
 		this.multi = new MultiPlayerButton(loader);
 		add(multi);
 
-		// nickname
 		this.nickname = new TextArea(345, 170, 110, 20);
-		// nickname.setText("inserire nickname");
 		add(nickname);
 
-		// domanda
-		this.domanda = new JButton();
-		domanda.setBounds(15, 15, 50, 50);
-		buffer = loader.uploadImage("/it/unipv/ingsw/client/images/domanda.png");
-		ImageIcon card = new ImageIcon(buffer);
-		domanda.setIcon(card);
-		domanda.setOpaque(true);
-		domanda.setContentAreaFilled(false);
-		domanda.setBorderPainted(false);
-		setVisible(true);
-		add(domanda);
+		this.quest = new QuestionsButton(loader);
+		add(quest);
 	}
 }

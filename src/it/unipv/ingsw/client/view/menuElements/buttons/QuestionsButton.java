@@ -7,17 +7,13 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
-public class BackButton extends JButton {
-
-	/**
-	 * 
-	 */
+public class QuestionsButton extends JButton{
 	private static final long serialVersionUID = 1L;
 
 	private ImagesLoader loader;
 	private BufferedImage buffer;
 
-	public BackButton(ImagesLoader loader) {
+	public QuestionsButton(ImagesLoader loader) {
 		super();
 
 		this.loader = loader;
@@ -27,11 +23,11 @@ public class BackButton extends JButton {
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/back.png");
-		ImageIcon back = new ImageIcon(buffer);
+		buffer = loader.uploadImage("/it/unipv/ingsw/client/images/domanda.png");
+		ImageIcon card = new ImageIcon(buffer);
+		setIcon(card);
 		setBounds(10, 15, 50, 50);
-		setIcon(back);
-		setOpaque(false);
+		setOpaque(true);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);
