@@ -87,6 +87,7 @@ public class Controller {
 		singlePlayerListener();
 		multiPlayerListener();
 		soundListener();
+		questionsListener();
 	}
 
 	public void startGame() {
@@ -466,6 +467,20 @@ public class Controller {
 		deckCreator(30, 309);
 	}
 
+	private void questionsListener() {
+		
+		ActionListener quest = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				JOptionPane.showMessageDialog(gui.getMainMenu(),
+						"Selezionare prima la carta da prendere", "Regole del gioco", 
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		};
+		gui.getMainMenu().getDomanda().addActionListener(quest);
+	}
 	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
 
 		for (Card s : temp) {
