@@ -138,12 +138,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			}
 			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
 			if(!((HumanPlayer)p).hasPlayed()) {
-				Card selected=null;
-				/*if(p.getCardsListTemp().size() != 0)
-					p.setCardSelected();*/
-				if(p.getCardsListTemp().size() != 0) {
-					selected=(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)).copy();
-				}
+				Card selected=controller.getSelectedCard();
 				g.playerActionMonitoring((Player)p);
 				if(selected!=null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
 					p.setCardSelected();
