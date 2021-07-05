@@ -3,35 +3,44 @@ package it.unipv.ingsw.client.model.game.player.types;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.cards.Suit;
 
 /**
- * Questa classe permette l'uso di un'intelligenza artificiale semplice, con il Bot
- * che gioca una carta a caso tra quelle a disposizione.
+ * Questa classe permette l'uso di un'intelligenza artificiale semplice, con il
+ * Bot che gioca una carta a caso tra quelle a disposizione.
  * 
  * @author Giuseppe Lentini
  */
 public class BotPlayer extends Player {
-	
-	
+
+	private Card cardPlayed;
+
 	/**
 	 * Crea un bot.
 	 */
 	public BotPlayer() {
-		super("Bot" + (int) (Math.random()*9999));
+		super("Bot" + (int) (Math.random() * 9999));
 	}
-	
+
 	/**
 	 * Crea un bot con nome.
+	 * 
 	 * @param name : il nome del bot.
 	 */
 	public BotPlayer(String name) {
 		super(name);
 	}
+
+	public Card getCardPlayed() {
+		return cardPlayed;
+	}
 	
-	//__________________METODI__________________
-	
+	// __________________METODI__________________
+
+
 	/**
 	 * Metodo che permette al bot di giocare una carta ed effettuare una presa.
+	 * 
 	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
 	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
@@ -46,14 +55,33 @@ public class BotPlayer extends Player {
 
 		case 0:
 
+			if (getDeck().size() > 1) {
+
+				for (Card s : getDeck()) {
+
+					if (s.getValue() > 3 && s.getValue() != 7 && s.getSuit() != Suit.DENARI) {
+
+						getCardsListTemp().add(s);
+
+						return getCardsListTemp();
+					}
+				}
+
+				for (Card t : getDeck()) {
+					if (t.getValue() != 7 && t.getSuit() != Suit.DENARI) {
+
+						getCardsListTemp().add(t);
+						return getCardsListTemp();
+					}
+				}
+			}
+
 			getCardsListTemp().add(getDeck().get(0));
-
-			return getCardsListTemp();
+			return getCardsListTemp(); // siamo arrivati all'ultima carta del deck
 		}
-
 		return null;
 	}
-	
+
 	/**
 	 * Metodo privato che permette al bot di effettuare una presa.
 	 * 
@@ -65,17 +93,46 @@ public class BotPlayer extends Player {
 
 		if (cardsOnBoard.isEmpty()) {
 
+			for (Card s : getDeck()) {
+
+				if (getDeck().size() > 1) {
+
+					if (s.getValue() != 7 && s.getSuit() != Suit.DENARI) {
+
+						if (s.getSuit() != Suit.DENARI) {
+
+							getCardsListTemp().add(s);
+							cardPlayed = s;
+
+							return 1;
+						}
+					}
+
+					else if (s.getValue() != 7 && s.getSuit() != Suit.DENARI) {
+
+						getCardsListTemp().add(s);
+						cardPlayed = s;
+
+						return 1;
+					}
+				} else {
+					getCardsListTemp().add(s);
+					cardPlayed = s;
+
+					return 1;
+				}
+			}
+
 			getCardsListTemp().add(getDeck().get(0));
-
 			return 1;
-		}
 
-		else {
+		} else {
 
+			ArrayList<Card> cardList = new ArrayList<Card>();
 			for (Card deck : getDeck()) {
 
 				int counter = 0;
-				ArrayList<Card> cardList = new ArrayList<Card>();
+				cardList.clear();
 
 				for (Card table : cardsOnBoard) {
 
@@ -89,16 +146,19 @@ public class BotPlayer extends Player {
 
 						return 1;
 					}
+				}
+			}
 
-					else {
+			for (Card deck2 : getDeck()) {
 
-						if (deck.getValue() == table.getValue()) {
+				for (Card table2 : cardsOnBoard) {
 
-							getCardsListTemp().add(table);
-							getCardsListTemp().add(deck);
+					if (deck2.getValue() == table2.getValue()) {
 
-							return 1;
-						}
+						getCardsListTemp().add(table2);
+						getCardsListTemp().add(deck2);
+
+						return 1;
 					}
 				}
 			}

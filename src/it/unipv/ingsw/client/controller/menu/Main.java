@@ -2,7 +2,6 @@ package it.unipv.ingsw.client.controller.menu;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
@@ -24,11 +23,14 @@ public class Main {
 	private Client client;
 	private PlayerThread playerThread;
 	private SingleplayerThread[] threads;
+	private boolean statusServer;
+
 
 	public Main() {
 		this.music = new Music();
 		this.sound = new Music();
 		music.playMusic("music.wav");
+		statusServer = false;
 	}
 
 	public PlayerThread getPlayerThread() {
@@ -95,6 +97,10 @@ public class Main {
 		this.nomeLobby = nomeLobby;
 	}
 
+	public boolean isStatusServer() {
+		return statusServer;
+	}
+
 	public void singleplayer() {
 		player = new HumanPlayer(nickname);
 		ArrayList<Player> p = new ArrayList<Player>();
@@ -111,16 +117,24 @@ public class Main {
 		}
 	}
 
-	public void multiplayer() {
+	public void clientConnect() {
 		player = new HumanPlayer(nickname);
 		client = new Client(player, controller);
 		this.playerThread = new MultiplayerThread(client, controller);
 		client.setMultiplayerThread((MultiplayerThread) playerThread);
-		client.connect("localhost");
+		statusServer = false;
+		try {
+			client.connect("localhost");
+			 statusServer = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			controller.serverError();
+		}
+		if(statusServer)
 		((MultiplayerThread) playerThread).start();
 	}
 
-	public boolean connectToServer(String hostname) {
+	public boolean connectToServer(String hostname) throws RemoteException {
 		return client.connect(hostname);
 	}
 
