@@ -143,6 +143,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				if (p.getCardsListTemp().size() != 0)
 					p.setCardSelected();
 				g.playerActionMonitoring((Player) p);
+				((HumanPlayer) p).setHavePlayed(true);
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
