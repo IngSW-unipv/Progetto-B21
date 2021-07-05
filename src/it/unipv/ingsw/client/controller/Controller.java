@@ -561,8 +561,8 @@ public class Controller {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						if (player.isCardSelected()) {
-							selectError();
+						if (player.isCardSelected() && !((HumanPlayer)player).hasPlayed()) {
+							selectErrorBoard();
 						}
 
 						else {
@@ -613,7 +613,7 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	private void selectError() {
+	private void selectErrorBoard() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione",
 				JOptionPane.WARNING_MESSAGE);
