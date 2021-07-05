@@ -120,7 +120,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la modalità multiplayer.
+	 * Avvia la modalitï¿½ multiplayer.
 	 */
 	public void startMultiPlayer() {
 
@@ -141,7 +141,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
 	 */
 	public void startCreaLobby() {
 
@@ -155,7 +155,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
 	 */
 	public void startEntraLobby() {
 
@@ -483,6 +483,13 @@ public class Controller {
 			x += 70;
 		}
 	}
+	
+	public Card getSelectedCard() {
+		for (Card s : player.getDeck())
+			if(s.isSelected())
+				return (s.copy());
+		return null;
+	}
 
 	public boolean verifyGame() {
 
@@ -522,8 +529,8 @@ public class Controller {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
 						"In questo gioco, valgono le regole dello scopone Scientifico tradizionali.\n\n"
-								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di \n "
-								+ "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
+								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere piï¿½ di \n "
+								+ "5 carte di denari vale 1 punto, prendere piï¿½ di 20 carte vale 1 punto, \n"
 								+ "la Primiera vale 1 punto.\n\n"
 								+ "Il meccanismo per effettuare una presa consiste nel: \n"
 								+ "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"
@@ -554,8 +561,8 @@ public class Controller {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						if (player.isCardSelected()) {
-							selectError();
+						if (player.isCardSelected() && !((HumanPlayer)player).hasPlayed()) {
+							selectErrorBoard();
 						}
 
 						else {
@@ -606,7 +613,7 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	private void selectError() {
+	private void selectErrorBoard() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione",
 				JOptionPane.WARNING_MESSAGE);
