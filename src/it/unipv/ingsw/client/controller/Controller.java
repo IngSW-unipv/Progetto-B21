@@ -560,33 +560,34 @@ public class Controller {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-
-						if (player.isCardSelected() && !((HumanPlayer)player).hasPlayed()) {
-							selectErrorBoard();
-						}
-
-						else {
-
-							if (s.isSelected() == false) {
-
-								player.getCardsListTemp().add(s);
-								s.setSelected();
-								try {
-									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {
-								}
-								cardsOnBoard.get(s).cardSelected(s.isSelected());
+						if(!((HumanPlayer)player).hasPlayed()) {
+							
+							if (player.isCardSelected()) {
+								selectErrorBoard();
 							}
-
 							else {
 
-								player.getCardsListTemp().remove(s);
-								s.setSelected();
-								try {
-									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {
+								if (s.isSelected() == false) {
+
+									player.getCardsListTemp().add(s);
+									s.setSelected();
+									try {
+										menu.getSound().playMusic("card_flip.wav");
+									} catch (Exception ex) {
+									}
+									cardsOnBoard.get(s).cardSelected(s.isSelected());
 								}
-								cardsOnBoard.get(s).cardSelected(s.isSelected());
+
+								else {
+
+									player.getCardsListTemp().remove(s);
+									s.setSelected();
+									try {
+										menu.getSound().playMusic("card_flip.wav");
+									} catch (Exception ex) {
+									}
+									cardsOnBoard.get(s).cardSelected(s.isSelected());
+								}
 							}
 						}
 					}

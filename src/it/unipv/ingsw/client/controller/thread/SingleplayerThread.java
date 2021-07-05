@@ -110,26 +110,26 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	public synchronized boolean play() {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
-			// init
-			((HumanPlayer) p).setHavePlayed(false);
+			//init
+			((HumanPlayer)p).setHavePlayed(false);
 			setClick(0);
 
 			try {
 				sleep(300);
-				controller.personalAdvisor("E' il tuo turno: hai " + seconds + " secondi per fare una mossa");
+				controller.personalAdvisor("E' il tuo turno: hai "+seconds+" secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 				sleep(1000);
 				counter(seconds);
-			} catch (InterruptedException e) { // se l'utente preme il pulsante INVIO
+			} catch (InterruptedException e) { //se l'utente preme il pulsante INVIO
 
-				if (!g.playerActionMonitoring((HumanPlayer) p)) { // e se sbaglia
+				if (!g.playerActionMonitoring((HumanPlayer) p)) { //e se sbaglia
 
 					p.setCardSelected();
 					controller.sendError();
 					p.getCardsListTemp().clear();
 					play();
 				}
-				// se invece va tutto bene
+				//se invece va tutto bene
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
@@ -145,21 +145,12 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				g.playerActionMonitoring((Player) p);
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-				// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
-				// BotPlayer
-				if (!((HumanPlayer) p).hasPlayed()) {
-					Card selected = controller.getSelectedCard();
-					g.playerActionMonitoring((Player) p);
-					if (selected != null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
-						p.setCardSelected();
-					controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-							+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-				}
 
 				seconds = 20;
 				return true;
 			}
 		}
+			
 			else {
 
 				try {
@@ -176,7 +167,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				return true;
 			}
 		return false;
-		}
+	}
 
 	/**
 	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
