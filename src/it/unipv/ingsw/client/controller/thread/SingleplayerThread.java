@@ -196,7 +196,6 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			p.getCardsListTemp().clear();
 
 			if (controller.verifyGame()) {
-				controller.getGui().getGame().getBack().setEnabled(true);
 				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
 				controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((controller.getWinner().getPlayers().get(0).getTeamIndex()==0)?"A":"B"));
 			} else {

@@ -131,4 +131,12 @@ public class Main {
 	public boolean entraLobby(String code) {
 		return client.joinLobby(code);
 	}
+	
+	@SuppressWarnings("deprecation")
+	public void closeThreads() {
+		
+		for(Thread s : threads) {			
+			s.stop();
+		}
+	}
 }

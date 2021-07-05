@@ -94,18 +94,17 @@ public class Controller {
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
 		gui.getMainMenu().setVisible(false);
-		
-		
+
 		try {
 			gui.getCreaLobby().setVisible(false);
 		} catch (Exception e) {
 		}
 		try {
-		gui.getEntraLobby().setVisible(false);
+			gui.getEntraLobby().setVisible(false);
 		} catch (Exception e) {
 		}
 		gui.game();
-		gui.getGame().getBack().addActionListener(backListener(gui.getGame(), gui.getMainMenu()));
+		gui.getGame().getBack().addActionListener(exitListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
 		deckCreator(30, 309);
 	}
@@ -119,7 +118,7 @@ public class Controller {
 		} catch (Exception e) {
 		}
 		try {
-		gui.getEntraLobby().setVisible(false);
+			gui.getEntraLobby().setVisible(false);
 		} catch (Exception e) {
 		}
 		gui.multiPlayer();
@@ -175,7 +174,7 @@ public class Controller {
 
 		gui.getCreaLobby().getNomeLobby().addTextListener(lobby);
 	}
-	
+
 	private void entraLobbyNameListener() {
 
 		TextListener lobby = new TextListener() {
@@ -303,14 +302,16 @@ public class Controller {
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 							"Specificare il nome della lobby prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
-			}
-				else {
-					
-					menu.getClient().joinLobby(menu.getNomeLobby());
+				} else {
+
+					if (!menu.getClient().joinLobby(menu.getNomeLobby())) {
+						JOptionPane.showMessageDialog(gui.getMainMenu(), "Errore: non esiste una lobby con quel nome.",
+								"Attenzione", JOptionPane.WARNING_MESSAGE);
+					}
 				}
-		}
-		
-	};
+			}
+
+		};
 		gui.getEntraLobby().getCrea().addActionListener(joinLobby);
 	}
 
@@ -340,7 +341,7 @@ public class Controller {
 					menu.getMusic().getHit().stop();
 					menu.getMusic().setMusicOn(false);
 					gui.getSound().soundRefresh(1);
-					
+
 				}
 
 				else {
@@ -364,6 +365,30 @@ public class Controller {
 				current.setVisible(false);
 				previus.add(gui.getSound());
 				previus.setVisible(true);
+			}
+		};
+
+		return back;
+	}
+
+	private ActionListener exitListener(JLabel current, JLabel previus) {
+
+		ActionListener back = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int i = JOptionPane.showOptionDialog(gui.getMainMenu(), "Stai per abbandonare la partita. Procedere?", "Attenzione", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, null, null);
+				
+				if (i == JOptionPane.YES_OPTION) {
+					
+				menu.closeThreads();
+				current.setVisible(false);
+				previus.add(gui.getSound());
+				previus.setVisible(true);					
+				}
+
 			}
 		};
 
@@ -415,7 +440,8 @@ public class Controller {
 						deck.get(s).cardSelected(true);
 						try {
 							menu.getSound().playMusic("card_flip.wav");
-						} catch (Exception ex) {} 
+						} catch (Exception ex) {
+						}
 						((HumanPlayer) player).setCardPlayed(s);
 					}
 
@@ -427,7 +453,8 @@ public class Controller {
 						((HumanPlayer) player).setCardPlayed(null);
 						try {
 							menu.getSound().playMusic("card_flip.wav");
-						} catch (Exception ex) {}
+						} catch (Exception ex) {
+						}
 						deck.get(s).cardSelected(false);
 					}
 				}
@@ -468,27 +495,28 @@ public class Controller {
 	}
 
 	private void questionsListener() {
-		
+
 		ActionListener quest = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
 						"In questo gioco, valgono le regole dello scopone Scientifico tradizionali.\n\n"
-					  + "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di \n "
-					  + "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
-					  + "la Primiera vale 1 punto.\n\n"
-					  + "Il meccanismo per effettuare una presa consiste nel: \n"
-					  + "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"
-					  + "2) Selezionare la carta con cui si vuole effettuare la presa. \n"
-					  + "3) Cliccare il pulsante 'invio'.\n\n"
-					  + "Per altre informazioni: github.com/IngSW-unipv/Progetto-B21/wiki\n", "Direttive del gioco", 
-						JOptionPane.INFORMATION_MESSAGE);
+								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di \n "
+								+ "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
+								+ "la Primiera vale 1 punto.\n\n"
+								+ "Il meccanismo per effettuare una presa consiste nel: \n"
+								+ "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"
+								+ "2) Selezionare la carta con cui si vuole effettuare la presa. \n"
+								+ "3) Cliccare il pulsante 'invio'.\n\n"
+								+ "Per altre informazioni: github.com/IngSW-unipv/Progetto-B21/wiki\n",
+						"Direttive del gioco", JOptionPane.INFORMATION_MESSAGE);
 			}
 		};
 		gui.getMainMenu().getDomanda().addActionListener(quest);
 	}
+
 	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
 
 		for (Card s : temp) {
@@ -519,7 +547,8 @@ public class Controller {
 								s.setSelected();
 								try {
 									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {}
+								} catch (Exception ex) {
+								}
 								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 
@@ -529,7 +558,8 @@ public class Controller {
 								s.setSelected();
 								try {
 									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {}
+								} catch (Exception ex) {
+								}
 								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 						}
@@ -559,22 +589,25 @@ public class Controller {
 
 	private void selectError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
-				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione", 
+				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione",
 				JOptionPane.WARNING_MESSAGE);
-
 	}
 
 	public void sendError() {
-		JOptionPane.showMessageDialog(gui.getMainMenu(),
-				"Mossa non consentita.", "Attenzione", //in caso di mossa sbagliata o tentativo di presa MULTIPLA selezionando una carta che ""attacca""
+		JOptionPane.showMessageDialog(gui.getMainMenu(), "Mossa non consentita.", "Attenzione", // in caso di mossa
+																								// sbagliata o tentativo
+																								// di presa MULTIPLA
+																								// selezionando una
+																								// carta che ""attacca""
 				JOptionPane.WARNING_MESSAGE);
-	
+
 	}
 
 	public synchronized void scopaAlert(Player player) {
 		try {
 			menu.getSound().playMusic("applause.wav");
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+		}
 		gui.getGame().getGameAdvisor().setForeground(Color.RED);
 		gameAdvisor(player.getNickname() + " FA SCOPA!");
 	}
