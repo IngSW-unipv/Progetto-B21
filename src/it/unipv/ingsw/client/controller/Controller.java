@@ -475,7 +475,15 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
-						"Selezionare prima la carta da prendere", "Regole del gioco", 
+						"In questo gioco, valgono le regole dello scopone Scientifico tradizionali.\n\n"
+					  + "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di \n "
+					  + "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
+					  + "la Primiera vale 1 punto.\n\n"
+					  + "Il meccanismo per effettuare una presa consiste nel: \n"
+					  + "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"
+					  + "2) Selezionare la carta con cui si vuole effettuare la presa. \n"
+					  + "3) Cliccare il pulsante 'invio'.\n\n"
+					  + "Per altre informazioni: github.com/IngSW-unipv/Progetto-B21/wiki\n", "Direttive del gioco", 
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		};

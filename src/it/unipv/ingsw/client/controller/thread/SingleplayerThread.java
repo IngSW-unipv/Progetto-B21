@@ -110,7 +110,8 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	public synchronized boolean play() {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
-
+			//init
+			((HumanPlayer)p).setHavePlayed(false);
 			setClick(0);
 
 			try {
@@ -136,9 +137,13 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				return true;
 			}
 			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
-			if(g.playerActionMonitoring((Player)p))
+			if(!((HumanPlayer)p).hasPlayed()) {
+				if(p.getCardsListTemp().size() != 0)
+					p.setCardSelected();
+				g.playerActionMonitoring((Player)p);
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+			}
 
 			seconds = 20;
 			return true;
