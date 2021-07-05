@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import it.unipv.ingsw.client.model.game.cards.Card;
 
 /**
- * Questa classe permette ad un giocatore umano di effettuare le sue mosse.
+ * Questa classe rappresenta un giocatore umano e permette di effettuare le sue mosse.
  * 
  * 
  * 
  */
 
-//____________________COSTRUTTORE_________________
 public class HumanPlayer extends Player {
 
-	/**
-	 * 
-	 */
+	//________________ATTRIBUTI________________
 	private static final long serialVersionUID = 1L;
-	
 	private Card cardPlayed;
 	private boolean havePlayed;
-
+	
+	/**
+	 * Crea un giocatore umano.
+	 * @param name : il nome del giocatore umano.
+	 */
 	public HumanPlayer(String name) {
 		super(name);
 		havePlayed = false;
@@ -29,7 +29,7 @@ public class HumanPlayer extends Player {
 
 	}
 
-//__________________GETTERS & SETTERS______________
+	//______________GETTERS & SETTERS______________
 
 	public Card getCardPlayed() {
 		return cardPlayed;
@@ -47,13 +47,13 @@ public class HumanPlayer extends Player {
 		this.havePlayed = havePlayed;
 	}	
 
-//__________________METODI__________________________
-
-
-
+	//__________________METODI__________________
+	
+	
 	/**
-	 * Questa è la stessa funzione del botPlayer. Serve nel caso in cui il giocatore umano
-	 * non faccia mosse.
+	 * Questo metodo serve nel caso in cui il giocatore umano
+	 * non faccia mosse, utilizzando la stessa logica di un BotPlayer.
+	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
 	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
@@ -77,10 +77,10 @@ public class HumanPlayer extends Player {
 	}
 
 	/**
+	 * Metodo privato che permette al bot di effettuare una presa.
 	 * 
-	 * 
-	 * @param cardsOnBoard arraylist di carte presenti sul tavolo
-	 * @return torna un intero per usarlo nello switch della funzione playCard
+	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
+	 * @return un intero per usarlo nello switch della funzione playCard
 	 */
 	
 	private int makePresa(ArrayList<Card> cardsOnBoard) {

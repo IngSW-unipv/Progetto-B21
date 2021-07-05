@@ -9,14 +9,15 @@ import java.io.Serializable;
  */
 public class Card implements Comparable<Card>,Serializable {
 
+	//________________ATTRIBUTI________________
 	private static final long serialVersionUID = 1123123123L;
 	private int value;
 	private Suit suit;
 	private int primieraValue;
 	private boolean selected;
-
+	
 	/**
-	 * 
+	 * Crea una carta.
 	 * @param value indica il valore della carta
 	 * @param suit  indica il seme della carta
 	 */
@@ -28,6 +29,7 @@ public class Card implements Comparable<Card>,Serializable {
 		this.selected = false;
 	}
 
+	//______________GETTERS & SETTERS______________
 	public int getValue() {
 		return value;
 	}
@@ -60,6 +62,8 @@ public class Card implements Comparable<Card>,Serializable {
 	public void setSelected() {
 		this.selected = !selected;
 	}
+
+	//__________________METODI__________________
 
 	@Override
 	public int compareTo(Card o) {

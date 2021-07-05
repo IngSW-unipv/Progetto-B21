@@ -14,16 +14,23 @@ import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
 public class Client implements RemoteClientInterface{
+	
+	//________________ATTRIBUTI________________
 	private RemoteHandlerInterface handler;
 	private MultiplayerThread thread;
 	private Player player;
 	private ArrayList<Card> board;
 	
-	
+	/**
+	 * Crea un client.
+	 * @param player : il player a cui fa riferimento il client.
+	 */
 	public Client(Player player) {
 		this.player = player;
 		this.board = new ArrayList<Card>();
 	}
+	
+	//______________GETTERS & SETTERS______________
 	
 	public Player getPlayer() {
 		return player;
@@ -33,8 +40,11 @@ public class Client implements RemoteClientInterface{
 		this.thread = thread;
 	}
 
-	/*
-	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client
+	//__________________METODI__________________
+	
+	/**
+	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client.
+	 * @param hostname : lo stub del client.
 	 */
 	public boolean connect(String hostname) {
 		try {
@@ -49,8 +59,8 @@ public class Client implements RemoteClientInterface{
 		}
 	}
 	
-	/*
-	 * Creazione della lobby
+	/**
+	 * Creazione della lobby.
 	 */
 	public boolean makeLobby(String txt) {
 		try {	
@@ -61,8 +71,8 @@ public class Client implements RemoteClientInterface{
 		return false;
 	}
 	
-	/*
-	 * Partecipazione ad una lobby già esistente
+	/**
+	 * Partecipazione ad una lobby già esistente.
 	 */
 	public boolean joinLobby(String lobbyCode) {
 		try {
@@ -75,8 +85,8 @@ public class Client implements RemoteClientInterface{
 		return false;
 	}
 	
-	/*
-	 * Si fa iniziare la partita
+	/**
+	 * Si fa iniziare la partita.
 	 */
 	public void startGame()  {
 		try {
@@ -86,8 +96,8 @@ public class Client implements RemoteClientInterface{
 		}
 	}
 	
-	/*
-	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le carte takenCards
+	/**
+	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le carte takenCards.
 	 */
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
 		try {
@@ -105,9 +115,8 @@ public class Client implements RemoteClientInterface{
 		}
 	}
 	
-	/*
-	 * E' passato all'handler il nome del giocatore
-	 */
+	//______________GETTERS & SETTERS______________
+	
 	@Override
 	public String getPlayerName() throws RemoteException {
 		return player.getNickname();

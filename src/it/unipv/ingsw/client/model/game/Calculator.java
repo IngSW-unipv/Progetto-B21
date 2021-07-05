@@ -1,11 +1,6 @@
 package it.unipv.ingsw.client.model.game;
 
-/**
- * Questa classe esegue i calcoli relativi alla partita. Oltre a calcolare il final score assegnando i punti in base
- * ai denari, carte e settebello, ha una funziona che ordina le carte in modo da poter calcolare la primiera.
- * 
- * @author Luca Furfaro, Giuseppe Lentini
- */
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -13,8 +8,21 @@ import it.unipv.ingsw.client.model.game.cards.Card;
 import it.unipv.ingsw.client.model.game.cards.Suit;
 import it.unipv.ingsw.client.model.game.player.team.Team;
 
+/**
+ * Questa classe esegue i calcoli relativi alla partita. Oltre a calcolare il final score assegnando i punti in base
+ * ai denari, carte e settebello, ha una funzione che ordina le carte in modo da poter calcolare la primiera.
+ * 
+ * @author Luca Furfaro, Giuseppe Lentini
+ */
 public class Calculator {
 
+	//__________________METODI__________________
+	
+	/**
+	 * Questo metodo calcola i punteggi finali di una smazzata dei due team passati come argomenti.
+	 * @param a : primo team.
+	 * @param b : secondo team.
+	 */
 	public static void finalScore(Team a, Team b) {
 
 		int scoreA = 0;
@@ -87,8 +95,8 @@ public class Calculator {
 	 * 
 	 * Metodo che accetta un array di cards e lo ordina in base al primiera value, per ogni seme. 
 	 * 
-	 * @param arraylist cards
-	 * @return
+	 * @param cards : le carte.
+	 * @return il valore della primiera.
 	 */
 
 	static int calculatePrimiera(ArrayList<Card> cards) {
