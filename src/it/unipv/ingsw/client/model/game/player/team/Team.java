@@ -7,22 +7,28 @@ import it.unipv.ingsw.client.model.game.player.types.Player;
 
 
 /**
- * 
+ * Classe che rappresenta un team.
  * @author Giuseppe Lentini
  */
 public class Team {
 
+	//________________ATTRIBUTI________________
 	private ArrayList<Player> players;
 	private ArrayList<Card> cardsCollected;
 	private int numScope;
 	private int totalPoints;
 
+	/**
+	 * Crea un team.
+	 */
 	public Team() {
 		players = new ArrayList<Player>();
 		cardsCollected = new ArrayList<Card>();
 		numScope = 0;
 	}
 
+	//______________GETTERS & SETTERS______________
+	
 	public int getNumScope() {
 		return numScope;
 	}

@@ -13,20 +13,28 @@ import it.unipv.ingsw.client.model.game.cards.Card;
 public class BotPlayer extends Player {
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * Crea un bot.
+	 */
 	public BotPlayer() {
 		super("bot");
 	}
+	
+	/**
+	 * Crea un bot con nome.
+	 * @param name : il nome del bot.
+	 */
 	public BotPlayer(String name) {
 		super(name);
 	}
 	
+	//__________________METODI__________________
+	
 	/**
-	 * 
 	 * Metodo che permette al bot di giocare una carta ed effettuare una presa.
-	 * 
+	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
 	 */
-
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
 
 		getCardsListTemp().clear();
@@ -48,12 +56,10 @@ public class BotPlayer extends Player {
 	}
 	
 	/**
-	 * 
-	 * @param cardsOnBoard
-	 * 
 	 * Metodo privato che permette al bot di effettuare una presa.
 	 * 
-	 * @return
+	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
+	 * @return un intero per usarlo nello switch della funzione playCard
 	 */
 
 	private int makePresa(ArrayList<Card> cardsOnBoard) {

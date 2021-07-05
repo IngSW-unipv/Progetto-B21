@@ -8,11 +8,12 @@ import it.unipv.ingsw.client.model.game.player.Actions;
 
 /**
  * 
- * Classe astratta che definisce il giocatore generico che parteciper√† alla partita * 
+ * Classe astratta che definisce il giocatore generico che parteciper‡†alla partita * 
  * @author Giuseppe Lentini
  */
 public abstract class Player implements Actions, Serializable {
 
+	//________________ATTRIBUTI________________
 	private static final long serialVersionUID = -3954006175628361968L;
 	private String nickname;
 	private ArrayList<Card> deck;
@@ -22,6 +23,11 @@ public abstract class Player implements Actions, Serializable {
 	private boolean isCardSelected;
 	private boolean scopa;
 
+	
+	/**
+	 * Crea un giocatore.
+	 * @param nickname : il nome del giocatore.
+	 */
 	public Player(String nickname) {
 		super();
 		deck = new ArrayList<Card>();
@@ -30,6 +36,8 @@ public abstract class Player implements Actions, Serializable {
 		isCardSelected = false;
 	}
 
+	//______________GETTERS & SETTERS______________
+	
 	public boolean isCardSelected() {
 
 		return isCardSelected;

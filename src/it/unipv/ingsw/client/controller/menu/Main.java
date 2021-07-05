@@ -27,6 +27,7 @@ public class Main {
 
 	public Main() {
 		this.music = new Music();
+		this.sound = new Music();
 		music.playMusic("music.wav");
 	}
 
@@ -99,7 +100,6 @@ public class Main {
 		ArrayList<Player> p = new ArrayList<Player>();
 		p.add(player);
 		game = new Game(p);
-		sound = new Music();
 		game.start();
 		this.threads = new SingleplayerThread[4];
 		for (int i = 0; i < 4; i++) {
@@ -112,7 +112,6 @@ public class Main {
 	}
 
 	public void multiplayer() {
-		sound = new Music();
 		player = new HumanPlayer(nickname);
 		client = new Client(player, controller);
 		this.playerThread = new MultiplayerThread(client, controller);

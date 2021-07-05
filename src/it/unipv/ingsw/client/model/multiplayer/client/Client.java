@@ -17,6 +17,8 @@ import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
 public class Client implements RemoteClientInterface{
+	
+	//________________ATTRIBUTI________________
 	private RemoteHandlerInterface handler;
 	private MultiplayerThread thread;
 	private HumanPlayer player;
@@ -24,15 +26,18 @@ public class Client implements RemoteClientInterface{
 	private Controller controller;
 	private boolean turn = false;
 	
+	/**
+	 * Crea un client.
+	 * @param player : il player a cui fa riferimento il client.
+	 * @param player : il controller a cui fa riferimento il client.
+	 */
 	public Client(HumanPlayer player, Controller controller) {
 		this.player = player;
 		this.controller = controller;
 		this.board = new ArrayList<Card>();
 	}
 	
-	public synchronized void changeTurn() {
-		turn = !turn;
-	}
+	//______________GETTERS & SETTERS______________
 	
 	public boolean getTurn() {
 		return turn;
@@ -46,8 +51,15 @@ public class Client implements RemoteClientInterface{
 		this.thread = thread;
 	}
 
-	/*
-	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client
+	//__________________METODI__________________
+	
+	public synchronized void changeTurn() {
+		turn = !turn;
+	}
+	
+	/**
+	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client.
+	 * @param hostname : lo stub del client.
 	 */
 	public boolean connect(String hostname) {
 		try {
@@ -62,8 +74,8 @@ public class Client implements RemoteClientInterface{
 		}
 	}
 	
-	/*
-	 * Creazione della lobby
+	/**
+	 * Creazione della lobby.
 	 */
 	public boolean makeLobby(String txt) {
 		try {	

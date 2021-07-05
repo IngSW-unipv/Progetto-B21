@@ -17,6 +17,7 @@ import it.unipv.ingsw.client.model.game.player.types.*;
  */
 public class Game {
 
+	//________________ATTRIBUTI________________
 	private ArrayList<Card> cardsOnBoard;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;
@@ -25,7 +26,10 @@ public class Game {
 	private int turn;
 	private int teamIndex;
 
-//__________________COSTRUTTORE____________________ 
+	/**
+	 * Crea una partita.
+	 * @param players : lista di giocatori che faranno parte della partita.
+	 */
 	public Game(ArrayList<Player> players) {
 		this.players = players;
 		initialize();
@@ -33,7 +37,7 @@ public class Game {
 		createDeck();
 	}
 
-//__________________________GETTERS & SETTERS__________________________
+	//______________GETTERS & SETTERS______________
 
 	public synchronized ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -65,14 +69,11 @@ public class Game {
 	}
 
 
-// ______________________METODI_________________________*/
+	//__________________METODI__________________
 
 	/**
 	 * Questo metodo ha il compito di inizializzare i vari componenti che verranno utilizzati nella partita.
-	 * *******************************************************************************
-	 * Questo metodo ha il compito di far iniziare la partita. Si mischiano le
-	 * carte, le si danno ai giocatori, si inizializza il turno, e si startano i thread
-	 * dei giocatori.
+	 * 
 	 */
 
 	private void initialize() {
@@ -92,6 +93,9 @@ public class Game {
 		
 	}
 
+	/**
+	 * Questo metodo fa iniziare la partita.
+	 */
 	public void start() {
 
 		shuffle();
@@ -130,15 +134,13 @@ public class Game {
 	}
 
 	/**
-	 * Questo metodo crea il deck di gioco. Il primo for distribuisce i semi, il
-	 * secondo i valori. Il secondo for parte da 1 per motivi di costruzione del
-	 * deck.
+	 * Questo metodo crea il deck di gioco. 
 	 */
 	private void createDeck() {
 
-		for (Suit s : Suit.values()) {
+		for (Suit s : Suit.values()) { //Distribuisce i semi
 
-			for (int i = 1; i <= 10; i++) {
+			for (int i = 1; i <= 10; i++) { //Distribuisce i valori. Parte da 1 per motivi di costruzione del deck.
 
 				int temp = 0;
 
@@ -194,7 +196,7 @@ public class Game {
 	}
 
 	/**
-	 * Questo metodo dï¿½ le carte ai players. Si occupa di dividere il deck in 4
+	 * Questo metodo dà le carte ai players. Si occupa di dividere il deck in 4
 	 * subdeck e di assegnarli ai quattro giocatori.
 	 */
 	private void giveCards() {
@@ -222,9 +224,9 @@ public class Game {
 
 	}
 
-	/*
-	 * (Per thread) Questo metodo fa eseguire un azione ad un giocatore bot o umano
-	 * 
+	/**
+	 * (Per thread) Questo metodo fa eseguire un azione ad un giocatore bot o umano.
+	 * @param player : il bot o il giocatore umano che deve eseguire l'azione.
 	 */
 	public synchronized boolean playerActionMonitoring(Player player) {
 
@@ -269,9 +271,10 @@ public class Game {
 		}
 	}
 
-	/*
-	 * Questa funzione permette di monitorare la giocata di un giocatore umano che
-	 * interagisce tramite la GUI
+	/**
+	 * Questo metodo permette di monitorare la giocata di un giocatore umano che
+	 * interagisce tramite la GUI.
+	 * @param player : il giocatore umano che effettua la giocata.
 	 */
 	public synchronized boolean playerActionMonitoring(HumanPlayer player) {
 
@@ -343,7 +346,7 @@ public class Game {
 		}
 	}
 
-	/*
+	/**
 	 * (Per thread) Aggiorna il contatore del turno.
 	 * 
 	 */
@@ -353,10 +356,10 @@ public class Game {
 			turn = 1;
 	}
 
-	/*
+	/**
 	 * (Per thread) La partita finisce. Vengono calcolati i punti finali e mostrati
-	 * all'utente. turn viene messo a zero cosï¿½ i thread non possono attivarsi
-	 * finchï¿½ non inizia una nuova partita.
+	 * all'utente. turn viene messo a zero così i thread non possono attivarsi
+	 * finché non inizia una nuova partita.
 	 * 
 	 */
 	public synchronized void endGame() {
@@ -368,6 +371,9 @@ public class Game {
 		changeIndex();
 	}
 
+	/**
+	 * Cambia l'indice del giocatore.
+	 */
 	private synchronized void changeIndex() {
 		for (int i = 3; i >= 0; i--) {
 			int t = getPlayers().get(i).getPlayerIndex() - 1;
