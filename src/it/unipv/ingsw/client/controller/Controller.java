@@ -20,8 +20,15 @@ import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
+/**
+ * Questa classe rappresenta il controller, che ha il compito di gestire gli eventi esterni e ricevere/mandare
+ * comunicazioni sia al model che alla view.
+ * 
+ *
+ */
 public class Controller {
 
+	//________________ATTRIBUTI________________
 	private Main menu;
 	private ScoponeGUI gui;
 	private Game game;
@@ -90,6 +97,9 @@ public class Controller {
 		questionsListener();
 	}
 
+	/**
+	 * Avvia la partita.
+	 */
 	public void startGame() {
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
@@ -109,6 +119,9 @@ public class Controller {
 		deckCreator(30, 309);
 	}
 
+	/**
+	 * Avvia la modalità multiplayer.
+	 */
 	public void startMultiPlayer() {
 
 		menu.multiplayer();
@@ -127,6 +140,9 @@ public class Controller {
 		gui.getMultiPlayer().getBack().addActionListener(backListener(gui.getMultiPlayer(), gui.getMainMenu()));
 	}
 
+	/**
+	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 */
 	public void startCreaLobby() {
 
 		gui.getMultiPlayer().setVisible(false);
@@ -138,6 +154,9 @@ public class Controller {
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
+	/**
+	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 */
 	public void startEntraLobby() {
 
 		gui.getMultiPlayer().setVisible(false);
