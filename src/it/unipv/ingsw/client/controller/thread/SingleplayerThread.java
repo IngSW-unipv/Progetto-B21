@@ -145,38 +145,38 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				g.playerActionMonitoring((Player) p);
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
-			if(!((HumanPlayer)p).hasPlayed()) {
-				Card selected=controller.getSelectedCard();
-				g.playerActionMonitoring((Player)p);
-				if(selected!=null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
-					p.setCardSelected();
-			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+				// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
+				// BotPlayer
+				if (!((HumanPlayer) p).hasPlayed()) {
+					Card selected = controller.getSelectedCard();
+					g.playerActionMonitoring((Player) p);
+					if (selected != null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
+						p.setCardSelected();
+					controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+							+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+				}
+
+				seconds = 20;
+				return true;
 			}
-
-			seconds = 20;
-			return true;
 		}
+			else {
 
-		else {
+				try {
+					sleep(500);// 2000
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 
-			try {
-				sleep(500);// 2000
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				g.playerActionMonitoring(p);
+
+				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+
+				return true;
 			}
-
-			g.playerActionMonitoring(p);
-
-			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-
-			return true;
-		}
-	}
 		return false;
-	}
+		}
 
 	/**
 	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
@@ -248,7 +248,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			g.nextTurn();
 			notifyAll();
 		}
-	}	
+	}
 
 	private void deckAction() {
 

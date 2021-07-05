@@ -30,6 +30,9 @@ public class Calculator {
 		int numDenariA = 0;
 		int numDenariB = 0;
 
+		a.setnCarte(a.getCardsCollected().size());
+		b.setnCarte(b.getCardsCollected().size());
+
 		for (Card card : a.getCardsCollected()) {
 
 			if (card.getValue() == 7 && card.getSuit() == Suit.DENARI) {
@@ -42,18 +45,18 @@ public class Calculator {
 				numDenariA += 1;
 			}
 		}
+		
+		a.setnDenari(numDenariA);
 
 		if (a.getCardsCollected().size() > 20) {
 			// punto carte
 			scoreA += 1;
 			a.setCarte(true);
-			a.setnCarte(a.getCardsCollected().size());
 		}
 		if (numDenariA > 5) {
 			// punto denari
 			scoreA += 1;
 			a.setDenari(true);
-			a.setnDenari(numDenariA);
 		}
 
 		scoreA += a.getNumScope();
@@ -70,14 +73,17 @@ public class Calculator {
 				numDenariB += 1;
 			}
 		}
+		b.setnDenari(numDenariB);
 
 		if (b.getCardsCollected().size() > 20) {
 			// punto carte
 			scoreB += 1;
+			b.setCarte(true);
 		}
 		if (numDenariB > 5) {
 			// punto denari
 			scoreB += 1;
+			b.setDenari(true);
 		}
 
 		scoreB += b.getNumScope();

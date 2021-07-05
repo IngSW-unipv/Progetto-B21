@@ -630,7 +630,11 @@ public class Controller {
 				  "             Team A   |   Team B   \n"
 				+ "sette bello: "+game.getTeams().get(0).isSetteBello()+"   |  " + game.getTeams().get(1).isSetteBello()+"\n"
 				+ "numero carte: " + game.getTeams().get(0).getnCarte()+ "  |  " + game.getTeams().get(1).getnCarte()+"\n"
-				+ "primiera: "
+				+ "primiera: " + game.getTeams().get(0).getPuntiPrimiera()+ "  |  " + game.getTeams().get(1).getPuntiPrimiera()+"\n"
+				+ "scope: " + game.getTeams().get(0).getNumScope()+ "  |  " + game.getTeams().get(1).getNumScope()+"\n"
+				+"\n\n"
+				+ "punteggio: " + game.getTeams().get(0).getTotalPoints()+ "  |  " + game.getTeams().get(1).getTotalPoints()+"\n"
+
 				, "Punteggio",
 				JOptionPane.WARNING_MESSAGE);
 
