@@ -35,6 +35,7 @@ public class Calculator {
 			if (card.getValue() == 7 && card.getSuit() == Suit.DENARI) {
 				// punto settebello
 				scoreA += 1;
+				a.setSetteBello(true);
 			}
 
 			if (card.getSuit() == Suit.DENARI) {
@@ -45,10 +46,14 @@ public class Calculator {
 		if (a.getCardsCollected().size() > 20) {
 			// punto carte
 			scoreA += 1;
+			a.setCarte(true);
+			a.setnCarte(a.getCardsCollected().size());
 		}
 		if (numDenariA > 5) {
 			// punto denari
 			scoreA += 1;
+			a.setDenari(true);
+			a.setnDenari(numDenariA);
 		}
 
 		scoreA += a.getNumScope();
@@ -58,6 +63,7 @@ public class Calculator {
 			if (card.getValue() == 7 && card.getSuit() == Suit.DENARI) {
 				// punto settebello
 				scoreB += 1;
+				b.setSetteBello(true);
 			}
 
 			if (card.getSuit() == Suit.DENARI) {
@@ -76,14 +82,22 @@ public class Calculator {
 
 		scoreB += b.getNumScope();
 
-		if (calculatePrimiera(a.getCardsCollected()) > calculatePrimiera(b.getCardsCollected())) {
+		
+		a.setPuntiPrimiera(calculatePrimiera(a.getCardsCollected()));
+		b.setPuntiPrimiera(calculatePrimiera(b.getCardsCollected()));
+		
+		
+		
+		if (a.getPuntiPrimiera() > b.getPuntiPrimiera()) {
 
 			scoreA++;
+			a.setPrimiera(true);
 		}
 
-		else if (calculatePrimiera(a.getCardsCollected()) < calculatePrimiera(b.getCardsCollected())) {
+		else if (a.getPuntiPrimiera() < b.getPuntiPrimiera()) {
 
 			scoreB++;
+			b.setPrimiera(true);
 		}
 
 		a.setTotalPoints(scoreA + a.getTotalPoints());

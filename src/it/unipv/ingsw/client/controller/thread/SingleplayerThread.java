@@ -24,7 +24,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	private Controller controller;
 	private int click; // Uso questa variabile per gestire il bug del doppio click durante l'invio
 						// della giocata
-	
+
 	private int seconds = 20;
 
 	public SingleplayerThread(Game g, Player p, Controller controller) {
@@ -110,39 +110,40 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	public synchronized boolean play() {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
-			//init
-			((HumanPlayer)p).setHavePlayed(false);
+			// init
+			((HumanPlayer) p).setHavePlayed(false);
 			setClick(0);
 
 			try {
 				sleep(300);
-				controller.personalAdvisor("E' il tuo turno: hai "+seconds+" secondi per fare una mossa");
+				controller.personalAdvisor("E' il tuo turno: hai " + seconds + " secondi per fare una mossa");
 				controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 				sleep(1000);
 				counter(seconds);
-			} catch (InterruptedException e) { //se l'utente preme il pulsante INVIO
+			} catch (InterruptedException e) { // se l'utente preme il pulsante INVIO
 
-				if (!g.playerActionMonitoring((HumanPlayer) p)) { //e se sbaglia
+				if (!g.playerActionMonitoring((HumanPlayer) p)) { // e se sbaglia
 
 					p.setCardSelected();
 					controller.sendError();
 					p.getCardsListTemp().clear();
 					play();
 				}
-				//se invece va tutto bene
+				// se invece va tutto bene
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 						+ ((HumanPlayer) p).getCardPlayed());
 
 				seconds = 20;
 				return true;
 			}
-			//se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un BotPlayer
-			if(!((HumanPlayer)p).hasPlayed()) {
-				if(p.getCardsListTemp().size() != 0)
+			// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
+			// BotPlayer
+			if (!((HumanPlayer) p).hasPlayed()) {
+				if (p.getCardsListTemp().size() != 0)
 					p.setCardSelected();
-				g.playerActionMonitoring((Player)p);
-			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+				g.playerActionMonitoring((Player) p);
+				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 			}
 
 			seconds = 20;
@@ -169,8 +170,10 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	/**
 	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
 	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
-	 * partita finisce, cio� se il giocatore di indice 4 non ha pi� carte in mano.
+	 * partita finisce, cio� se il giocatore di indice 4 non ha pi� carte in
+	 * mano.
 	 */
+
 	public synchronized void endTurn() {
 
 		try {
@@ -181,19 +184,35 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 
-			g.endGame();
+			
+			String dd = new String();
+			if (g.getTeamIndex() == 0) {
+				dd = "A";
+			} else {
+				dd = "B";
+			}
+			if (g.getCardsOnBoard().size() != 0) 
+				controller.gameAdvisor("Le carte sul tavolo vanno prese dal team " + dd);
+			
+			try {
+				sleep(2000);
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 			for (Card s : g.getCardsOnBoard()) {
 				controller.getCardsOnBoard().get(s).setVisible(false);
 			}
 
-			controller.gameAdvisor("Punti team A: " + g.getTeams().get(0).getTotalPoints() + " | Punti team B: "
-					+ g.getTeams().get(1).getTotalPoints());
+			g.calcolate();
+			controller.gameRecap();
 			try {
 				sleep(5000);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			p.getCardsListTemp().clear();
+			g.endGame();
 
 			if (controller.verifyGame()) {
 				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
@@ -218,7 +237,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			g.nextTurn();
 			notifyAll();
 		}
-	}
+	}	
 
 	private void deckAction() {
 

@@ -21,14 +21,14 @@ import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
 /**
- * Questa classe rappresenta il controller, che ha il compito di gestire gli eventi esterni e ricevere/mandare
- * comunicazioni sia al model che alla view.
+ * Questa classe rappresenta il controller, che ha il compito di gestire gli
+ * eventi esterni e ricevere/mandare comunicazioni sia al model che alla view.
  * 
  *
  */
 public class Controller {
 
-	//________________ATTRIBUTI________________
+	// ________________ATTRIBUTI________________
 	private Main menu;
 	private ScoponeGUI gui;
 	private Game game;
@@ -397,15 +397,15 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int i = JOptionPane.showOptionDialog(gui.getMainMenu(), "Stai per abbandonare la partita. Procedere?", "Attenzione", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-						null, null, null);
-				
+				int i = JOptionPane.showOptionDialog(gui.getMainMenu(), "Stai per abbandonare la partita. Procedere?",
+						"Attenzione", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+
 				if (i == JOptionPane.YES_OPTION) {
-					
-				menu.closeThreads();
-				current.setVisible(false);
-				previus.add(gui.getSound());
-				previus.setVisible(true);					
+
+					menu.closeThreads();
+					current.setVisible(false);
+					previus.add(gui.getSound());
+					previus.setVisible(true);
 				}
 
 			}
@@ -613,11 +613,18 @@ public class Controller {
 	}
 
 	public void sendError() {
-		JOptionPane.showMessageDialog(gui.getMainMenu(), "Mossa non consentita.", "Attenzione", // in caso di mossa
-																								// sbagliata o tentativo
-																								// di presa MULTIPLA
-																								// selezionando una
-																								// carta che ""attacca""
+		JOptionPane.showMessageDialog(gui.getMainMenu(), "Mossa non consentita.", "Attenzione",
+				JOptionPane.WARNING_MESSAGE);
+
+	}
+
+	public void gameRecap() {
+		JOptionPane.showMessageDialog(gui.getMainMenu(), 
+				  "             Team A   |   Team B   \n"
+				+ "sette bello: "+game.getTeams().get(0).isSetteBello()+"   |  " + game.getTeams().get(1).isSetteBello()+"\n"
+				+ "numero carte: " + game.getTeams().get(0).getnCarte()+ "  |  " + game.getTeams().get(1).getnCarte()+"\n"
+				+ "primiera: "
+				, "Punteggio",
 				JOptionPane.WARNING_MESSAGE);
 
 	}

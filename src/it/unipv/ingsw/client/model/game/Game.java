@@ -10,14 +10,14 @@ import it.unipv.ingsw.client.model.game.player.types.*;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Possiede le funzioni principali
- * in quanto visto come l'ambiente di gioco e gestore della
- * distribuzione delle carte ai giocatori e dell'avvio della partita.
+ * in quanto visto come l'ambiente di gioco e gestore della distribuzione delle
+ * carte ai giocatori e dell'avvio della partita.
  * 
  * @author gruppo B
  */
 public class Game {
 
-	//________________ATTRIBUTI________________
+	// ________________ATTRIBUTI________________
 	private ArrayList<Card> cardsOnBoard;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> shuffledDeck;
@@ -28,6 +28,7 @@ public class Game {
 
 	/**
 	 * Crea una partita.
+	 * 
 	 * @param players : lista di giocatori che faranno parte della partita.
 	 */
 	public Game(ArrayList<Player> players) {
@@ -37,7 +38,7 @@ public class Game {
 		createDeck();
 	}
 
-	//______________GETTERS & SETTERS______________
+	// ______________GETTERS & SETTERS______________
 
 	public synchronized ArrayList<Card> getCardsOnBoard() {
 		return cardsOnBoard;
@@ -68,29 +69,28 @@ public class Game {
 		return turn;
 	}
 
-
-	//__________________METODI__________________
+	// __________________METODI__________________
 
 	/**
-	 * Questo metodo ha il compito di inizializzare i vari componenti che verranno utilizzati nella partita.
+	 * Questo metodo ha il compito di inizializzare i vari componenti che verranno
+	 * utilizzati nella partita.
 	 * 
 	 */
 
 	private void initialize() {
-		
-		
+
 		if (players.size() < 4) {
-			for (int i = 4-players.size(); i > 0; i--) {
-				this.players.add(new BotPlayer(((i%2==0)?"botA":"botB")));
+			for (int i = 4 - players.size(); i > 0; i--) {
+				this.players.add(new BotPlayer(((i % 2 == 0) ? "botA" : "botB")));
 			}
 		}
-		
+
 		cardsOnBoard = new ArrayList<Card>();
 		teams = new ArrayList<Team>();
 		deck = new ArrayList<Card>();
 		shuffledDeck = new ArrayList<Card>();
 		turn = 0;
-		
+
 	}
 
 	/**
@@ -134,13 +134,13 @@ public class Game {
 	}
 
 	/**
-	 * Questo metodo crea il deck di gioco. 
+	 * Questo metodo crea il deck di gioco.
 	 */
 	private void createDeck() {
 
-		for (Suit s : Suit.values()) { //Distribuisce i semi
+		for (Suit s : Suit.values()) { // Distribuisce i semi
 
-			for (int i = 1; i <= 10; i++) { //Distribuisce i valori. Parte da 1 per motivi di costruzione del deck.
+			for (int i = 1; i <= 10; i++) { // Distribuisce i valori. Parte da 1 per motivi di costruzione del deck.
 
 				int temp = 0;
 
@@ -226,6 +226,7 @@ public class Game {
 
 	/**
 	 * (Per thread) Questo metodo fa eseguire un azione ad un giocatore bot o umano.
+	 * 
 	 * @param player : il bot o il giocatore umano che deve eseguire l'azione.
 	 */
 	public synchronized boolean playerActionMonitoring(Player player) {
@@ -274,6 +275,7 @@ public class Game {
 	/**
 	 * Questo metodo permette di monitorare la giocata di un giocatore umano che
 	 * interagisce tramite la GUI.
+	 * 
 	 * @param player : il giocatore umano che effettua la giocata.
 	 */
 	public synchronized boolean playerActionMonitoring(HumanPlayer player) {
@@ -311,6 +313,14 @@ public class Game {
 			return true;
 
 		default: // caso nel cui il giocatore fa una presa
+
+			if (player.getCardsListTemp().size() > 2)
+				for (Card s : cardsOnBoard) {
+
+					if (player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue() == s.getValue())
+						return false;
+				}
+
 			int temp = 0;
 			int valueCardPlayed = player.getCardsListTemp().get(player.getCardsListTemp().size() - 1).getValue();
 
@@ -366,13 +376,15 @@ public class Game {
 
 		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
 		cardsOnBoard.clear();
-		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 		turn = 0;
-		teams.get(0).getCardsCollected().clear();
-		teams.get(1).getCardsCollected().clear();
+		for (Team s : teams)
+			s.restart();
 		changeIndex();
 	}
 
+	public void calcolate() {
+		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
+	}
 	/**
 	 * Cambia l'indice del giocatore.
 	 */
