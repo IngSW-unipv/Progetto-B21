@@ -33,12 +33,11 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	public Player getPlayer() {
 		return client.getPlayer();
 	}
-	
-	
+
 	public void run() {
+		ArrayList<Card> taken = new ArrayList<Card>();
+		ArrayList<Card> played = new ArrayList<Card>();
 		while (checkTurn()) {
-			ArrayList<Card> taken = new ArrayList<Card>();
-			ArrayList<Card> played = new ArrayList<Card>();
 			taken.addAll(client.getCardsOnBoard());
 			played.addAll(client.getPlayer().getDeck());
 			play();
@@ -49,16 +48,16 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			endTurn();
 		}
 	}
-	
-	
+
 	public synchronized boolean checkTurn() {
 		while (client.getTurn() != true)
 			try {
 				notifyAll();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		return true;
 	}
-	
+
 	/**
 	 * Il giocatore gioca una carta
 	 */
@@ -90,8 +89,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		seconds = 20;
 		return true;
 	}
-	
-	
+
 	public synchronized void updateBoard() {
 		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
@@ -165,7 +163,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	public void writeMessage(String str) {
 		controller.gameAdvisor(str);
 	}
-	
+
 	public synchronized boolean automaticPlay() {
 		switch (client.getPlayer().playCard(client.getCardsOnBoard()).size()) {
 		case 1:
@@ -177,15 +175,16 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			for (int i = 0; i < client.getPlayer().getCardsListTemp().size() - 1; i++) {
 				temp += client.getPlayer().getCardsListTemp().get(i).getValue();
 			}
-			if (temp == client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1).getValue()) {
+			if (temp == client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1)
+					.getValue()) {
 				client.getCardsOnBoard().removeAll(client.getPlayer().getCardsListTemp());
-				client.getPlayer().getDeck().remove(client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+				client.getPlayer().getDeck().remove(
+						client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
 				if (client.getCardsOnBoard().isEmpty()) {
 					client.getPlayer().setScopa();
 				}
 				return true;
-			}
-			else {
+			} else {
 				automaticPlay();
 				return false;
 			}
@@ -235,6 +234,5 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			}
 		}
 	}
-
 
 }
