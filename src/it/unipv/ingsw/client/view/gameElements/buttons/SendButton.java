@@ -7,6 +7,11 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
+/**
+ * Questa classe rappresenta il pulsante "INVIO", utilizzato dall'utente per poter giocare correttamente una carta.
+ * 
+ *
+ */
 public class SendButton extends JButton{
 
 	/**

@@ -7,6 +7,11 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
+/**
+ * Questa classe rappresenta il pulsante "SINGLEPLAYER" presente nella schermata principale.
+ * 
+ *
+ */
 public class SinglePlayerButton extends JButton {
 
 	/**

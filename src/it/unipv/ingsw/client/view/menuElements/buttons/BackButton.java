@@ -7,6 +7,11 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
+/**
+ * Questa classe rappresenta il pulsante di uscita presente nella schermata della partita, per poter interrompere la partita in corso.
+ * 
+ *
+ */
 public class BackButton extends JButton {
 
 	/**

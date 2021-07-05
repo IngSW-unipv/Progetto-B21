@@ -10,6 +10,11 @@ import it.unipv.ingsw.client.view.menuElements.buttons.QuestionsButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.SinglePlayerButton;
 import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
+/**
+ * Questa classe rappresenta l'etichetta principale del gioco.
+ * @author Vito
+ *
+ */
 public class MainMenuUI extends JLabel {
 
 	/**

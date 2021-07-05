@@ -7,6 +7,11 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
+/**
+ * Questa classe rappresenta il pulsante "CREA LOBBY" presente nella modalità multiplayer.
+ * 
+ *
+ */
 public class StartButton extends JButton{
 
 	private static final long serialVersionUID = 1L;

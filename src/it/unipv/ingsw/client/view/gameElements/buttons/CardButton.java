@@ -41,6 +41,10 @@ public class CardButton extends JButton {
 		setVisible(true);
 	}
 
+	/**
+	 * Sposta la carta un po più in alto nell'interfaccia grafica, se selezionata.
+	 * @param temp
+	 */
 	public void cardSelected(boolean temp) {
 
 		if (temp) {

@@ -11,6 +11,11 @@ import it.unipv.ingsw.client.view.menuElements.buttons.CreaButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.StartButton;
 import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
+/**
+ * Questa classe rappresenta l'etichetta principale della sezione di creazione di lobby nella modalità multiplayer.
+ *
+ *
+ */
 public class CreaLobbyUI extends JLabel {
 
 	private static final long serialVersionUID = 1L;

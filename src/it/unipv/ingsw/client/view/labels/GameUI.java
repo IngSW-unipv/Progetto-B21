@@ -8,11 +8,13 @@ import it.unipv.ingsw.client.view.gameElements.buttons.*;
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.BackButton;
 
+/**
+ * Questa classe rappresenta l'etichetta del gioco.
+ * 
+ *
+ */
 public class GameUI extends JLabel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private ImagesLoader loader;

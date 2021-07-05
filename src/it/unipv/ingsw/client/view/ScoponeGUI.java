@@ -13,6 +13,11 @@ import it.unipv.ingsw.client.view.labels.MainMenuUI;
 import it.unipv.ingsw.client.view.labels.MultiPlayerMenuUI;
 import it.unipv.ingsw.client.view.menuElements.sound.SoundButton;
 
+/**
+ * Questa classe rappresenta l'interfaccia grafica del gioco.
+ * @author Vito
+ *
+ */
 public class ScoponeGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;

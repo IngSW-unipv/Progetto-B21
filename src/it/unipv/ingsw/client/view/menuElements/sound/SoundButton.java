@@ -7,6 +7,11 @@ import javax.swing.JButton;
 
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 
+/**
+ * Questa classe rappresenta il bottone del suono, attraverso il quale è possibile silenziare/attivare la musica del gioco.
+ * 
+ *
+ */
 public class SoundButton extends JButton {
 
 	/**

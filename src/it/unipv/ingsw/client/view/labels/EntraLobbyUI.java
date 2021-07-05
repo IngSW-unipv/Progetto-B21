@@ -10,6 +10,11 @@ import it.unipv.ingsw.client.view.menuElements.buttons.BackButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.CreaButton;
 import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
+/**
+ * Questa classe rappresenta l'etichetta principale della sezione di accesso ad una lobby nella modalità multiplayer.
+ *
+ *
+ */
 public class EntraLobbyUI extends JLabel {
 
 	private static final long serialVersionUID = 1L;

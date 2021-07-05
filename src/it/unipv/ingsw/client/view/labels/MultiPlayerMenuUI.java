@@ -7,6 +7,11 @@ import javax.swing.JLabel;
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.*;
 
+/**
+ * Questa classe rappresenta l'etichetta principale della modalità multiplayer.
+ *
+ *
+ */
 public class MultiPlayerMenuUI extends JLabel {
 
 	private static final long serialVersionUID = 1L;
