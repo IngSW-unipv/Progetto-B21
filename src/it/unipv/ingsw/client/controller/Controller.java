@@ -100,21 +100,13 @@ public class Controller {
 	/**
 	 * Avvia la partita.
 	 */
-	public void startGame() {
+	public void startGame(JLabel label) {
 		this.game = menu.getGame();
 		this.player = menu.getPlayer();
-		gui.getMainMenu().setVisible(false);
 
-		try {
-			gui.getCreaLobby().setVisible(false);
-		} catch (Exception e) {
-		}
-		try {
-			gui.getEntraLobby().setVisible(false);
-		} catch (Exception e) {
-		}
+		label.setVisible(false);
 		gui.game();
-		gui.getGame().getBack().addActionListener(exitListener(gui.getGame(), gui.getMainMenu()));
+		gui.getGame().getBack().addActionListener(exitListener(gui.getGame(), label));
 		sendListener();
 		deckCreator(30, 309);
 	}
@@ -124,7 +116,6 @@ public class Controller {
 	 */
 	public void startMultiPlayer() {
 
-		menu.multiplayer();
 		gui.getMainMenu().setVisible(false);
 		try {
 			gui.getCreaLobby().setVisible(false);
@@ -138,6 +129,7 @@ public class Controller {
 		creaLobbyListener();
 		entraLobbyListener();
 		gui.getMultiPlayer().getBack().addActionListener(backListener(gui.getMultiPlayer(), gui.getMainMenu()));
+
 	}
 
 	/**
@@ -222,7 +214,7 @@ public class Controller {
 							JOptionPane.WARNING_MESSAGE);
 				} else {
 					menu.singleplayer();
-					startGame();
+					startGame(gui.getMainMenu());
 				}
 			}
 		};
@@ -242,8 +234,11 @@ public class Controller {
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 							"Specificare il proprio username prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
-				} else
-					startMultiPlayer();
+				} else {
+					menu.clientConnect();
+					if(menu.isStatusServer())
+						startMultiPlayer();
+				}
 			}
 		};
 
@@ -298,7 +293,7 @@ public class Controller {
 				} else
 					try {
 						if (!menu.creaLobby()) {
-							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby giï¿½ esistente",
+							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (RemoteException e1) {
@@ -397,8 +392,8 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int i = JOptionPane.showOptionDialog(gui.getMainMenu(), "Stai per abbandonare la partita. Procedere?",
-						"Attenzione", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+				int i = JOptionPane.showOptionDialog(gui.getMainMenu(), "Stai per uscire. Procedere?", "Attenzione",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 
 				if (i == JOptionPane.YES_OPTION) {
 
@@ -484,6 +479,13 @@ public class Controller {
 		}
 	}
 
+	public Card getSelectedCard() {
+		for (Card s : player.getDeck())
+			if (s.isSelected())
+				return (s.copy());
+		return null;
+	}
+
 	public boolean verifyGame() {
 
 		int a = game.getTeams().get(0).getTotalPoints();
@@ -509,6 +511,7 @@ public class Controller {
 		setX(80);
 		game.start();
 		gui.game().repaint();
+		gui.getGame().getBack().addActionListener(exitListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
 		deckCreator(30, 309);
 	}
@@ -521,8 +524,8 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
-						"In questo gioco, valgono le regole dello scopone Scientifico tradizionali.\n\n"
-								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di \n "
+						"In questo gioco, valgono le regole dello Scopone Scientifico tradizionali.\n\n"
+								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di\n"
 								+ "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
 								+ "la Primiera vale 1 punto.\n\n"
 								+ "Il meccanismo per effettuare una presa consiste nel: \n"
@@ -553,33 +556,33 @@ public class Controller {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						if (!((HumanPlayer) player).hasPlayed()) {
 
-						if (player.isCardSelected()) {
-							selectError();
-						}
+							if (player.isCardSelected()) {
+								selectErrorBoard();
+							} else {
 
-						else {
+								if (s.isSelected() == false) {
 
-							if (s.isSelected() == false) {
-
-								player.getCardsListTemp().add(s);
-								s.setSelected();
-								try {
-									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {
+									player.getCardsListTemp().add(s);
+									s.setSelected();
+									try {
+										menu.getSound().playMusic("card_flip.wav");
+									} catch (Exception ex) {
+									}
+									cardsOnBoard.get(s).cardSelected(s.isSelected());
 								}
-								cardsOnBoard.get(s).cardSelected(s.isSelected());
-							}
 
-							else {
+								else {
 
-								player.getCardsListTemp().remove(s);
-								s.setSelected();
-								try {
-									menu.getSound().playMusic("card_flip.wav");
-								} catch (Exception ex) {
+									player.getCardsListTemp().remove(s);
+									s.setSelected();
+									try {
+										menu.getSound().playMusic("card_flip.wav");
+									} catch (Exception ex) {
+									}
+									cardsOnBoard.get(s).cardSelected(s.isSelected());
 								}
-								cardsOnBoard.get(s).cardSelected(s.isSelected());
 							}
 						}
 					}
@@ -606,7 +609,7 @@ public class Controller {
 		gui.getGame().getGameAdvisor().setText(txt);
 	}
 
-	private void selectError() {
+	private void selectErrorBoard() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"Prima deseleziona la carta in mano e poi eventualmente quella/e sul tavolo", "Attenzione",
 				JOptionPane.WARNING_MESSAGE);
@@ -618,14 +621,26 @@ public class Controller {
 
 	}
 
-	public void gameRecap() {
-		JOptionPane.showMessageDialog(gui.getMainMenu(), 
-				  "             Team A   |   Team B   \n"
-				+ "sette bello: "+game.getTeams().get(0).isSetteBello()+"   |  " + game.getTeams().get(1).isSetteBello()+"\n"
-				+ "numero carte: " + game.getTeams().get(0).getnCarte()+ "  |  " + game.getTeams().get(1).getnCarte()+"\n"
-				+ "primiera: "
-				, "Punteggio",
+	public void serverError() {
+		JOptionPane.showMessageDialog(gui.getMainMenu(),
+				"Il server non risulta essere online.\n" + "Riprovare più tardi.", "Errore",
 				JOptionPane.WARNING_MESSAGE);
+	}
+
+	public void gameRecap() {
+		JOptionPane.showMessageDialog(gui.getMainMenu(), "                           Team A          Team B\n"
+				+ "sette bello:          " + game.getTeams().get(0).isSetteBello() + "               "
+				+ game.getTeams().get(1).isSetteBello() + "\n" + "denari:                      "
+				+ game.getTeams().get(0).getnDenari() + "                     " + game.getTeams().get(1).getnDenari()
+				+ "\n" + "numero carte:      " + game.getTeams().get(0).getnCarte() + "                   "
+				+ game.getTeams().get(1).getnCarte() + "\n" + "primiera:                "
+				+ game.getTeams().get(0).getPuntiPrimiera() + "                  "
+				+ game.getTeams().get(1).getPuntiPrimiera() + "\n" + "scope:                       "
+				+ game.getTeams().get(0).getNumScope() + "                    " + game.getTeams().get(1).getNumScope()
+				+ "\n" + "\n\n" + "punteggio:                " + game.getTeams().get(0).getTotalPoints()
+				+ "                   " + game.getTeams().get(1).getTotalPoints() + "\n"
+
+				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 

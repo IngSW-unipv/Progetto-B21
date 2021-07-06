@@ -86,4 +86,8 @@ public class Card implements Comparable<Card>,Serializable {
 
 		return s;
 	}
+
+	public Card copy() {
+		return new Card(value, suit, primieraValue);
+	}
 }

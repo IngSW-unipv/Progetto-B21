@@ -60,15 +60,16 @@ public class Client implements RemoteClientInterface{
 	/**
 	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client.
 	 * @param hostname : lo stub del client.
+	 * @throws RemoteException 
 	 */
-	public boolean connect(String hostname) {
+	public boolean connect(String hostname) throws RemoteException {
 		try {
 			RemoteClientInterface clientStub = (RemoteClientInterface) UnicastRemoteObject.exportObject(this, 0);
 			Registry registry = LocateRegistry.getRegistry(hostname, 6499);
 			RemoteServerInterface serverStub = (RemoteServerInterface) registry.lookup("ScoponeServer");
 			this.handler = serverStub.registerClient(clientStub);
 			return true;
-		} catch (RemoteException | NotBoundException e) {
+		} catch (NotBoundException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -174,7 +175,16 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void openGameView() {
-		controller.startGame();
+		try {
+		controller.startGame(controller.getGui().getCreaLobby());		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
+		controller.startGame(controller.getGui().getEntraLobby());		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	@Override
@@ -191,6 +201,4 @@ public class Client implements RemoteClientInterface{
 		@SuppressWarnings("unused")
 		int i = 0;
 	}
-	
-
 }
