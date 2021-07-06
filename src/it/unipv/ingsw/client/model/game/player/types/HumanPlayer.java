@@ -14,7 +14,7 @@ import it.unipv.ingsw.client.model.game.cards.Suit;
 
 public class HumanPlayer extends Player {
 
-	//________________ATTRIBUTI________________
+
 	private Card cardPlayed;
 	private boolean havePlayed;
 	
@@ -143,6 +143,27 @@ public class HumanPlayer extends Player {
 
 		} else {
 			
+			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
+
+				for (Card table : cardsOnBoard) {
+
+					for (Card table2 : cardsOnBoard) {
+
+						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
+
+							if(verify(deck, cardsOnBoard)) {
+								
+								getCardsListTemp().add(table);
+								getCardsListTemp().add(table2);
+								getCardsListTemp().add(deck);
+
+								return 1;								
+							}
+						}
+					}
+				}
+			}
+			
 			for (Card deck : getDeck()) { // presa singola
 
 				for (Card table : cardsOnBoard) {
@@ -156,26 +177,7 @@ public class HumanPlayer extends Player {
 					}
 				}
 			}
-			
-			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
-
-				for (Card table : cardsOnBoard) {
-
-					for (Card table2 : cardsOnBoard) {
-
-						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
-
-							getCardsListTemp().add(table);
-							getCardsListTemp().add(table2);
-							getCardsListTemp().add(deck);
-
-							return 1;
-						}
-					}
-				}
-
-			}
-			
+						
 			ArrayList<Card> cardList = new ArrayList<Card>();
 			
 			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
@@ -201,6 +203,17 @@ public class HumanPlayer extends Player {
 		return 0;
 	}
 
+	private boolean verify(Card deck, ArrayList<Card> cardsOnBoard) {
+		for (Card table : cardsOnBoard) {
+
+			if (deck.getValue() == table.getValue()) {
+
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	@Override
 	public TypePlayer typePlayer() {
 		// TODO Auto-generated method stub

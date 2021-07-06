@@ -127,6 +127,27 @@ public class BotPlayer extends Player {
 
 		} else {
 			
+			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
+
+				for (Card table : cardsOnBoard) {
+
+					for (Card table2 : cardsOnBoard) {
+
+						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
+
+							if(verify(deck, cardsOnBoard)) {
+								
+								getCardsListTemp().add(table);
+								getCardsListTemp().add(table2);
+								getCardsListTemp().add(deck);
+
+								return 1;								
+							}
+						}
+					}
+				}
+			}
+			
 			for (Card deck : getDeck()) { // presa singola
 
 				for (Card table : cardsOnBoard) {
@@ -139,25 +160,6 @@ public class BotPlayer extends Player {
 						return 1;
 					}
 				}
-			}
-			
-			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
-
-				for (Card table : cardsOnBoard) {
-
-					for (Card table2 : cardsOnBoard) {
-
-						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
-
-							getCardsListTemp().add(table);
-							getCardsListTemp().add(table2);
-							getCardsListTemp().add(deck);
-
-							return 1;
-						}
-					}
-				}
-
 			}
 			
 			ArrayList<Card> cardList = new ArrayList<Card>();
@@ -183,6 +185,18 @@ public class BotPlayer extends Player {
 			}
 		}
 		return 0;
+	}
+	
+	private boolean verify(Card deck, ArrayList<Card> cardsOnBoard) {
+		for (Card table : cardsOnBoard) {
+
+			if (deck.getValue() == table.getValue()) {
+
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	@Override
