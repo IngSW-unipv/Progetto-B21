@@ -111,7 +111,6 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 			// init
-			((HumanPlayer) p).setHavePlayed(false);
 			setClick(0);
 
 			try {
@@ -131,26 +130,24 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				}
 				// se invece va tutto bene
 				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-						+ ((HumanPlayer) p).getCardPlayed());
+						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
 				seconds = 20;
 				return true;
 			}
+
 			// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
 			// BotPlayer
-			if (!((HumanPlayer) p).hasPlayed()) {
-				if (p.getCardsListTemp().size() != 0)
-					p.setCardSelected();
-				g.playerActionMonitoring((Player) p);
-				controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
-						+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
-			}
+			if (p.getCardsListTemp().size() != 0)
+				p.setCardSelected();
+			g.playerActionMonitoring((Player) p);
+			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
+					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
 
 			seconds = 20;
 			return true;
-		}
-
-		else {
+			
+		} else {
 
 			try {
 				sleep(500);// 2000
@@ -184,16 +181,15 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 		if (p.getDeck().size() == 0 && p.getPlayerIndex() == 4) {
 
-			
 			String dd = new String();
 			if (g.getTeamIndex() == 0) {
 				dd = "A";
 			} else {
 				dd = "B";
 			}
-			if (g.getCardsOnBoard().size() != 0) 
+			if (g.getCardsOnBoard().size() != 0)
 				controller.gameAdvisor("Le carte sul tavolo vanno prese dal team " + dd);
-			
+
 			try {
 				sleep(2000);
 			} catch (InterruptedException e2) {
@@ -206,19 +202,16 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			g.calcolate();
 			controller.gameRecap();
-			try {
-				sleep(5000);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
 			p.getCardsListTemp().clear();
 			g.endGame();
 
 			if (controller.verifyGame()) {
-				controller.gameAdvisor("PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e " +
-				controller.getWinner().getPlayers().get(1).getNickname()+" del team "+((controller.getWinner().getPlayers().get(0).getTeamIndex()==0)?"A":"B"));
+				controller.gameAdvisor(
+						"PARTITA FINITA! vincono: " + controller.getWinner().getPlayers().get(0).getNickname() + " e "
+								+ controller.getWinner().getPlayers().get(1).getNickname() + " del team "
+								+ ((controller.getWinner().getPlayers().get(0).getTeamIndex() == 0) ? "A" : "B"));
 			} else {
-				controller.gameAdvisor("La partita ricomincia tra "+10+" secondi.");
+				controller.gameAdvisor("La partita ricomincia tra " + 10 + " secondi.");
 				try {
 					sleep(2000);
 					counter(10);
@@ -237,11 +230,11 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			g.nextTurn();
 			notifyAll();
 		}
-	}	
+	}
 
 	private void deckAction() {
 
-		controller.getDeck().get(((HumanPlayer) p).getCardPlayed()).setVisible(false);
+		controller.getDeck().get(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)).setVisible(false);
 	}
 
 	private void boardAction() {

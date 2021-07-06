@@ -262,14 +262,8 @@ public class Game {
 
 				return true;
 			}
-
-			else {
-
-				playerActionMonitoring(player);
-
-				return false;
-			}
 		}
+		return false;
 	}
 
 	/**
@@ -292,7 +286,6 @@ public class Game {
 
 				if (counter == player.getCardsListTemp().get(0).getValue()) {
 
-					player.setHavePlayed(false);
 					return false;
 				}
 
@@ -300,7 +293,6 @@ public class Game {
 
 					if (player.getCardsListTemp().get(0).getValue() == table.getValue()) {
 
-						player.setHavePlayed(false);
 						return false;
 					}
 				}
@@ -308,7 +300,6 @@ public class Game {
 
 			getCardsOnBoard().addAll(player.getCardsListTemp());
 			player.getDeck().removeAll(player.getCardsListTemp());
-			player.setHavePlayed(true);
 
 			return true;
 
@@ -342,14 +333,10 @@ public class Game {
 					player.setScopa();
 				}
 
-				player.setHavePlayed(true);
-
 				return true;
 			}
 
 			else {
-
-				player.setHavePlayed(false);
 
 				return false;
 			}
@@ -374,8 +361,6 @@ public class Game {
 	 */
 	public synchronized void endGame() {
 
-		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
-		cardsOnBoard.clear();
 		turn = 0;
 		for (Team s : teams)
 			s.restart();
@@ -383,8 +368,11 @@ public class Game {
 	}
 
 	public void calcolate() {
+		teams.get(getTeamIndex()).getCardsCollected().addAll(cardsOnBoard);
+		cardsOnBoard.clear();
 		Calculator.finalScore(getTeams().get(0), getTeams().get(1));
 	}
+
 	/**
 	 * Cambia l'indice del giocatore.
 	 */
