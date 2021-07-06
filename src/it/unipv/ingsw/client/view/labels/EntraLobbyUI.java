@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import it.unipv.ingsw.client.view.imagesLoader.ImagesLoader;
 import it.unipv.ingsw.client.view.menuElements.buttons.BackButton;
 import it.unipv.ingsw.client.view.menuElements.buttons.CreaButton;
+import it.unipv.ingsw.client.view.menuElements.buttons.EntraButton;
 import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
 /**
@@ -23,7 +24,7 @@ public class EntraLobbyUI extends JLabel {
 	private BackButton back;
 	private JLabel advisor;
 	private JLabel players;
-	private CreaButton crea;
+	private EntraButton entra;
 	private TextArea nomeLobby;
 
 //__________________COSTRUTTORE___________________
@@ -61,8 +62,8 @@ public class EntraLobbyUI extends JLabel {
 		this.players = players;
 	}
 
-	public CreaButton getCrea() {
-		return crea;
+	public EntraButton getCrea() {
+		return entra;
 	}
 
 	public TextArea getNomeLobby() {
@@ -94,11 +95,11 @@ public class EntraLobbyUI extends JLabel {
 		add(players);
 
 		// crea
-		this.crea = new CreaButton(loader);
-		add(crea);
+		this.entra = new EntraButton(loader);
+		add(entra);
 
 		// nomeLobby
-		this.nomeLobby = new TextArea(250, 190, 120, 20);
+		this.nomeLobby = new TextArea(250, 190, 180, 20);
 		add(nomeLobby);
 	}
 }

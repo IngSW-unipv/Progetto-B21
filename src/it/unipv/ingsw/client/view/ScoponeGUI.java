@@ -27,6 +27,7 @@ public class ScoponeGUI extends JFrame {
 	private CreaLobbyUI creaLobby;
 	private EntraLobbyUI entraLobby;
 	private boolean mainCreated;
+	private boolean gameCreated;
 	private boolean multiPlayerCreated;
 	private boolean creaLobbyCreated;
 	private boolean entraLobbyCreated;
@@ -37,10 +38,6 @@ public class ScoponeGUI extends JFrame {
 	public ScoponeGUI() {
 		super();
 
-		this.mainCreated = false;
-		this.multiPlayerCreated = false;
-		this.creaLobbyCreated = false;
-		this.entraLobbyCreated = false;
 		create();
 		mainMenu();
 	}
@@ -125,7 +122,12 @@ public class ScoponeGUI extends JFrame {
 		setVisible(true);
 
 		loader = new ImagesLoader();
-		this.sound = new SoundButton(loader);
+		sound = new SoundButton(loader);
+		mainCreated = false;
+		gameCreated = false;
+		multiPlayerCreated = false;
+		creaLobbyCreated = false;
+		entraLobbyCreated = false;
 	}
 
 	public void mainMenu() {
@@ -152,9 +154,9 @@ public class ScoponeGUI extends JFrame {
 
 	public GameUI game() {
 
-		if (getGame() == null) {
-			this.game = new GameUI(loader);
-			setGame(game);
+		if (gameCreated) {
+
+			game.setVisible(true);
 			sound.setVisible(true);
 			add(sound);
 			add(game);
@@ -163,9 +165,7 @@ public class ScoponeGUI extends JFrame {
 
 		else {
 
-			remove(game);
-			this.game = new GameUI(loader);
-			setGame(game);
+			game = new GameUI(loader);
 			sound.setVisible(true);
 			add(sound);
 			add(game);

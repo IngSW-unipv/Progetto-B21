@@ -29,12 +29,12 @@ public class StartButton extends JButton{
 
 	private void create() {
 
-		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/creaLobby.png");
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/start.png");
 		ImageIcon multiPImg = new ImageIcon(buffer);
-		setBounds(350, 370, 100, 50);
 		setIcon(multiPImg);
-		setOpaque(true);
-		setContentAreaFilled(true);
+		setBounds(350, 370, 100, 50);
+		setOpaque(false);
+		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);
 	}

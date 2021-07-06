@@ -155,7 +155,7 @@ public class Controller {
 		gui.entraLobby();
 		entraLobbyNameListener();
 		joinLobbyListener();
-		gui.getEntraLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
+		gui.getEntraLobby().getBack().addActionListener(backListener(gui.getEntraLobby(), gui.getMultiPlayer()));
 	}
 
 	private void nicknameListener() {

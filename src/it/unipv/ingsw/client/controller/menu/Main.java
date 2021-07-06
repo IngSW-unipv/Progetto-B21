@@ -153,5 +153,11 @@ public class Main {
 		for(Thread s : threads) {			
 			s.stop();
 		}
+		
+		try {
+			((MultiplayerThread) playerThread).stop();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
