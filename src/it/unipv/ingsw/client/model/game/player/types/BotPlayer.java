@@ -34,9 +34,8 @@ public class BotPlayer extends Player {
 	public Card getCardPlayed() {
 		return cardPlayed;
 	}
-	
-	// __________________METODI__________________
 
+	// __________________METODI__________________
 
 	/**
 	 * Metodo che permette al bot di giocare una carta ed effettuare una presa.
@@ -127,9 +126,10 @@ public class BotPlayer extends Player {
 			return 1;
 
 		} else {
-
+			
 			ArrayList<Card> cardList = new ArrayList<Card>();
-			for (Card deck : getDeck()) {
+			
+			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
 
 				int counter = 0;
 				cardList.clear();
@@ -149,14 +149,33 @@ public class BotPlayer extends Player {
 				}
 			}
 
-			for (Card deck2 : getDeck()) {
+			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
 
-				for (Card table2 : cardsOnBoard) {
+				for (Card table : cardsOnBoard) {
 
-					if (deck2.getValue() == table2.getValue()) {
+					for (Card table2 : cardsOnBoard) {
 
-						getCardsListTemp().add(table2);
-						getCardsListTemp().add(deck2);
+						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
+
+							getCardsListTemp().add(table);
+							getCardsListTemp().add(table2);
+							getCardsListTemp().add(deck);
+
+							return 1;
+						}
+					}
+				}
+
+			}
+
+			for (Card deck : getDeck()) { // presa singola
+
+				for (Card table : cardsOnBoard) {
+
+					if (deck.getValue() == table.getValue()) {
+
+						getCardsListTemp().add(table);
+						getCardsListTemp().add(deck);
 
 						return 1;
 					}
