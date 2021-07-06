@@ -90,7 +90,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	
 	
 	public synchronized void updateBoard() {
-		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 48);
+		controller.cardsOnBoardCreator(client.getCardsOnBoard(), controller.getX(), 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		if (controller.getDeck().get(((HumanPlayer) client.getPlayer()).getCardPlayed()) != null)
 			deckAction();
