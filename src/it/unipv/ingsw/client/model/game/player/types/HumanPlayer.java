@@ -164,20 +164,6 @@ public class HumanPlayer extends Player {
 				}
 			}
 			
-			for (Card deck : getDeck()) { // presa singola
-
-				for (Card table : cardsOnBoard) {
-
-					if (deck.getValue() == table.getValue()) {
-
-						getCardsListTemp().add(table);
-						getCardsListTemp().add(deck);
-
-						return 1;
-					}
-				}
-			}
-						
 			ArrayList<Card> cardList = new ArrayList<Card>();
 			
 			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
@@ -192,7 +178,23 @@ public class HumanPlayer extends Player {
 
 					if (counter == deck.getValue() && cardList.size() != 1) {
 
-						getCardsListTemp().addAll(cardList);
+						if(verify(deck, cardsOnBoard)) {
+							getCardsListTemp().addAll(cardList);
+							getCardsListTemp().add(deck);
+
+							return 1;							
+						}
+					}
+				}
+			}
+			
+			for (Card deck : getDeck()) { // presa singola
+
+				for (Card table : cardsOnBoard) {
+
+					if (deck.getValue() == table.getValue()) {
+
+						getCardsListTemp().add(table);
 						getCardsListTemp().add(deck);
 
 						return 1;
