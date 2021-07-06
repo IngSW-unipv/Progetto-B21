@@ -117,7 +117,7 @@ public class HumanPlayer extends Player {
 						if (s.getSuit() != Suit.DENARI) {
 
 							getCardsListTemp().add(s);
-							setCardPlayed(s);
+							cardPlayed = s;
 
 							return 1;
 						}
@@ -126,25 +126,59 @@ public class HumanPlayer extends Player {
 					else if (s.getValue() != 7 && s.getSuit() != Suit.DENARI) {
 
 						getCardsListTemp().add(s);
-						setCardPlayed(s);
+						cardPlayed = s;
+
 						return 1;
 					}
 				} else {
 					getCardsListTemp().add(s);
-					setCardPlayed(s);
+					cardPlayed = s;
+
 					return 1;
 				}
 			}
 
 			getCardsListTemp().add(getDeck().get(0));
-			setCardPlayed(getDeck().get(0));
-
 			return 1;
 
 		} else {
+			
+			for (Card deck : getDeck()) { // presa singola
 
+				for (Card table : cardsOnBoard) {
+
+					if (deck.getValue() == table.getValue()) {
+
+						getCardsListTemp().add(table);
+						getCardsListTemp().add(deck);
+
+						return 1;
+					}
+				}
+			}
+			
+			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
+
+				for (Card table : cardsOnBoard) {
+
+					for (Card table2 : cardsOnBoard) {
+
+						if ((table != table2) &&  table.getValue() + table2.getValue() == deck.getValue()) {
+
+							getCardsListTemp().add(table);
+							getCardsListTemp().add(table2);
+							getCardsListTemp().add(deck);
+
+							return 1;
+						}
+					}
+				}
+
+			}
+			
 			ArrayList<Card> cardList = new ArrayList<Card>();
-			for (Card deck : getDeck()) {
+			
+			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
 
 				int counter = 0;
 				cardList.clear();
@@ -158,22 +192,7 @@ public class HumanPlayer extends Player {
 
 						getCardsListTemp().addAll(cardList);
 						getCardsListTemp().add(deck);
-						setCardPlayed(deck);
 
-						return 1;
-					}
-				}
-			}
-
-			for (Card deck2 : getDeck()) {
-
-				for (Card table2 : cardsOnBoard) {
-
-					if (deck2.getValue() == table2.getValue()) {
-
-						getCardsListTemp().add(table2);
-						getCardsListTemp().add(deck2);
-						setCardPlayed(deck2);
 						return 1;
 					}
 				}

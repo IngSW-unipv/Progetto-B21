@@ -127,28 +127,20 @@ public class BotPlayer extends Player {
 
 		} else {
 			
-			ArrayList<Card> cardList = new ArrayList<Card>();
-			
-			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
-
-				int counter = 0;
-				cardList.clear();
+			for (Card deck : getDeck()) { // presa singola
 
 				for (Card table : cardsOnBoard) {
 
-					counter += table.getValue();
-					cardList.add(table);
+					if (deck.getValue() == table.getValue()) {
 
-					if (counter == deck.getValue() && cardList.size() != 1) {
-
-						getCardsListTemp().addAll(cardList);
+						getCardsListTemp().add(table);
 						getCardsListTemp().add(deck);
 
 						return 1;
 					}
 				}
 			}
-
+			
 			for (Card deck : getDeck()) { //prese con 2 carte sul tavolo
 
 				for (Card table : cardsOnBoard) {
@@ -167,14 +159,22 @@ public class BotPlayer extends Player {
 				}
 
 			}
+			
+			ArrayList<Card> cardList = new ArrayList<Card>();
+			
+			for (Card deck : getDeck()) { //prese con più di 2 carte sul tavolo
 
-			for (Card deck : getDeck()) { // presa singola
+				int counter = 0;
+				cardList.clear();
 
 				for (Card table : cardsOnBoard) {
 
-					if (deck.getValue() == table.getValue()) {
+					counter += table.getValue();
+					cardList.add(table);
 
-						getCardsListTemp().add(table);
+					if (counter == deck.getValue() && cardList.size() != 1) {
+
+						getCardsListTemp().addAll(cardList);
 						getCardsListTemp().add(deck);
 
 						return 1;
