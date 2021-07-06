@@ -61,7 +61,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 	private synchronized void updateBoard() {
 
-		controller.cardsOnBoardCreator(g.getCardsOnBoard(), controller.getX(), 48);
+		controller.cardsOnBoardCreator(g.getCardsOnBoard(), controller.getX(), 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
@@ -202,6 +202,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			g.calcolate();
 			controller.gameRecap();
+			controller.setX(80);
 			p.getCardsListTemp().clear();
 			g.endGame();
 

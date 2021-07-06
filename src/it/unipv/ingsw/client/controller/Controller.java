@@ -634,11 +634,11 @@ public class Controller {
 				+ game.getTeams().get(0).getnDenari() + "                     " + game.getTeams().get(1).getnDenari()
 				+ "\n" + "numero carte:      " + game.getTeams().get(0).getnCarte() + "                   "
 				+ game.getTeams().get(1).getnCarte() + "\n" + "primiera:                "
-				+ game.getTeams().get(0).getPuntiPrimiera() + "                  "
-				+ game.getTeams().get(1).getPuntiPrimiera() + "\n" + "scope:                       "
+				+ game.getTeams().get(0).getPuntiPrimiera() + "                   "
+				+ game.getTeams().get(1).getPuntiPrimiera() + "\n" + "scope:                      "
 				+ game.getTeams().get(0).getNumScope() + "                    " + game.getTeams().get(1).getNumScope()
 				+ "\n" + "\n\n" + "punteggio:                " + game.getTeams().get(0).getTotalPoints()
-				+ "                   " + game.getTeams().get(1).getTotalPoints() + "\n"
+				+ "                    " + game.getTeams().get(1).getTotalPoints() + "\n"
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 
