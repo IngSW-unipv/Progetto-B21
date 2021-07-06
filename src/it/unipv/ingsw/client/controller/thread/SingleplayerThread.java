@@ -112,7 +112,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 		if (p.typePlayer() == TypePlayer.HUMANPLAYER) {
 			// init
 			setClick(0);
-
+			((HumanPlayer)p).setHavePlayed(false);
 			try {
 				sleep(300);
 				controller.personalAdvisor("E' il tuo turno: hai " + seconds + " secondi per fare una mossa");
@@ -138,11 +138,16 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 
 			// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
 			// BotPlayer
-			if (p.getCardsListTemp().size() != 0)
-				p.setCardSelected();
-			g.playerActionMonitoring((Player) p);
+			if(!((HumanPlayer)p).hasPlayed()) {
+				Card selected=controller.getSelectedCard();
+				g.playerActionMonitoring((Player)p);
+				if(selected!=null && selected.equals(p.getCardsListTemp().get(p.getCardsListTemp().size() - 1)))
+					p.setCardSelected();
+				((HumanPlayer)p).setHavePlayed(true);
+				setClick(1);
 			controller.gameAdvisor("||GIOCATORE " + p.getPlayerIndex() + "|| " + p.getNickname() + " gioca "
 					+ p.getCardsListTemp().get(p.getCardsListTemp().size() - 1));
+			}
 
 			seconds = 20;
 			return true;
