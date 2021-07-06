@@ -112,7 +112,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la modalitï¿½ multiplayer.
+	 * Avvia la modalità multiplayer.
 	 */
 	public void startMultiPlayer() {
 
@@ -133,7 +133,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
 	 */
 	public void startCreaLobby() {
 
@@ -147,7 +147,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
 	 */
 	public void startEntraLobby() {
 
@@ -293,7 +293,7 @@ public class Controller {
 				} else
 					try {
 						if (!menu.creaLobby()) {
-							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby giï¿½ esistente",
+							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (RemoteException e1) {
@@ -524,9 +524,9 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
-						"In questo gioco, valgono le regole dello scopone Scientifico tradizionali.\n\n"
-								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere piï¿½ di \n "
-								+ "5 carte di denari vale 1 punto, prendere piï¿½ di 20 carte vale 1 punto, \n"
+						"In questo gioco, valgono le regole dello Scopone Scientifico tradizionali.\n\n"
+								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di\n"
+								+ "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
 								+ "la Primiera vale 1 punto.\n\n"
 								+ "Il meccanismo per effettuare una presa consiste nel: \n"
 								+ "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"

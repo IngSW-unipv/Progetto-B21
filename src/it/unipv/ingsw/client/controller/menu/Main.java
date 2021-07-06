@@ -33,6 +33,7 @@ public class Main {
 		statusServer = false;
 	}
 
+	//________GETTERS & SETTERS________
 	public PlayerThread getPlayerThread() {
 		return playerThread;
 	}

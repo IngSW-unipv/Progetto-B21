@@ -12,7 +12,7 @@ import it.unipv.ingsw.client.view.menuElements.text.TextArea;
 
 /**
  * Questa classe rappresenta l'etichetta principale del gioco.
- * @author Vito
+ * 
  *
  */
 public class MainMenuUI extends JLabel {
