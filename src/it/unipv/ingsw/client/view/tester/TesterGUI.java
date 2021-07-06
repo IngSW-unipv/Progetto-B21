@@ -14,5 +14,4 @@ public class TesterGUI {
 		menu.setController(controller);
 		gui.setVisible(true);
 	}
-
 }

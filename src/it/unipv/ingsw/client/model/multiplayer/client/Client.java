@@ -16,18 +16,19 @@ import it.unipv.ingsw.client.model.game.player.types.Player;
 import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
 import it.unipv.ingsw.server.utils.RemoteServerInterface;
 
-public class Client implements RemoteClientInterface{
-	
-	//________________ATTRIBUTI________________
+public class Client implements RemoteClientInterface {
+
+	// ________________ATTRIBUTI________________
 	private RemoteHandlerInterface handler;
 	private MultiplayerThread thread;
 	private HumanPlayer player;
 	private ArrayList<Card> board;
 	private Controller controller;
 	private boolean turn = false;
-	
+
 	/**
 	 * Crea un client.
+	 * 
 	 * @param player : il player a cui fa riferimento il client.
 	 * @param player : il controller a cui fa riferimento il client.
 	 */
@@ -36,31 +37,33 @@ public class Client implements RemoteClientInterface{
 		this.controller = controller;
 		this.board = new ArrayList<Card>();
 	}
-	
-	//______________GETTERS & SETTERS______________
-	
+
+	// ______________GETTERS & SETTERS______________
+
 	public boolean getTurn() {
 		return turn;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public void setMultiplayerThread(MultiplayerThread thread) {
 		this.thread = thread;
 	}
 
-	//__________________METODI__________________
-	
+	// __________________METODI__________________
+
 	public synchronized void changeTurn() {
 		turn = !turn;
 	}
-	
+
 	/**
-	 * Viene effettuata la connessione al server specificato ed è passato lo stub del client.
+	 * Viene effettuata la connessione al server specificato ed è passato lo stub
+	 * del client.
+	 * 
 	 * @param hostname : lo stub del client.
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public boolean connect(String hostname) throws RemoteException {
 		try {
@@ -74,19 +77,19 @@ public class Client implements RemoteClientInterface{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Creazione della lobby.
 	 */
 	public boolean makeLobby(String txt) {
-		try {	
+		try {
 			return handler.makeNewLobby(txt);
 		} catch (RemoteException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/*
 	 * Partecipazione ad una lobby già esistente
 	 */
@@ -97,23 +100,24 @@ public class Client implements RemoteClientInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	/*
 	 * Si fa iniziare la partita
 	 */
-	public void startGame()  {
+	public void startGame() {
 		try {
 			handler.startGame();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
-	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le carte takenCards
+	 * Viene giocata dalla mano la carta playedCard e vengono prese dalla board le
+	 * carte takenCards
 	 */
 	public void makePlay(Card playedCard, ArrayList<Card> takenCards) {
 		board.removeAll(takenCards);
@@ -128,7 +132,7 @@ public class Client implements RemoteClientInterface{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	 * E' passato all'handler il nome del giocatore
 	 */
@@ -136,7 +140,7 @@ public class Client implements RemoteClientInterface{
 	public String getPlayerName() throws RemoteException {
 		return player.getNickname();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
 		controller.cardsOnBoardCreator(cards, controller.getX(), 48);
@@ -146,16 +150,16 @@ public class Client implements RemoteClientInterface{
 			if (controller.getCardsOnBoard().get(s) != null) {
 				try {
 					controller.getCardsOnBoard().get(s).setVisible(false);
-				} catch (Exception e) {}
+				} catch (Exception e) {
+				}
 			}
 		}
 		board = (ArrayList<Card>) cards.clone();
 	}
-	
+
 	public ArrayList<Card> getCardsOnBoard() {
 		return board;
 	}
-
 
 	@Override
 	public void printMessage(String msg) {
@@ -175,13 +179,16 @@ public class Client implements RemoteClientInterface{
 
 	@Override
 	public void openGameView() {
+
 		try {
-		controller.startGame(controller.getGui().getCreaLobby());		
+			controller.startGame(controller.getGui().getCreaLobby());
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		try {
-		controller.startGame(controller.getGui().getEntraLobby());		
+			controller.startGame(controller.getGui().getEntraLobby());
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

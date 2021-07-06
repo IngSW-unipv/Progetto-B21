@@ -232,6 +232,4 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			}
 		}
 	}
-
-
 }
