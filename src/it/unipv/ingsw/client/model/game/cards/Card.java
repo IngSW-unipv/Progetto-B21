@@ -87,7 +87,7 @@ public class Card implements Comparable<Card>,Serializable {
 		return s;
 	}
 	
-	public boolean ciao(Object card) {
+	public boolean equals(Card card) {
 		Card x=(Card)card;
 		if(value==x.getValue() && suit.equals(x.getSuit()))
 			return true;
