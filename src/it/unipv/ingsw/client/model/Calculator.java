@@ -121,7 +121,7 @@ public class Calculator {
 	 * @return il valore della primiera.
 	 */
 
-	static int calculatePrimiera(ArrayList<Card> cards) {
+	public static int calculatePrimiera(ArrayList<Card> cards) {
 
 		int denari = 0;
 		int bastoni = 0;
