@@ -82,6 +82,7 @@ public class GameUI extends JLabel {
 		
 		//back
 		this.back = new BackButton(loader);
+		setBack(back);
 		add(back);
 
 		// chat

@@ -79,6 +79,7 @@ public class EntraLobbyUI extends JLabel {
 		setLayout(null);
 
 		this.back = new BackButton(loader);
+		setBack(back);
 		add(back);
 
 		// advisor

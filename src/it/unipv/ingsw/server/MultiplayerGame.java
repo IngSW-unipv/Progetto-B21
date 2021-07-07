@@ -29,7 +29,9 @@ public class MultiplayerGame extends Thread{
 		createDeck();
 		System.out.println("@"+toString()+": " + "deck created");
 	}
-
+	
+	
+	
 	private void initialize(ArrayList<ClientHandler> p) {
 		this.players = new ArrayList<Handler>();
 		for (ClientHandler ch : p) {
@@ -167,8 +169,8 @@ public class MultiplayerGame extends Thread{
 	private synchronized void nextTurn() {
 		turn++;
 		if (turn == 40) {
-			turn = -1;
 			endRound();
+			turn = -1;
 		}
 	}
 	
@@ -234,9 +236,12 @@ public class MultiplayerGame extends Thread{
 		board.clear();
 		notifyBoardChange();
 		for (Handler p : players) {
-			p.sendMessage("Round terminato");
+			p.sendMessage("Round terminato. Il gioco riinizierà tra 10 secondi.");
 		}
 		Calculator.finalScore(teams.get(0), teams.get(1));
+		for (Handler p : players) {
+			p.notifyGameEnd(teams);
+		}
 		try {
 			sleep(10000);
 		} catch (InterruptedException e) {}
@@ -267,11 +272,20 @@ public class MultiplayerGame extends Thread{
 				p.sendMessage("Hai perso con" + teams.get(1-win).getTotalPoints() + " vs " + teams.get(win).getTotalPoints() + " punti.");
 			}
 		}
+		try {
+			sleep(10000);
+		} catch (InterruptedException e) {}
+		for (Handler p : players) {
+			p.notifyGameEnd(teams);
+		}
 		turn = -3;
 	}
 	
 	public synchronized void interruptGame() {
 		turn = -3;
+		for (Handler p : players) {
+			p.notifyGameEnd(teams);
+		}
 		System.out.println("@"+toString()+": game interrupted" );
 	}
 

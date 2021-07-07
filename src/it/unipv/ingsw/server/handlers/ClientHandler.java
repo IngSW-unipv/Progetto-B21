@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.team.Team;
 import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
 import it.unipv.ingsw.server.Lobby;
 import it.unipv.ingsw.server.MultiplayerGame;
@@ -96,20 +97,16 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		}
 	}
 	
-	public void notifyGameEnd(String lobbyCode) {
+	public void notifyGameEnd(ArrayList<Team> teams) {
 		try {
-			client.openLobbyView(lobbyCode);
+			client.gameHasEnded(teams);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void disconnectFromLobby() {
-		try {
-			client.disconnect();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		server.lobbies.get(lobbyCode).removePlayer((ClientHandler) client);
 	}
 
 	@Override

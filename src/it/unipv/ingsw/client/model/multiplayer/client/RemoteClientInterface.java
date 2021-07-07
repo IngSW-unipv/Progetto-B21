@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.team.Team;
 
 public interface RemoteClientInterface extends Remote{
 	public String getPlayerName() throws RemoteException;
@@ -19,7 +20,9 @@ public interface RemoteClientInterface extends Remote{
 
 	public void openGameView() throws RemoteException;
 
-	public void openLobbyView(String lobbyCode) throws RemoteException;
+	public void gameHasEnded(ArrayList<Team> teams) throws RemoteException;
 
 	public void disconnect() throws RemoteException;
+
+
 }

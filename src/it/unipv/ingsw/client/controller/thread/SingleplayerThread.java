@@ -206,7 +206,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 			}
 
 			g.calcolate();
-			controller.gameRecap();
+			controller.gameRecap(g.getTeams());
 			controller.setX(80);
 			p.getCardsListTemp().clear();
 			g.endGame();

@@ -33,6 +33,9 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		return client.getPlayer();
 	}
 	
+	public void setSeconds(int s) {
+		this.seconds = s;
+	}
 	
 	public void run() {
 		while (checkTurn()) {
@@ -52,7 +55,9 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 		while (client.getTurn() != true)
 			try {
 				notifyAll();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				notifyAll();
+			}
 		return true;
 	}
 	
@@ -61,6 +66,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	 */
 	public synchronized boolean play() {
 		setClick(0);
+		((HumanPlayer)client.getPlayer()).setHavePlayed(false);
 		try {
 			sleep(300);
 			controller.personalAdvisor("E' il tuo turno: hai " + seconds + " secondi per fare una mossa");
@@ -80,12 +86,19 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			seconds = 20;
 			return true;
 		}
-		automaticPlay();
-		controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| "
-				+ client.getPlayer().getNickname() + " gioca "
-				+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
-		seconds = 20;
-		return true;
+		if(!((HumanPlayer)client.getPlayer()).hasPlayed()) {
+			Card selected=controller.getSelectedCard();
+			automaticPlay();
+			if(selected!=null && selected.equals(client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1)))
+				client.getPlayer().setCardSelected();
+			((HumanPlayer)client.getPlayer()).setHavePlayed(true);
+			setClick(1);
+			controller.gameAdvisor("||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| "
+					+ client.getPlayer().getNickname() + " gioca "
+					+ client.getPlayer().getCardsListTemp().get(client.getPlayer().getCardsListTemp().size() - 1));
+			}
+			seconds = 20;
+			return true;
 	}
 	
 	
@@ -126,7 +139,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 			e.printStackTrace();
 		}
 		client.getPlayer().getCardsListTemp().clear();
-		client.changeTurn();
+		client.setTurn(false);
 	}
 
 	private void deckAction() {

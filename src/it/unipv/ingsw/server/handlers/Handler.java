@@ -3,6 +3,7 @@ package it.unipv.ingsw.server.handlers;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.game.player.team.Team;
 
 public interface Handler {
 
@@ -25,5 +26,6 @@ public interface Handler {
 	String getNickname();
 
 	void notifyGameStart();
-
+	
+	void notifyGameEnd(ArrayList<Team> teams);
 }

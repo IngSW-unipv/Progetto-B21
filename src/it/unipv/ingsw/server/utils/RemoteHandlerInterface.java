@@ -13,4 +13,5 @@ public interface RemoteHandlerInterface extends Remote{
 	void startGame() throws RemoteException;
 	void playCard(Card playedCard) throws RemoteException;
 	void removeFromBoard(ArrayList<Card> takenCards) throws RemoteException;
+	void disconnectFromLobby() throws RemoteException;
 }
