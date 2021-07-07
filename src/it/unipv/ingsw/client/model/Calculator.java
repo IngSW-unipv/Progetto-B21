@@ -105,7 +105,9 @@ public class Calculator {
 			scoreB++;
 			b.setPrimiera(true);
 		}
-
+		
+		a.setPuntiSmazzata(scoreA);
+		b.setPuntiSmazzata(scoreB);
 		a.setTotalPoints(scoreA + a.getTotalPoints());
 		b.setTotalPoints(scoreB + b.getTotalPoints());
 

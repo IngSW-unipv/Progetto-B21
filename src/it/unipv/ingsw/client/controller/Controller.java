@@ -294,6 +294,9 @@ public class Controller {
 							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
+						
+						else 
+							gui.getCreaLobby().getAdvisor().setText("La lobby '"+menu.getNomeLobby()+"' è stata creata correttamente. E' possibile avviare la partita in qualsiasi momento.");
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
@@ -320,6 +323,9 @@ public class Controller {
 						JOptionPane.showMessageDialog(gui.getMainMenu(), "Errore: non esiste una lobby con quel nome.",
 								"Attenzione", JOptionPane.WARNING_MESSAGE);
 					}
+					
+					else 
+						gui.getEntraLobby().getAdvisor().setText("Accesso avvenuto correttamente nella lobby: '"+ menu.getNomeLobby()+"'."+ " In attesa dell'avvio della partita...");
 				}
 			}
 
@@ -635,9 +641,12 @@ public class Controller {
 				+ "\n" + "numero carte:      " + teams.get(0).getnCarte() + "                   "
 				+ teams.get(1).getnCarte() + "\n" + "primiera:                "
 				+ teams.get(0).getPuntiPrimiera() + "                   "
-				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                      "
-				+ teams.get(0).getNumScope() + "                    " + teams.get(1).getNumScope()
-				+ "\n" + "\n\n" + "punteggio:                " + teams.get(0).getTotalPoints()
+				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                       "
+				+ teams.get(0).getNumScope() + "                     " + teams.get(1).getNumScope()
+				+ "\n"
+				 + "punteggio:                " + teams.get(0).getPuntiSmazzata()
+				+ "                    " + teams.get(1).getPuntiSmazzata() + "\n"
+				+ "\n\n" + "punteggio totale:     " + teams.get(0).getTotalPoints()
 				+ "                    " + teams.get(1).getTotalPoints() + "\n"
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
