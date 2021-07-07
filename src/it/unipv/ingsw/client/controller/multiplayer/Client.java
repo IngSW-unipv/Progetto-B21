@@ -25,7 +25,7 @@ public class Client implements RemoteClientInterface {
 	private HumanPlayer player;
 	private ArrayList<Card> board;
 	private Controller controller;
-	private boolean turn = false;
+	private boolean turn;
 
 	/**
 	 * Crea un client.
@@ -37,6 +37,7 @@ public class Client implements RemoteClientInterface {
 		this.player = player;
 		this.controller = controller;
 		this.board = new ArrayList<Card>();
+		this.turn = false;
 	}
 
 	// ______________GETTERS & SETTERS______________
@@ -183,9 +184,6 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public void openGameView() {
-		turn = false;
-		thread.setSeconds(20);
-		turn = true;
 		try {
 			controller.startGame(controller.getGui().getCreaLobby());
 
