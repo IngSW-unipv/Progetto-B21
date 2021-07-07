@@ -5,10 +5,11 @@ import it.unipv.ingsw.client.controller.ScoponeGame;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 public class TesterGUI {
 
+	
 	public static void main(String[] args) {
 
 		ScoponeGame menu = new ScoponeGame();
-		ScoponeGUI gui = new ScoponeGUI();
+		ScoponeGUI gui = ScoponeGUI.getGUI();
 
 		Controller controller = new Controller(menu, gui);
 		menu.setController(controller);

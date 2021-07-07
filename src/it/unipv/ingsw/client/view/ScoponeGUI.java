@@ -22,6 +22,7 @@ public class ScoponeGUI extends JFrame {
 
 //______________ATTRIBUTI_____________
 	private static final long serialVersionUID = 1L;
+	private static ScoponeGUI gui = null;
 	private MainMenuUI mainMenu;
 	private GameUI game;
 	private MultiPlayerMenuUI multiPlayer;
@@ -36,7 +37,7 @@ public class ScoponeGUI extends JFrame {
 	private SoundButton sound;
 
 //_____________________COSTRUTTORE__________________
-	public ScoponeGUI() {
+	private ScoponeGUI() {
 		super();
 
 		create();
@@ -109,6 +110,14 @@ public class ScoponeGUI extends JFrame {
 	}
 
 	// ________________________METODI_______________________
+
+    public static synchronized ScoponeGUI getGUI() {
+        if (gui == null) {
+            gui = new ScoponeGUI();
+        }
+        return gui;
+    }
+	
 	private void create() {
 
 		setTitle("Scopone Scientifico");

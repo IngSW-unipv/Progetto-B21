@@ -23,8 +23,8 @@ public class ScoponeGame {
 	public static void main(String[] args) {
 
 		ScoponeGame menu = new ScoponeGame();
-		ScoponeGUI gui = new ScoponeGUI();
-
+		ScoponeGUI gui = ScoponeGUI.getGUI();
+		
 		if (args.length != 0)
 			ServerIP.getInstance().setIp(args[0]);
 
@@ -181,7 +181,12 @@ public class ScoponeGame {
 				s.stop();
 			}
 		} catch (Exception e) {
+		}
+		
+		try {
 			((MultiplayerThread) playerThread).stop();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 

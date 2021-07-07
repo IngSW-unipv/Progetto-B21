@@ -141,12 +141,12 @@ public class Controller {
 		creaLobbyStartListener();
 		makeLobbyListener();
 		creaLobbyNameListener();
-		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
+		gui.getCreaLobby().getAdvisor().setText("Benvenuto nella creazione della lobby"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 * Avvia la schermata "ENTRA LOBBY" della modalità multiplayer.
 	 */
 	public void startEntraLobby() {
 
@@ -155,6 +155,7 @@ public class Controller {
 		entraLobbyNameListener();
 		joinLobbyListener();
 		gui.getEntraLobby().getBack().addActionListener(backListener(gui.getEntraLobby(), gui.getMultiPlayer()));
+		gui.getEntraLobby().getAdvisor().setText("Benvenuto. Puoi accedere ad una lobby");
 	}
 
 	private void nicknameListener() {
@@ -546,7 +547,7 @@ public class Controller {
 	}
 
 	public synchronized void cardsOnBoardCreator(ArrayList<Card> temp, int x, int y) {
-
+		
 		for (Card s : temp) {
 
 			if (cardsOnBoard.get(s) == null) {
@@ -642,12 +643,12 @@ public class Controller {
 				+ teams.get(1).getnCarte() + "\n" + "primiera:                "
 				+ teams.get(0).getPuntiPrimiera() + "                   "
 				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                       "
-				+ teams.get(0).getNumScope() + "                     " + teams.get(1).getNumScope()
+				+ teams.get(0).getNumScope() + "                   " + teams.get(1).getNumScope()
 				+ "\n"
 				 + "punteggio:                " + teams.get(0).getPuntiSmazzata()
-				+ "                    " + teams.get(1).getPuntiSmazzata() + "\n"
+				+ "                   " + teams.get(1).getPuntiSmazzata() + "\n"
 				+ "\n\n" + "punteggio totale:     " + teams.get(0).getTotalPoints()
-				+ "                    " + teams.get(1).getTotalPoints() + "\n"
+				+ "                   " + teams.get(1).getTotalPoints() + "\n"
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 

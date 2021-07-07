@@ -83,6 +83,7 @@ public class CreaLobbyUI extends JLabel {
 	}
 
 	// ______________________METODI______________________
+	
 	private void create() {
 
 		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/background.png");
