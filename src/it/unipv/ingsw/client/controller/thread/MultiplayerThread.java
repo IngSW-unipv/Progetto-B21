@@ -38,8 +38,8 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	}
 	
 	public void run() {
-		while (checkTurn()) {
-
+		while (true) {
+			checkTurn();
 			play();
 			if (client.getPlayer().getCardsListTemp().size() == 1) { //se == true il giocatore non ha effettuato una presa
 				client.getPlayer().getCardsListTemp().clear();
@@ -52,7 +52,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 	
 	
 	public synchronized boolean checkTurn() {
-		while (client.getTurn() != true)
+		if (client.getTurn() == false)
 			try {
 				notifyAll();
 			} catch (Exception e) {

@@ -259,11 +259,8 @@ public class MultiplayerGame extends Thread{
 	}
 	
 	private synchronized void changeIndex() {
-		for (int i = 3; i >= 0; i--) {
-			int t = players.get(i).getTurnIndex();
-			if (t == 0)
-				t = 3;
-			players.get(i).setTurnIndex(t);
+		for (int i = 0; i < 3; i++) {
+			players.get(i).setTeamIndex((players.get(i).getTurnIndex()+1)%4); 
 		}
 	}
 	
