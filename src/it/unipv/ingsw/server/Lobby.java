@@ -20,8 +20,6 @@ public class Lobby extends Thread{
 		players = new ArrayList<ClientHandler>();
 		players.add(p1);
 		code = txt;
-		
-		System.out.println("lobby created");
 	}
 
 	public ArrayList<ClientHandler> getPlayers() {
@@ -43,14 +41,14 @@ public class Lobby extends Thread{
 	public synchronized boolean addPlayer(ClientHandler player) {
 		if (players.size() >= 4)
 			return false;
-		System.out.println("+Lobby"+toString()+": " + "aggiunto il giocatore " + player.getNickname());
+		System.out.println("+Lobby"+toString()+": " + "added player " + player.getNickname());
 		return players.add(player);
 	}
 	
 	public synchronized boolean removePlayer(ClientHandler player) {
 		game.interrupt();
 		game = null;
-		System.out.println("+Lobby"+toString()+": " + "rimosso il giocatore "+ player.getNickname());
+		System.out.println("+Lobby"+toString()+": " + "removed player "+ player.getNickname());
 		return players.remove(player);
 	}
 	
@@ -65,7 +63,7 @@ public class Lobby extends Thread{
 			for (ClientHandler p : players) {
 				p.setGame(game);
 			}
-			System.out.println("+Lobby"+toString()+": " + "inizio partita");
+			System.out.println("+Lobby"+toString()+": " + "game starting");
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {}
