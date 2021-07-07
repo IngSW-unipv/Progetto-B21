@@ -63,8 +63,7 @@ public class Client implements RemoteClientInterface {
 
 
 	/**
-	 * Viene effettuata la connessione al server specificato ed è passato lo stub
-	 * del client.
+	 * Viene effettuata la connessione al server specificato.
 	 * 
 	 * @param hostname : lo stub del client.
 	 * @throws RemoteException

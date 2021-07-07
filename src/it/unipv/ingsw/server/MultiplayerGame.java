@@ -11,6 +11,11 @@ import it.unipv.ingsw.server.handlers.BotHandler;
 import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.handlers.Handler;
 
+/**
+ * Questa classe rappresenta la modalità multiplayer.
+ *
+ *
+ */
 public class MultiplayerGame extends Thread{
 
 	private ArrayList<Card> board;

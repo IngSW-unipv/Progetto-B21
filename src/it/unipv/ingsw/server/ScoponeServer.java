@@ -12,6 +12,11 @@ import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
 import it.unipv.ingsw.server.interfaces.RemoteServerInterface;
 
+/**
+ * Questa classe rappresenta il server, da avviare all'inizio.
+ * @author Vito
+ *
+ */
 public class ScoponeServer implements RemoteServerInterface {
 	private Registry registry;
 	private ArrayList<ClientHandler> players;

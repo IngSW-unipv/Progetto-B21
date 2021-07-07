@@ -13,8 +13,8 @@ import it.unipv.ingsw.client.model.player.types.TypePlayer;
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza
  * fare differenze tra bot e umani
  * 
- * @param g ï¿½ il game a cui si riferisce
- * @param p ï¿½ il player a cui si riferisce
+ * @param g è il game a cui si riferisce
+ * @param p è il player a cui si riferisce
  * 
  */
 
@@ -92,7 +92,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	}
 
 	/**
-	 * Se l'indice del giocatore ï¿½ == al turno, allora tocca a lui
+	 * Se l'indice del giocatore è == al turno, allora tocca a lui
 	 */
 	public synchronized boolean checkTurn() {
 		while (g.getTurn() != p.getPlayerIndex())
@@ -136,7 +136,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 				return true;
 			}
 
-			// se lo HumanPlayer lascia scadere il proprio tempo, si comporterÃ  come un
+			// se lo HumanPlayer lascia scadere il proprio tempo, si comporterà come un
 			// BotPlayer
 			if(!((HumanPlayer)p).hasPlayed()) {
 				Card selected=controller.getSelectedCard();
@@ -172,7 +172,7 @@ public class SingleplayerThread extends Thread implements PlayerThread {
 	/**
 	 * Il giocatore finisce il turno, quindi viene incrementato il contatore g.turn
 	 * e si passa il controllo al giocatore successivo. Bisogna controllare se la
-	 * partita finisce, cioï¿½ se il giocatore di indice 4 non ha piï¿½ carte in
+	 * partita finisce, cioè se il giocatore di indice 4 non ha più carte in
 	 * mano.
 	 */
 

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.server.handlers.ClientHandler;
 
+/**
+ * Questa classe rappresenta una lobby del gioco.
+ * 
+ *
+ */
 public class Lobby extends Thread{
 
 	private ArrayList<ClientHandler> players;
@@ -47,6 +52,10 @@ public class Lobby extends Thread{
 		return players.remove(player);
 	}
 	
+	/**
+	 * Inizia la partita.
+	 * @return
+	 */
 	public synchronized boolean startGame() {
 		if (game == null) {
 			game = new MultiplayerGame(players);
