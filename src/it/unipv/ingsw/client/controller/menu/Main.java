@@ -147,20 +147,17 @@ public class Main {
 		return client.joinLobby(code);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void closeThreads() {
+		
+		for(Thread s : threads) {			
+			s.stop();
+		}
+		
 		try {
-			for(Thread s : threads) {			
-				s.stop();
-			} 
+			((MultiplayerThread) playerThread).stop();
 		} catch (Exception e) {
-			try {
-				((MultiplayerThread) playerThread).stop();
-				client.disconnect();
-			} catch (Exception e1){
-				client.setMultiplayerThread(null);
-				this.playerThread = new MultiplayerThread(client, controller);
-				client.setMultiplayerThread((MultiplayerThread) playerThread);
-			}
+			// TODO: handle exception
 		}
 	}
 }
