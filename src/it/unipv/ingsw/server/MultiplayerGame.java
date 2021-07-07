@@ -187,10 +187,10 @@ public class MultiplayerGame extends Thread{
 		notifyBoardChange();
 		for (Handler p : players) {
 			if (p.getTurnIndex() != (turn % 4)) {
-				p.sendMessage("||GIOCATORE " + p.getTurnIndex() + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+				p.sendMessage("||GIOCATORE " + (p.getTurnIndex()+1) + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+				System.out.println("@"+toString()+": " + "||GIOCATORE " + (p.getTurnIndex()+1) + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 			}
 		}
-		System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 	}
 
 	private void notifyBoardChange() {
@@ -218,6 +218,9 @@ public class MultiplayerGame extends Thread{
 			for (Handler p : players) {
 				if (p.getTurnIndex() == (turn % 4)) {
 					teams.get(p.getTeamIndex()).scopa();
+					for (Handler pla : players) {
+						pla.sendScopaAlert(p.getNickname());
+					}
 					break;
 				}
 			}
@@ -228,7 +231,6 @@ public class MultiplayerGame extends Thread{
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(takenCards);
 			}	
 		}
-		System.out.print("@"+toString()+": rimosse le carte");
 		for (Card c : takenCards) {
 			System.out.print(" "+c.toString());
 		}
@@ -275,6 +277,7 @@ public class MultiplayerGame extends Thread{
 		int win = 0;
 		if (teams.get(0).getTotalPoints() < teams.get(1).getTotalPoints())
 			win = 1;
+		System.out.println("@"+toString()+": vince il team "+ win);
 		for (Handler p : players) {
 			if (p.getTeamIndex() == win) {
 				p.sendMessage("Hai vinto con" + teams.get(win).getTotalPoints() + " vs " + teams.get(1-win).getTotalPoints() + " punti.");

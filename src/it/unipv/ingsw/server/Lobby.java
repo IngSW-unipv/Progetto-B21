@@ -43,12 +43,14 @@ public class Lobby extends Thread{
 	public synchronized boolean addPlayer(ClientHandler player) {
 		if (players.size() >= 4)
 			return false;
+		System.out.println("+"+toString()+": " + "aggiunto il giocatore " + player.getNickname());
 		return players.add(player);
 	}
 	
 	public synchronized boolean removePlayer(ClientHandler player) {
 		game.interrupt();
 		game = null;
+		System.out.println("+"+toString()+": " + "rimosso il giocatore "+ player.getNickname());
 		return players.remove(player);
 	}
 	
@@ -57,12 +59,13 @@ public class Lobby extends Thread{
 	 * @return
 	 */
 	public synchronized boolean startGame() {
+		
 		if (game == null) {
 			game = new MultiplayerGame(players);
 			for (ClientHandler p : players) {
 				p.setGame(game);
 			}
-			System.out.println("Starting game" + game.toString());
+			System.out.println("+"+toString()+": " + "inizio partita");
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {}

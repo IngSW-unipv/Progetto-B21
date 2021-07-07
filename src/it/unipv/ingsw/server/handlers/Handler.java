@@ -28,4 +28,6 @@ public interface Handler {
 	void notifyGameStart();
 	
 	void notifyGameEnd(ArrayList<Team> teams);
+
+	void sendScopaAlert(String nickname);
 }

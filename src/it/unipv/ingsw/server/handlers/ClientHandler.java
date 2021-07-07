@@ -149,4 +149,12 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		game.remove(takenCards);
 		game.setMove();
 	}
+
+
+	@Override
+	public void sendScopaAlert(String nickname) {
+		try {
+			client.scopaAlert(nickname);
+		} catch (RemoteException e) {}
+	}
 }

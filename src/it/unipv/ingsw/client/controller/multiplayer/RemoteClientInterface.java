@@ -24,5 +24,7 @@ public interface RemoteClientInterface extends Remote{
 
 	public void disconnect() throws RemoteException;
 
+	public void scopaAlert(String nickname) throws RemoteException;
+
 
 }

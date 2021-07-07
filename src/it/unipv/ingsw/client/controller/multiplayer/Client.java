@@ -220,4 +220,9 @@ public class Client implements RemoteClientInterface {
 		} catch (RemoteException e) {
 		}
 	}
+
+	@Override
+	public void scopaAlert(String nickname) throws RemoteException {
+		controller.scopaAlert(new HumanPlayer(nickname));
+	}
 }
