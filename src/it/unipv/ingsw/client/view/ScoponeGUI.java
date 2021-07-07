@@ -134,20 +134,20 @@ public class ScoponeGUI extends JFrame {
 
 		if (mainCreated) {
 
-			getMainMenu().setVisible(true);
+			mainMenu.setVisible(true);
 			sound.setVisible(true);
 			add(sound);
-			add(getMainMenu());
+			add(mainMenu);
 			repaint();
 		}
 
 		else {
 
 			this.mainMenu = new MainMenuUI(loader);
+			mainCreated = true;
 			sound.setVisible(true);
 			add(sound);
 			add(mainMenu);
-			setMainCreated(true);
 			repaint();
 		}
 	}
@@ -166,6 +166,7 @@ public class ScoponeGUI extends JFrame {
 		else {
 
 			game = new GameUI(loader);
+			gameCreated = true;
 			sound.setVisible(true);
 			add(sound);
 			add(game);
@@ -178,16 +179,16 @@ public class ScoponeGUI extends JFrame {
 
 		if (multiPlayerCreated) {
 
-			getMultiPlayer().setVisible(true);
+			multiPlayer.setVisible(true);
 			sound.setVisible(true);
 			add(sound);
-			add(getMultiPlayer());
+			add(multiPlayer);
 			repaint();
 		}
 
 		else {
-			this.multiPlayer = new MultiPlayerMenuUI(loader);
-			setMultiPlayer(multiPlayer);
+			multiPlayer = new MultiPlayerMenuUI(loader);
+			multiPlayerCreated = true;
 			add(sound);
 			add(multiPlayer);
 			repaint();
@@ -200,16 +201,16 @@ public class ScoponeGUI extends JFrame {
 
 		if (creaLobbyCreated) {
 
-			getCreaLobby().setVisible(true);
+			creaLobby.setVisible(true);
 			sound.setVisible(true);
 			add(sound);
-			add(getCreaLobby());
+			add(creaLobby);
 			repaint();
 		}
 
 		else {
-			this.creaLobby = new CreaLobbyUI(loader);
-			setCreaLobby(creaLobby);
+			creaLobby = new CreaLobbyUI(loader);
+			creaLobbyCreated = true;
 			add(sound);
 			add(creaLobby);
 			repaint();
@@ -221,16 +222,16 @@ public class ScoponeGUI extends JFrame {
 
 		if (entraLobbyCreated) {
 
-			getEntraLobby().setVisible(true);
+			entraLobby.setVisible(true);
 			sound.setVisible(true);
 			add(sound);
-			add(getEntraLobby());
+			add(entraLobby);
 			repaint();
 		}
 
 		else {
-			this.entraLobby = new EntraLobbyUI(loader);
-			setEntraLobby(entraLobby);
+			entraLobby = new EntraLobbyUI(loader);
+			entraLobbyCreated = true;
 			add(sound);
 			add(entraLobby);
 			repaint();

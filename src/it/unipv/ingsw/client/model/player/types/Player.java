@@ -1,9 +1,9 @@
-package it.unipv.ingsw.client.model.game.player.types;
+package it.unipv.ingsw.client.model.player.types;
 
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.Actions;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Actions;
 
 /**
  * 

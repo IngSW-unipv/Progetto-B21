@@ -2,8 +2,9 @@ package it.unipv.ingsw.server.handlers;
 
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.BotPlayer;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.BotPlayer;
 import it.unipv.ingsw.server.MultiplayerGame;
 
 public class BotHandler implements Handler{
@@ -104,5 +105,8 @@ public class BotHandler implements Handler{
 
 	@Override
 	public void notifyGameStart() {}
+
+	@Override
+	public void notifyGameEnd(ArrayList<Team> teams) {}
 
 }

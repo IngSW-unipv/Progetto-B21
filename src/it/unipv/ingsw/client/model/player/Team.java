@@ -1,17 +1,19 @@
-package it.unipv.ingsw.client.model.game.player.team;
+package it.unipv.ingsw.client.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.types.Player;
 
 /**
  * Classe che rappresenta un team.
  * 
  * @author Giuseppe Lentini
  */
-public class Team {
+public class Team implements Serializable{
 
+	private static final long serialVersionUID = -8856358148127602182L;
 	// ________________ATTRIBUTI________________
 	private ArrayList<Player> players;
 	private ArrayList<Card> cardsCollected;

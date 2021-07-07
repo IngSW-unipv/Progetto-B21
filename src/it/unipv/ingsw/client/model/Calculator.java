@@ -1,12 +1,12 @@
-package it.unipv.ingsw.client.model.game;
+package it.unipv.ingsw.client.model;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.cards.Suit;
-import it.unipv.ingsw.client.model.game.player.team.Team;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.card.Suit;
+import it.unipv.ingsw.client.model.player.Team;
 
 /**
  * Questa classe esegue i calcoli relativi alla partita. Oltre a calcolare il final score assegnando i punti in base

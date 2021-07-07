@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.multiplayer.client;
+package it.unipv.ingsw.client.controller.multiplayer;
 
 import java.awt.Color;
 import java.rmi.NotBoundException;
@@ -10,11 +10,12 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
-import it.unipv.ingsw.server.utils.RemoteServerInterface;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
+import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
+import it.unipv.ingsw.server.interfaces.RemoteServerInterface;
 
 public class Client implements RemoteClientInterface {
 
@@ -51,12 +52,15 @@ public class Client implements RemoteClientInterface {
 	public void setMultiplayerThread(MultiplayerThread thread) {
 		this.thread = thread;
 	}
+	
+	public synchronized void setTurn(boolean t) {
+		turn = t;
+	}
+	
 
 	// __________________METODI__________________
 
-	public synchronized void changeTurn() {
-		turn = !turn;
-	}
+
 
 	/**
 	 * Viene effettuata la connessione al server specificato ed è passato lo stub
@@ -109,6 +113,7 @@ public class Client implements RemoteClientInterface {
 	 */
 	public void startGame() {
 		try {
+			
 			handler.startGame();
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -143,7 +148,7 @@ public class Client implements RemoteClientInterface {
 
 	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
-		controller.cardsOnBoardCreator(cards, controller.getX(), 48);
+		controller.cardsOnBoardCreator(cards, 80, 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		board.removeAll(cards);
 		for (Card s : board) {
@@ -168,8 +173,13 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public synchronized void play() {
-		changeTurn();
-		thread.notifyAll();
+		thread.setSeconds(20);
+		turn = true;
+		try {
+			thread.resume();
+		} catch (Exception e) {
+		}
+		
 	}
 
 	@Override
@@ -179,33 +189,34 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public void openGameView() {
-
+		turn = false;
+		thread.setSeconds(20);
+		turn = true;
 		try {
 			controller.startGame(controller.getGui().getCreaLobby());
 
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		} catch (Exception e) {}
 		try {
 			controller.startGame(controller.getGui().getEntraLobby());
 
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 	}
 
 	@Override
-	public void openLobbyView(String lobbyCode) {
-		for (Card s : board) {
-			controller.getCardsOnBoard().get(s).setVisible(false);
-		}
-		controller.startEntraLobby();
+	public void gameHasEnded(ArrayList<Team> teams) {
+		if (teams != null)
+			controller.gameRecap(teams);
+		try {
+			wait(10000);
+		} catch (Exception e ) {}
 	}
 
 	@Override
 	public void disconnect() {
-
-		@SuppressWarnings("unused")
-		int i = 0;
+		try {
+			handler.disconnectFromLobby();
+		} catch (RemoteException e) {
+		}
 	}
 }

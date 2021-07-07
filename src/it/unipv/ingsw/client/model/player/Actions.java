@@ -1,8 +1,8 @@
-package it.unipv.ingsw.client.model.game.player;
+package it.unipv.ingsw.client.model.player;
 
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
+import it.unipv.ingsw.client.model.card.Card;
 
 /**
  * Interfaccia che definisce il contratto tra tutti i player (human e bot) ovvero l'azione di giocare una carta.

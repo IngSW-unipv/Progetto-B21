@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.game.player.types;
+package it.unipv.ingsw.client.model.player.types;
 
 /**
  * Enum che differenzia il bot dal giocatore umano.

@@ -18,7 +18,7 @@ git clone https://github.com/IngSW-unipv/Progetto-B21.git
 Una volta faccio ciò, eseguire l'import del progetto tramite l'apposito comando sull'IDE a disposizione.
  
 ## **3. Esecuzione codice**
-Importata la cartella "Scopone", per giocare in modalità single player sarà sufficiente eseguire la classe `src\it\unipv\ingsw\client\view\tester\TesterGUI.java`, mentre per giocare in multiplayer sarà prima necessario avviare il server tramite l'esecuzione della classe `src\it\unipv\ingsw\server\ScoponeServer.java`.
+Importata la cartella "Scopone", per giocare in modalità single player sarà sufficiente eseguire la classe `src\it\unipv\ingsw\client\controller\ScoponeGame.java`, mentre per giocare in multiplayer sarà prima necessario avviare il server tramite l'esecuzione della classe `src\it\unipv\ingsw\server\ScoponeServer.java`.
 
 ### 4. Tutte le informazioni aggiuntive, come il glossario e le regole del gioco, sono disponibili alla pagina [Wiki del progetto](https://github.com/IngSW-unipv/Progetto-B21/wiki).
 

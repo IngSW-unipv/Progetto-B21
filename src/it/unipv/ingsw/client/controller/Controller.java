@@ -11,12 +11,11 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import it.unipv.ingsw.client.controller.menu.Main;
-import it.unipv.ingsw.client.model.game.Game;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.team.Team;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.client.model.Game;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
@@ -29,9 +28,9 @@ import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 public class Controller {
 
 	// ________________ATTRIBUTI________________
-	private Main menu;
+	private ScoponeGame menu;
 	private ScoponeGUI gui;
-	private Game game;
+	private Game teams;
 	private Player player;
 	private HashMap<Card, CardButton> deck;
 	private HashMap<Card, CardButton> cardsOnBoard;
@@ -39,7 +38,7 @@ public class Controller {
 	private Team winner;
 
 //___________________COSTRUTTORE_______________________
-	public Controller(Main menu, ScoponeGUI gui) {
+	public Controller(ScoponeGame menu, ScoponeGUI gui) {
 		super();
 		this.menu = menu;
 		this.gui = gui;
@@ -72,10 +71,10 @@ public class Controller {
 	}
 
 	public void setGame(Game game) {
-		this.game = game;
+		this.teams = game;
 	}
 
-	public Main getMenu() {
+	public ScoponeGame getMenu() {
 		return menu;
 	}
 
@@ -101,7 +100,7 @@ public class Controller {
 	 * Avvia la partita.
 	 */
 	public void startGame(JLabel label) {
-		this.game = menu.getGame();
+		this.teams = menu.getGame();
 		this.player = menu.getPlayer();
 
 		label.setVisible(false);
@@ -142,7 +141,7 @@ public class Controller {
 		creaLobbyStartListener();
 		makeLobbyListener();
 		creaLobbyNameListener();
-		gui.getCreaLobby().getAdvisor().setText("questa ï¿½ una LOBBY"); // schermata da cambiare
+		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
@@ -235,9 +234,7 @@ public class Controller {
 							"Specificare il proprio username prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					menu.clientConnect();
-					if(menu.isStatusServer())
-						startMultiPlayer();
+					startMultiPlayer();
 				}
 			}
 		};
@@ -251,8 +248,9 @@ public class Controller {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				startCreaLobby();
+				menu.clientConnect();
+				if(menu.isStatusServer())
+					startCreaLobby();
 			}
 		};
 
@@ -335,8 +333,9 @@ public class Controller {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				startEntraLobby();
+				menu.clientConnect();
+				if(menu.isStatusServer())
+					startEntraLobby();
 			}
 		};
 
@@ -488,16 +487,16 @@ public class Controller {
 
 	public boolean verifyGame() {
 
-		int a = game.getTeams().get(0).getTotalPoints();
-		int b = game.getTeams().get(1).getTotalPoints();
+		int a = teams.getTeams().get(0).getTotalPoints();
+		int b = teams.getTeams().get(1).getTotalPoints();
 
 		if (a > b && a >= 21) {
-			winner = game.getTeams().get(0);
+			winner = teams.getTeams().get(0);
 
 			return true;
 		} else if (b > a && b >= 21) {
 
-			winner = game.getTeams().get(1);
+			winner = teams.getTeams().get(1);
 			return true;
 		} else {
 
@@ -509,7 +508,7 @@ public class Controller {
 
 		cardsOnBoard.clear();
 		setX(80);
-		game.start();
+		teams.start();
 		gui.game().repaint();
 		gui.getGame().getBack().addActionListener(exitListener(gui.getGame(), gui.getMainMenu()));
 		sendListener();
@@ -592,7 +591,7 @@ public class Controller {
 				gui.getGame().repaint();
 
 				setX(x += 70);
-				if (getX() > 680) {
+				if (getX() > 600) {
 					setX(80);
 				}
 			}
@@ -627,18 +626,18 @@ public class Controller {
 				JOptionPane.WARNING_MESSAGE);
 	}
 
-	public void gameRecap() {
+	public void gameRecap(ArrayList<Team> teams) {
 		JOptionPane.showMessageDialog(gui.getMainMenu(), "                           Team A          Team B\n"
-				+ "sette bello:          " + game.getTeams().get(0).isSetteBello() + "               "
-				+ game.getTeams().get(1).isSetteBello() + "\n" + "denari:                      "
-				+ game.getTeams().get(0).getnDenari() + "                     " + game.getTeams().get(1).getnDenari()
-				+ "\n" + "numero carte:      " + game.getTeams().get(0).getnCarte() + "                   "
-				+ game.getTeams().get(1).getnCarte() + "\n" + "primiera:                "
-				+ game.getTeams().get(0).getPuntiPrimiera() + "                   "
-				+ game.getTeams().get(1).getPuntiPrimiera() + "\n" + "scope:                      "
-				+ game.getTeams().get(0).getNumScope() + "                    " + game.getTeams().get(1).getNumScope()
-				+ "\n" + "\n\n" + "punteggio:                " + game.getTeams().get(0).getTotalPoints()
-				+ "                    " + game.getTeams().get(1).getTotalPoints() + "\n"
+				+ "sette bello:          " + teams.get(0).isSetteBello() + "               "
+				+ teams.get(1).isSetteBello() + "\n" + "denari:                      "
+				+ teams.get(0).getnDenari() + "                     " + teams.get(1).getnDenari()
+				+ "\n" + "numero carte:      " + teams.get(0).getnCarte() + "                   "
+				+ teams.get(1).getnCarte() + "\n" + "primiera:                "
+				+ teams.get(0).getPuntiPrimiera() + "                   "
+				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                      "
+				+ teams.get(0).getNumScope() + "                    " + teams.get(1).getNumScope()
+				+ "\n" + "\n\n" + "punteggio:                " + teams.get(0).getTotalPoints()
+				+ "                    " + teams.get(1).getTotalPoints() + "\n"
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 

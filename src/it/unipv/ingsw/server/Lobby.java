@@ -1,13 +1,11 @@
 package it.unipv.ingsw.server;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.unipv.ingsw.server.handlers.ClientHandler;
 
-public class Lobby extends Thread implements Serializable{
+public class Lobby extends Thread{
 
-	private static final long serialVersionUID = 2723652664412273354L;
 	private ArrayList<ClientHandler> players;
 	private MultiplayerGame game;
 	private String code;
@@ -44,6 +42,8 @@ public class Lobby extends Thread implements Serializable{
 	}
 	
 	public synchronized boolean removePlayer(ClientHandler player) {
+		game.interrupt();
+		game = null;
 		return players.remove(player);
 	}
 	
@@ -63,16 +63,5 @@ public class Lobby extends Thread implements Serializable{
 		return false;
 	}
 	
-	public synchronized boolean endGame() {
-		game.endGame();
-		game = null;
-		for (ClientHandler p : players) {
-			p.notifyGameEnd(code);
-		}
-		for (ClientHandler p : players) {
-			p.setGame(game);
-		}
-		return true;
-	}
 	
 }

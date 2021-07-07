@@ -95,6 +95,7 @@ public class CreaLobbyUI extends JLabel {
 		add(start);
 
 		this.back = new BackButton(loader);
+		setBack(back);
 		add(back);
 
 		// advisor

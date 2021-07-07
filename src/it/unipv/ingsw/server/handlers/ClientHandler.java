@@ -3,12 +3,13 @@ package it.unipv.ingsw.server.handlers;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
+import it.unipv.ingsw.client.controller.multiplayer.RemoteClientInterface;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
 import it.unipv.ingsw.server.Lobby;
 import it.unipv.ingsw.server.MultiplayerGame;
 import it.unipv.ingsw.server.ScoponeServer;
-import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
+import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
 
 public class ClientHandler implements RemoteHandlerInterface, Handler {
 	private RemoteClientInterface client;
@@ -96,20 +97,16 @@ public class ClientHandler implements RemoteHandlerInterface, Handler {
 		}
 	}
 	
-	public void notifyGameEnd(String lobbyCode) {
+	public void notifyGameEnd(ArrayList<Team> teams) {
 		try {
-			client.openLobbyView(lobbyCode);
+			client.gameHasEnded(teams);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void disconnectFromLobby() {
-		try {
-			client.disconnect();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		server.lobbies.get(lobbyCode).removePlayer((ClientHandler) client);
 	}
 
 	@Override
