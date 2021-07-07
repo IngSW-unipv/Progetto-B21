@@ -109,4 +109,7 @@ public class BotHandler implements Handler{
 	@Override
 	public void notifyGameEnd(ArrayList<Team> teams) {}
 
+	@Override
+	public void sendScopaAlert(String nickname) {}
+
 }

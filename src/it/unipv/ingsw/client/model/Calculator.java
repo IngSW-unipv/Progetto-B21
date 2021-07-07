@@ -105,7 +105,9 @@ public class Calculator {
 			scoreB++;
 			b.setPrimiera(true);
 		}
-
+		
+		a.setPuntiSmazzata(scoreA);
+		b.setPuntiSmazzata(scoreB);
 		a.setTotalPoints(scoreA + a.getTotalPoints());
 		b.setTotalPoints(scoreB + b.getTotalPoints());
 
@@ -119,7 +121,7 @@ public class Calculator {
 	 * @return il valore della primiera.
 	 */
 
-	static int calculatePrimiera(ArrayList<Card> cards) {
+	public static int calculatePrimiera(ArrayList<Card> cards) {
 
 		int denari = 0;
 		int bastoni = 0;

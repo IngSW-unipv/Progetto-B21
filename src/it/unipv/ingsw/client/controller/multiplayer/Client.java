@@ -25,7 +25,7 @@ public class Client implements RemoteClientInterface {
 	private HumanPlayer player;
 	private ArrayList<Card> board;
 	private Controller controller;
-	private boolean turn = false;
+	private boolean turn;
 
 	/**
 	 * Crea un client.
@@ -37,6 +37,7 @@ public class Client implements RemoteClientInterface {
 		this.player = player;
 		this.controller = controller;
 		this.board = new ArrayList<Card>();
+		this.turn = false;
 	}
 
 	// ______________GETTERS & SETTERS______________
@@ -63,8 +64,7 @@ public class Client implements RemoteClientInterface {
 
 
 	/**
-	 * Viene effettuata la connessione al server specificato ed è passato lo stub
-	 * del client.
+	 * Viene effettuata la connessione al server specificato.
 	 * 
 	 * @param hostname : lo stub del client.
 	 * @throws RemoteException
@@ -148,7 +148,8 @@ public class Client implements RemoteClientInterface {
 
 	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
-		controller.cardsOnBoardCreator(cards, 80, 78);
+		if (cards.size() != 0)
+			controller.cardsOnBoardCreator(cards, 80, 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		board.removeAll(cards);
 		for (Card s : board) {
@@ -175,11 +176,6 @@ public class Client implements RemoteClientInterface {
 	public synchronized void play() {
 		thread.setSeconds(20);
 		turn = true;
-		try {
-			thread.resume();
-		} catch (Exception e) {
-		}
-		
 	}
 
 	@Override
@@ -189,9 +185,6 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public void openGameView() {
-		turn = false;
-		thread.setSeconds(20);
-		turn = true;
 		try {
 			controller.startGame(controller.getGui().getCreaLobby());
 
@@ -214,9 +207,6 @@ public class Client implements RemoteClientInterface {
 		board.clear();
 		if (teams != null)
 			controller.gameRecap(teams);
-		try {
-			wait(10000);
-		} catch (Exception e ) {}
 	}
 
 	@Override
@@ -225,5 +215,10 @@ public class Client implements RemoteClientInterface {
 			handler.disconnectFromLobby();
 		} catch (RemoteException e) {
 		}
+	}
+
+	@Override
+	public void scopaAlert(String nickname) throws RemoteException {
+		controller.scopaAlert(new HumanPlayer(nickname));
 	}
 }

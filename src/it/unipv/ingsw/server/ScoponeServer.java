@@ -12,6 +12,11 @@ import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
 import it.unipv.ingsw.server.interfaces.RemoteServerInterface;
 
+/**
+ * Questa classe rappresenta il server, da avviare all'inizio.
+ * @author Vito
+ *
+ */
 public class ScoponeServer implements RemoteServerInterface {
 	private Registry registry;
 	private ArrayList<ClientHandler> players;
@@ -34,6 +39,8 @@ public class ScoponeServer implements RemoteServerInterface {
 	public boolean removeLobby(String code) {
 		boolean bool = lobbies.containsKey(code);
 		lobbies.remove(code);
+		if (bool = true)
+			System.out.println("#Server: " + "Removed lobby" + lobbies.get(code));
 		return bool;
 	}
 	
@@ -42,7 +49,7 @@ public class ScoponeServer implements RemoteServerInterface {
 			return false;
 		}
 		lobbies.put(lobby.getCode(), lobby);
-		System.out.println("Lobby added. lobby name: " + lobby.getCode());
+		System.out.println("#Server: " + "Added lobby "+ lobby.getCode());
 		return true;
 	}
 	
@@ -54,7 +61,7 @@ public class ScoponeServer implements RemoteServerInterface {
 	public RemoteHandlerInterface registerClient(RemoteClientInterface client) throws RemoteException {
 		ClientHandler newPlayer = new ClientHandler(client, this);
 		players.add(newPlayer);
-		System.out.println("Added player "+newPlayer.getNickname());
+		System.out.println("#Server: " + "Added player " + newPlayer.getNickname());
 		RemoteHandlerInterface handler = (RemoteHandlerInterface) UnicastRemoteObject.exportObject(newPlayer, 0);
 		return handler;
 	}
@@ -67,9 +74,9 @@ public class ScoponeServer implements RemoteServerInterface {
 			RemoteServerInterface skeleton = (RemoteServerInterface) UnicastRemoteObject.exportObject(server, 0);
 			server.getRegistry().rebind("ScoponeServer", skeleton);
 			
-			System.out.println("Server ready");
+			System.out.println("#Server: " + "Server ready");
 		} catch (Exception e) {
-            System.err.println("Server exception:");
+			System.out.println("#Server: " + "Server exception:");
             e.printStackTrace();
         }
 	}

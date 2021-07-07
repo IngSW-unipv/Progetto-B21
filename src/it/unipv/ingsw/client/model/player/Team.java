@@ -26,6 +26,7 @@ public class Team implements Serializable{
 	private int nDenari;
 	private boolean primiera;
 	private int puntiPrimiera;
+	private int puntiSmazzata;
 
 	/**
 	 * Crea un team.
@@ -129,6 +130,14 @@ public class Team implements Serializable{
 
 	public void setNumScope(int numScope) {
 		this.numScope = numScope;
+	}
+	
+	public int getPuntiSmazzata() {
+		return puntiSmazzata;
+	}
+
+	public void setPuntiSmazzata(int puntiSmazzata) {
+		this.puntiSmazzata = puntiSmazzata;
 	}
 
 	public void restart() {

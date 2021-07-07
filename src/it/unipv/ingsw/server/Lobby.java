@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.server.handlers.ClientHandler;
 
+/**
+ * Questa classe rappresenta una lobby del gioco.
+ * 
+ *
+ */
 public class Lobby extends Thread{
 
 	private ArrayList<ClientHandler> players;
@@ -15,8 +20,6 @@ public class Lobby extends Thread{
 		players = new ArrayList<ClientHandler>();
 		players.add(p1);
 		code = txt;
-		
-		System.out.println("lobby created");
 	}
 
 	public ArrayList<ClientHandler> getPlayers() {
@@ -38,22 +41,29 @@ public class Lobby extends Thread{
 	public synchronized boolean addPlayer(ClientHandler player) {
 		if (players.size() >= 4)
 			return false;
+		System.out.println("+Lobby"+toString()+": " + "added player " + player.getNickname());
 		return players.add(player);
 	}
 	
 	public synchronized boolean removePlayer(ClientHandler player) {
 		game.interrupt();
 		game = null;
+		System.out.println("+Lobby"+toString()+": " + "removed player "+ player.getNickname());
 		return players.remove(player);
 	}
 	
+	/**
+	 * Inizia la partita.
+	 * @return
+	 */
 	public synchronized boolean startGame() {
+		
 		if (game == null) {
 			game = new MultiplayerGame(players);
 			for (ClientHandler p : players) {
 				p.setGame(game);
 			}
-			System.out.println("Starting game" + game.toString());
+			System.out.println("+Lobby"+toString()+": " + "game starting");
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {}

@@ -11,6 +11,11 @@ import it.unipv.ingsw.server.handlers.BotHandler;
 import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.handlers.Handler;
 
+/**
+ * Questa classe rappresenta la modalità multiplayer.
+ *
+ *
+ */
 public class MultiplayerGame extends Thread{
 
 	private ArrayList<Card> board;
@@ -23,11 +28,11 @@ public class MultiplayerGame extends Thread{
 	
 	public MultiplayerGame(ArrayList<ClientHandler> p) {
 		initialize(p);
-		System.out.println("@"+toString()+": " + "correctly initialized");
+		System.out.println("@Game"+toString()+": " + "correctly initialized");
 		makeTeam();
-		System.out.println("@"+toString()+": " + "teams created");
+		System.out.println("@Game"+toString()+": " + "teams created");
 		createDeck();
-		System.out.println("@"+toString()+": " + "deck created");
+		System.out.println("@Game"+toString()+": " + "deck created");
 	}
 	
 	
@@ -119,7 +124,7 @@ public class MultiplayerGame extends Thread{
 					p.notifyGameStart();
 				}
 			} else {
-				System.out.println("@"+toString()+": " + "turn " + turn);
+				System.out.println("@Game"+toString()+": " + "turn " + turn);
 				for (Handler p : players) {
 					if (p.getTurnIndex() == (turn % 4)) {
 						players.get(turn % 4).requestMove();
@@ -177,15 +182,14 @@ public class MultiplayerGame extends Thread{
 	
 
 	public synchronized void play(Card playedCard) {
-		System.out.println("@"+toString()+": giocata la carta "+playedCard);
 		board.add(playedCard);
 		notifyBoardChange();
 		for (Handler p : players) {
 			if (p.getTurnIndex() != (turn % 4)) {
-				p.sendMessage("||GIOCATORE " + p.getTurnIndex() + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+				p.sendMessage("||GIOCATORE " + ((turn % 4 )+ 1) + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 			}
 		}
-		System.out.println("@"+toString()+": " + "||GIOCATORE " + turn%4 + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+		System.out.println("@Game"+toString()+": " + "||GIOCATORE " + ((turn % 4 )+ 1) + "|| Gioca " + playedCard);
 	}
 
 	private void notifyBoardChange() {
@@ -212,7 +216,12 @@ public class MultiplayerGame extends Thread{
 		if (board.size() == 0) {
 			for (Handler p : players) {
 				if (p.getTurnIndex() == (turn % 4)) {
-					teams.get(p.getTeamIndex()).scopa();;
+					teams.get(p.getTeamIndex()).scopa();
+					System.out.println("@Game"+toString()+": " + "scopa!");
+					for (Handler pla : players) {
+						pla.sendScopaAlert(p.getNickname());
+					}
+					break;
 				}
 			}
 		}
@@ -222,11 +231,6 @@ public class MultiplayerGame extends Thread{
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(takenCards);
 			}	
 		}
-		System.out.print("@"+toString()+": rimosse le carte");
-		for (Card c : takenCards) {
-			System.out.print(" "+c.toString());
-		}
-		System.out.println();
 	}
 	
 	public synchronized void setMove() {
@@ -234,7 +238,7 @@ public class MultiplayerGame extends Thread{
 	}
 	
 	public synchronized void endRound() {
-		System.out.println("@"+toString()+": " + "fine round");
+		System.out.println("@Game"+toString()+": " + "fine round");
 		for (Handler p : players) {
 			if (p.getTurnIndex() == (turn % 4)) {
 				teams.get(p.getTeamIndex()).getCardsCollected().addAll(board);
@@ -260,15 +264,16 @@ public class MultiplayerGame extends Thread{
 	
 	private synchronized void changeIndex() {
 		for (int i = 0; i < 3; i++) {
-			players.get(i).setTeamIndex((players.get(i).getTurnIndex()+1)%4); 
+			players.get(i).setTurnIndex((players.get(i).getTurnIndex()+1)%4); 
 		}
 	}
 	
 	public synchronized void endGame() {
-		System.out.println("@"+toString()+": " + "fine partita");
+		System.out.println("@Game"+toString()+": " + "fine partita");
 		int win = 0;
 		if (teams.get(0).getTotalPoints() < teams.get(1).getTotalPoints())
 			win = 1;
+		System.out.println("@Game"+toString()+": vince il team "+ win);
 		for (Handler p : players) {
 			if (p.getTeamIndex() == win) {
 				p.sendMessage("Hai vinto con" + teams.get(win).getTotalPoints() + " vs " + teams.get(1-win).getTotalPoints() + " punti.");
@@ -290,7 +295,7 @@ public class MultiplayerGame extends Thread{
 		for (Handler p : players) {
 			p.notifyGameEnd(null);
 		}
-		System.out.println("@"+toString()+": game interrupted" );
+		System.out.println("@Game"+toString()+": game interrupted" );
 	}
 
 }

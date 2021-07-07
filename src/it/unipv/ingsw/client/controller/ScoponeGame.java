@@ -13,6 +13,11 @@ import it.unipv.ingsw.client.model.player.types.*;
 import it.unipv.ingsw.client.sounds.Music;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 
+/**
+ * Questa classe rappresenta il gioco eseguibile.
+ * 
+ *
+ */
 public class ScoponeGame {
 
 	public static void main(String[] args) {
@@ -28,6 +33,7 @@ public class ScoponeGame {
 		gui.setVisible(true);
 	}
 
+	//____________ATTRIBUTI____________
 	private Game game;
 	private String nickname;
 	private String nomeLobby;
@@ -40,6 +46,7 @@ public class ScoponeGame {
 	private SingleplayerThread[] threads;
 	private boolean statusServer;
 
+	//__________COSTRUTTORE__________
 	public ScoponeGame() {
 		this.music = new Music();
 		this.sound = new Music();
@@ -47,6 +54,7 @@ public class ScoponeGame {
 		statusServer = false;
 	}
 
+	//__________GETTERS&SETTERS_________
 	public PlayerThread getPlayerThread() {
 		return playerThread;
 	}
@@ -115,6 +123,9 @@ public class ScoponeGame {
 		return statusServer;
 	}
 
+	/**
+	 * Questo metodo avvia la modalità singleplayer.
+	 */
 	public void singleplayer() {
 		player = new HumanPlayer(nickname);
 		ArrayList<Player> p = new ArrayList<Player>();
@@ -131,6 +142,9 @@ public class ScoponeGame {
 		}
 	}
 
+	/**
+	 * Questo metodo fa connettere il client con il server.
+	 */
 	public void clientConnect() {
 		player = new HumanPlayer(nickname);
 		client = new Client(player, controller);

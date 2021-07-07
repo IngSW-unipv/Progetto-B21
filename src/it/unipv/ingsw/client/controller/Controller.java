@@ -292,6 +292,9 @@ public class Controller {
 							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby giï¿½ esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
+						
+						else 
+							gui.getCreaLobby().getAdvisor().setText("La lobby '"+menu.getNomeLobby()+"' è stata creata correttamente. E' possibile avviare la partita in qualsiasi momento.");
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
@@ -318,6 +321,9 @@ public class Controller {
 						JOptionPane.showMessageDialog(gui.getMainMenu(), "Errore: non esiste una lobby con quel nome.",
 								"Attenzione", JOptionPane.WARNING_MESSAGE);
 					}
+					
+					else 
+						gui.getEntraLobby().getAdvisor().setText("Accesso avvenuto correttamente nella lobby: '"+ menu.getNomeLobby()+"'."+ " In attesa dell'avvio della partita...");
 				}
 			}
 
@@ -398,6 +404,7 @@ public class Controller {
 					current.setVisible(false);
 					previus.add(gui.getSound());
 					previus.setVisible(true);
+					setX(80);
 				}
 
 			}
@@ -625,6 +632,7 @@ public class Controller {
 	}
 
 	public void gameRecap(ArrayList<Team> teams) {
+<<<<<<< HEAD
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
 				"                           Team A          Team B\n" + "sette bello:          "
 						+ teams.get(0).isSetteBello() + "               " + teams.get(1).isSetteBello() + "\n"
@@ -635,6 +643,22 @@ public class Controller {
 						+ "\n" + "scope:                      " + teams.get(0).getNumScope() + "                    "
 						+ teams.get(1).getNumScope() + "\n" + "\n\n" + "punteggio:                "
 						+ teams.get(0).getTotalPoints() + "                    " + teams.get(1).getTotalPoints() + "\n"
+=======
+		JOptionPane.showMessageDialog(gui.getMainMenu(), "                           Team A          Team B\n"
+				+ "sette bello:          " + teams.get(0).isSetteBello() + "               "
+				+ teams.get(1).isSetteBello() + "\n" + "denari:                      "
+				+ teams.get(0).getnDenari() + "                     " + teams.get(1).getnDenari()
+				+ "\n" + "numero carte:      " + teams.get(0).getnCarte() + "                   "
+				+ teams.get(1).getnCarte() + "\n" + "primiera:                "
+				+ teams.get(0).getPuntiPrimiera() + "                   "
+				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                       "
+				+ teams.get(0).getNumScope() + "                     " + teams.get(1).getNumScope()
+				+ "\n"
+				 + "punteggio:                " + teams.get(0).getPuntiSmazzata()
+				+ "                    " + teams.get(1).getPuntiSmazzata() + "\n"
+				+ "\n\n" + "punteggio totale:     " + teams.get(0).getTotalPoints()
+				+ "                    " + teams.get(1).getTotalPoints() + "\n"
+>>>>>>> branch 'main' of https://github.com/IngSW-unipv/Progetto-B21
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 

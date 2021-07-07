@@ -20,6 +20,7 @@ import it.unipv.ingsw.client.view.menuElements.sound.SoundButton;
  */
 public class ScoponeGUI extends JFrame {
 
+//______________ATTRIBUTI_____________
 	private static final long serialVersionUID = 1L;
 	private MainMenuUI mainMenu;
 	private GameUI game;
