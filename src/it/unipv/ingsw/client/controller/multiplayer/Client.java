@@ -205,6 +205,13 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public void gameHasEnded(ArrayList<Team> teams) {
+		for (Card s : board) {
+			try {
+				controller.getCardsOnBoard().get(s).setVisible(false);
+			} catch (Exception e) {
+			}
+		}
+		board.clear();
 		if (teams != null)
 			controller.gameRecap(teams);
 		try {

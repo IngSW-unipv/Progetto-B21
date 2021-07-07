@@ -81,7 +81,7 @@ public class MultiplayerThread extends Thread implements PlayerThread {
 				play();
 			}
 			controller.gameAdvisor(
-					"||GIOCATORE " + client.getPlayer().getPlayerIndex() + "|| " + client.getPlayer().getNickname()
+					"||GIOCATORE " + (client.getPlayer().getPlayerIndex()+1) + "|| " + client.getPlayer().getNickname()
 							+ " gioca " + ((HumanPlayer) client.getPlayer()).getCardPlayed());
 			seconds = 20;
 			return true;
