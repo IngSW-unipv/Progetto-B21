@@ -43,14 +43,14 @@ public class Lobby extends Thread{
 	public synchronized boolean addPlayer(ClientHandler player) {
 		if (players.size() >= 4)
 			return false;
-		System.out.println("+"+toString()+": " + "aggiunto il giocatore " + player.getNickname());
+		System.out.println("+Lobby"+toString()+": " + "aggiunto il giocatore " + player.getNickname());
 		return players.add(player);
 	}
 	
 	public synchronized boolean removePlayer(ClientHandler player) {
 		game.interrupt();
 		game = null;
-		System.out.println("+"+toString()+": " + "rimosso il giocatore "+ player.getNickname());
+		System.out.println("+Lobby"+toString()+": " + "rimosso il giocatore "+ player.getNickname());
 		return players.remove(player);
 	}
 	
@@ -65,7 +65,7 @@ public class Lobby extends Thread{
 			for (ClientHandler p : players) {
 				p.setGame(game);
 			}
-			System.out.println("+"+toString()+": " + "inizio partita");
+			System.out.println("+Lobby"+toString()+": " + "inizio partita");
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {}
