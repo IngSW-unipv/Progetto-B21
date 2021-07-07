@@ -400,6 +400,7 @@ public class Controller {
 					current.setVisible(false);
 					previus.add(gui.getSound());
 					previus.setVisible(true);
+					setX(80);
 				}
 
 			}

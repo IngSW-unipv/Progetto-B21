@@ -27,10 +27,13 @@ public class CreaButton extends JButton {
 
 	private void create() {
 
-		setBounds(505, 189, 60, 20);
-		setOpaque(true);
-		setContentAreaFilled(true);
-		setBorderPainted(true);
+		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/crea.png");
+		ImageIcon crea = new ImageIcon(buffer);
+		setIcon(crea);
+		setBounds(450, 191, 60, 20);
+		setOpaque(false);
+		setContentAreaFilled(false);
+		setBorderPainted(false);
 		setVisible(true);
 	}
 }
