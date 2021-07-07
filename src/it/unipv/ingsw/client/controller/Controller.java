@@ -111,7 +111,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la modalità multiplayer.
+	 * Avvia la modalitï¿½ multiplayer.
 	 */
 	public void startMultiPlayer() {
 
@@ -132,7 +132,7 @@ public class Controller {
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
 	 */
 	public void startCreaLobby() {
 
@@ -141,12 +141,12 @@ public class Controller {
 		creaLobbyStartListener();
 		makeLobbyListener();
 		creaLobbyNameListener();
-		gui.getCreaLobby().getAdvisor().setText("questa è una LOBBY"); // schermata da cambiare
+		gui.getCreaLobby().getAdvisor().setText("questa ï¿½ una LOBBY"); // schermata da cambiare
 		gui.getCreaLobby().getBack().addActionListener(backListener(gui.getCreaLobby(), gui.getMultiPlayer()));
 	}
 
 	/**
-	 * Avvia la schermata "CREA LOBBY" della modalità multiplayer.
+	 * Avvia la schermata "CREA LOBBY" della modalitï¿½ multiplayer.
 	 */
 	public void startEntraLobby() {
 
@@ -207,7 +207,6 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				if (menu.getNickname() == null || menu.getNickname().length() == 0) {
-					// gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 							"Specificare il proprio username prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
@@ -229,7 +228,6 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 
 				if (menu.getNickname() == null || menu.getNickname().length() == 0) {
-					// gui.getMainMenu().getNickname().setText("INSERISCILO!!!!");
 					JOptionPane.showMessageDialog(gui.getMainMenu(),
 							"Specificare il proprio username prima di continuare!", "Attenzione",
 							JOptionPane.WARNING_MESSAGE);
@@ -249,7 +247,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				menu.clientConnect();
-				if(menu.isStatusServer())
+				if (menu.isStatusServer())
 					startCreaLobby();
 			}
 		};
@@ -291,7 +289,7 @@ public class Controller {
 				} else
 					try {
 						if (!menu.creaLobby()) {
-							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby già esistente",
+							JOptionPane.showMessageDialog(gui.getMainMenu(), "Nome della lobby giï¿½ esistente",
 									"Attenzione", JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (RemoteException e1) {
@@ -334,7 +332,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				menu.clientConnect();
-				if(menu.isStatusServer())
+				if (menu.isStatusServer())
 					startEntraLobby();
 			}
 		};
@@ -524,8 +522,8 @@ public class Controller {
 
 				JOptionPane.showMessageDialog(gui.getMainMenu(),
 						"In questo gioco, valgono le regole dello Scopone Scientifico tradizionali.\n\n"
-								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere più di\n"
-								+ "5 carte di denari vale 1 punto, prendere più di 20 carte vale 1 punto, \n"
+								+ "Ogni Scopa vale 1 punto, il Sette Bello vale un 1 punto, prendere piï¿½ di\n"
+								+ "5 carte di denari vale 1 punto, prendere piï¿½ di 20 carte vale 1 punto, \n"
 								+ "la Primiera vale 1 punto.\n\n"
 								+ "Il meccanismo per effettuare una presa consiste nel: \n"
 								+ "1) Selezionare prima le carte presenti sul tavolo da gioco.\n"
@@ -622,22 +620,21 @@ public class Controller {
 
 	public void serverError() {
 		JOptionPane.showMessageDialog(gui.getMainMenu(),
-				"Il server non risulta essere online.\n" + "Riprovare più tardi.", "Errore",
+				"Il server non risulta essere online.\n" + "Riprovare piï¿½ tardi.", "Errore",
 				JOptionPane.WARNING_MESSAGE);
 	}
 
 	public void gameRecap(ArrayList<Team> teams) {
-		JOptionPane.showMessageDialog(gui.getMainMenu(), "                           Team A          Team B\n"
-				+ "sette bello:          " + teams.get(0).isSetteBello() + "               "
-				+ teams.get(1).isSetteBello() + "\n" + "denari:                      "
-				+ teams.get(0).getnDenari() + "                     " + teams.get(1).getnDenari()
-				+ "\n" + "numero carte:      " + teams.get(0).getnCarte() + "                   "
-				+ teams.get(1).getnCarte() + "\n" + "primiera:                "
-				+ teams.get(0).getPuntiPrimiera() + "                   "
-				+ teams.get(1).getPuntiPrimiera() + "\n" + "scope:                      "
-				+ teams.get(0).getNumScope() + "                    " + teams.get(1).getNumScope()
-				+ "\n" + "\n\n" + "punteggio:                " + teams.get(0).getTotalPoints()
-				+ "                    " + teams.get(1).getTotalPoints() + "\n"
+		JOptionPane.showMessageDialog(gui.getMainMenu(),
+				"                           Team A          Team B\n" + "sette bello:          "
+						+ teams.get(0).isSetteBello() + "               " + teams.get(1).isSetteBello() + "\n"
+						+ "denari:                      " + teams.get(0).getnDenari() + "                     "
+						+ teams.get(1).getnDenari() + "\n" + "numero carte:      " + teams.get(0).getnCarte()
+						+ "                   " + teams.get(1).getnCarte() + "\n" + "primiera:                "
+						+ teams.get(0).getPuntiPrimiera() + "                   " + teams.get(1).getPuntiPrimiera()
+						+ "\n" + "scope:                      " + teams.get(0).getNumScope() + "                    "
+						+ teams.get(1).getNumScope() + "\n" + "\n\n" + "punteggio:                "
+						+ teams.get(0).getTotalPoints() + "                    " + teams.get(1).getTotalPoints() + "\n"
 
 				, "Punteggio", JOptionPane.INFORMATION_MESSAGE);
 
