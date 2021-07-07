@@ -186,10 +186,10 @@ public class MultiplayerGame extends Thread{
 		notifyBoardChange();
 		for (Handler p : players) {
 			if (p.getTurnIndex() != (turn % 4)) {
-				p.sendMessage("||GIOCATORE " + (p.getTurnIndex()+1) + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
+				p.sendMessage("||GIOCATORE " + ((turn % 4 )+ 1) + "|| " + players.get(turn%4).getNickname() + " gioca " + playedCard);
 			}
-			System.out.println("@Game"+toString()+": " + "||GIOCATORE " + (p.getTurnIndex()+1) + "|| Gioca " + playedCard);
 		}
+		System.out.println("@Game"+toString()+": " + "||GIOCATORE " + ((turn % 4 )+ 1) + "|| Gioca " + playedCard);
 	}
 
 	private void notifyBoardChange() {
