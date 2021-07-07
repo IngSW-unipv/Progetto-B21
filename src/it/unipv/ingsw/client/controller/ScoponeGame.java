@@ -1,18 +1,36 @@
-package it.unipv.ingsw.client.controller.menu;
+package it.unipv.ingsw.client.controller;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import it.unipv.ingsw.client.controller.Controller;
+
+import it.unipv.ingsw.client.controller.multiplayer.Client;
+import it.unipv.ingsw.client.controller.multiplayer.ServerIP;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
 import it.unipv.ingsw.client.controller.thread.PlayerThread;
 import it.unipv.ingsw.client.controller.thread.SingleplayerThread;
-import it.unipv.ingsw.client.model.game.Game;
-import it.unipv.ingsw.client.model.game.player.types.*;
-import it.unipv.ingsw.client.model.multiplayer.client.Client;
+import it.unipv.ingsw.client.model.Game;
+import it.unipv.ingsw.client.model.player.types.*;
 import it.unipv.ingsw.client.sounds.Music;
+import it.unipv.ingsw.client.view.ScoponeGUI;
 
-public class Main {
+public class ScoponeGame {
+	
+	public static void main(String[] args) {
 
+		ScoponeGame menu = new ScoponeGame();
+		ScoponeGUI gui = new ScoponeGUI();
+		
+		if (args.length != 0)
+			ServerIP.getInstance().setIp(args[0]);
+		
+		Controller controller = new Controller(menu, gui);
+		menu.setController(controller);
+		gui.setVisible(true);
+	}
+	
+	
+	
+	
 	private Game game;
 	private String nickname;
 	private String nomeLobby;
@@ -26,7 +44,7 @@ public class Main {
 	private boolean statusServer;
 
 
-	public Main() {
+	public ScoponeGame() {
 		this.music = new Music();
 		this.sound = new Music();
 		music.playMusic("music.wav");
@@ -125,7 +143,7 @@ public class Main {
 		client.setMultiplayerThread((MultiplayerThread) playerThread);
 		statusServer = false;
 		try {
-			client.connect("localhost");
+			client.connect(ServerIP.getInstance().getIp());
 			 statusServer = true;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -136,7 +154,7 @@ public class Main {
 	}
 
 	public boolean connectToServer(String hostname) throws RemoteException {
-		return client.connect(hostname);
+		return client.connect(ServerIP.getInstance().getIp());
 	}
 
 	public boolean creaLobby() throws RemoteException {
@@ -157,4 +175,10 @@ public class Main {
 			((MultiplayerThread) playerThread).stop();
 		}
 	}
+	
+	
+	
+	
+	
+	
 }

@@ -7,10 +7,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
+import it.unipv.ingsw.client.controller.multiplayer.RemoteClientInterface;
 import it.unipv.ingsw.server.handlers.ClientHandler;
-import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
-import it.unipv.ingsw.server.utils.RemoteServerInterface;
+import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
+import it.unipv.ingsw.server.interfaces.RemoteServerInterface;
 
 public class ScoponeServer implements RemoteServerInterface {
 	private Registry registry;

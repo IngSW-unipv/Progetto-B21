@@ -2,9 +2,9 @@ package it.unipv.ingsw.server.handlers;
 
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.team.Team;
-import it.unipv.ingsw.client.model.game.player.types.BotPlayer;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.BotPlayer;
 import it.unipv.ingsw.server.MultiplayerGame;
 
 public class BotHandler implements Handler{

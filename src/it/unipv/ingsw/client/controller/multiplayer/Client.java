@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.multiplayer.client;
+package it.unipv.ingsw.client.controller.multiplayer;
 
 import java.awt.Color;
 import java.rmi.NotBoundException;
@@ -10,12 +10,12 @@ import java.util.ArrayList;
 
 import it.unipv.ingsw.client.controller.Controller;
 import it.unipv.ingsw.client.controller.thread.MultiplayerThread;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.team.Team;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.server.utils.RemoteHandlerInterface;
-import it.unipv.ingsw.server.utils.RemoteServerInterface;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
+import it.unipv.ingsw.server.interfaces.RemoteHandlerInterface;
+import it.unipv.ingsw.server.interfaces.RemoteServerInterface;
 
 public class Client implements RemoteClientInterface {
 
@@ -148,7 +148,7 @@ public class Client implements RemoteClientInterface {
 
 	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
-		controller.cardsOnBoardCreator(cards, controller.getX(), 78);
+		controller.cardsOnBoardCreator(cards, 80, 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		board.removeAll(cards);
 		for (Card s : board) {
@@ -205,7 +205,8 @@ public class Client implements RemoteClientInterface {
 
 	@Override
 	public void gameHasEnded(ArrayList<Team> teams) {
-		controller.gameRecap(teams);
+		if (teams != null)
+			controller.gameRecap(teams);
 		try {
 			wait(10000);
 		} catch (Exception e ) {}

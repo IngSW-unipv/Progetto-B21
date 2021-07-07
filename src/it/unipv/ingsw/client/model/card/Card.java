@@ -1,4 +1,4 @@
-package it.unipv.ingsw.client.model.game.cards;
+package it.unipv.ingsw.client.model.card;
 
 import java.io.Serializable;
 

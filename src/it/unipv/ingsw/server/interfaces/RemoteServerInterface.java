@@ -1,9 +1,9 @@
-package it.unipv.ingsw.server.utils;
+package it.unipv.ingsw.server.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import it.unipv.ingsw.client.model.multiplayer.client.RemoteClientInterface;
+import it.unipv.ingsw.client.controller.multiplayer.RemoteClientInterface;
 
 
 public interface RemoteServerInterface extends Remote {

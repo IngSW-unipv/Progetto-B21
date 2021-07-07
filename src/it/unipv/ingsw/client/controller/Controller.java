@@ -11,12 +11,11 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import it.unipv.ingsw.client.controller.menu.Main;
-import it.unipv.ingsw.client.model.game.Game;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.team.Team;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.client.model.Game;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
 import it.unipv.ingsw.client.view.ScoponeGUI;
 import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 
@@ -29,7 +28,7 @@ import it.unipv.ingsw.client.view.gameElements.buttons.CardButton;
 public class Controller {
 
 	// ________________ATTRIBUTI________________
-	private Main menu;
+	private ScoponeGame menu;
 	private ScoponeGUI gui;
 	private Game teams;
 	private Player player;
@@ -39,7 +38,7 @@ public class Controller {
 	private Team winner;
 
 //___________________COSTRUTTORE_______________________
-	public Controller(Main menu, ScoponeGUI gui) {
+	public Controller(ScoponeGame menu, ScoponeGUI gui) {
 		super();
 		this.menu = menu;
 		this.gui = gui;
@@ -75,7 +74,7 @@ public class Controller {
 		this.teams = game;
 	}
 
-	public Main getMenu() {
+	public ScoponeGame getMenu() {
 		return menu;
 	}
 

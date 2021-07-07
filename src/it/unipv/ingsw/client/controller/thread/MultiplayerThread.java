@@ -3,10 +3,10 @@ package it.unipv.ingsw.client.controller.thread;
 import java.awt.Color;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.client.model.multiplayer.client.Client;
+import it.unipv.ingsw.client.controller.multiplayer.Client;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
 
 public class MultiplayerThread extends Thread implements PlayerThread {
 	private Client client;

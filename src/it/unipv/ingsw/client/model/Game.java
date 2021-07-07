@@ -1,12 +1,12 @@
-package it.unipv.ingsw.client.model.game;
+package it.unipv.ingsw.client.model;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.cards.Suit;
-import it.unipv.ingsw.client.model.game.player.team.Team;
-import it.unipv.ingsw.client.model.game.player.types.*;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.card.Suit;
+import it.unipv.ingsw.client.model.player.Team;
+import it.unipv.ingsw.client.model.player.types.*;
 
 /**
  * Questa classe modellizza il tavolo di gioco. Possiede le funzioni principali

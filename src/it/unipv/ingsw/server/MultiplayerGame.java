@@ -3,10 +3,10 @@ package it.unipv.ingsw.server;
 import java.util.ArrayList;
 import java.util.Random;
 
-import it.unipv.ingsw.client.model.game.Calculator;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.cards.Suit;
-import it.unipv.ingsw.client.model.game.player.team.Team;
+import it.unipv.ingsw.client.model.Calculator;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.card.Suit;
+import it.unipv.ingsw.client.model.player.Team;
 import it.unipv.ingsw.server.handlers.BotHandler;
 import it.unipv.ingsw.server.handlers.ClientHandler;
 import it.unipv.ingsw.server.handlers.Handler;
@@ -284,7 +284,7 @@ public class MultiplayerGame extends Thread{
 	public synchronized void interruptGame() {
 		turn = -3;
 		for (Handler p : players) {
-			p.notifyGameEnd(teams);
+			p.notifyGameEnd(null);
 		}
 		System.out.println("@"+toString()+": game interrupted" );
 	}

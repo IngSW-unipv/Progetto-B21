@@ -3,11 +3,11 @@ package it.unipv.ingsw.client.controller.thread;
 import java.awt.Color;
 
 import it.unipv.ingsw.client.controller.Controller;
-import it.unipv.ingsw.client.model.game.Game;
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.HumanPlayer;
-import it.unipv.ingsw.client.model.game.player.types.Player;
-import it.unipv.ingsw.client.model.game.player.types.TypePlayer;
+import it.unipv.ingsw.client.model.Game;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.types.HumanPlayer;
+import it.unipv.ingsw.client.model.player.types.Player;
+import it.unipv.ingsw.client.model.player.types.TypePlayer;
 
 /**
  * Per ogni game abbiamo 4 thread che gestiscono i turni dei giocatori, senza

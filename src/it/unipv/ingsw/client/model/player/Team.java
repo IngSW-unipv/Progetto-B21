@@ -1,10 +1,10 @@
-package it.unipv.ingsw.client.model.game.player.team;
+package it.unipv.ingsw.client.model.player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.types.Player;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.types.Player;
 
 /**
  * Classe che rappresenta un team.

@@ -1,58 +1,45 @@
-package it.unipv.ingsw.client.model.game.player.types;
+package it.unipv.ingsw.client.model.player.types;
 
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.cards.Suit;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.card.Suit;
 
 /**
- * Questa classe rappresenta un giocatore umano e permette di effettuare le sue mosse.
+ * Questa classe permette l'uso di un'intelligenza artificiale semplice, con il
+ * Bot che gioca una carta a caso tra quelle a disposizione.
  * 
- * 
- * 
+ * @author Giuseppe Lentini
  */
-
-public class HumanPlayer extends Player {
-
+public class BotPlayer extends Player {
 
 	private Card cardPlayed;
-	private boolean havePlayed;
-	
-	/**
-	 * Crea un giocatore umano.
-	 * @param name : il nome del giocatore umano.
-	 */
-	public HumanPlayer(String name) {
-		super(name);
-		havePlayed = false;
-		cardPlayed = null;
 
+	/**
+	 * Crea un bot.
+	 */
+	public BotPlayer() {
+		super("Bot" + (int) (Math.random() * 9999));
 	}
 
-	//______________GETTERS & SETTERS______________
+	/**
+	 * Crea un bot con nome.
+	 * 
+	 * @param name : il nome del bot.
+	 */
+	public BotPlayer(String name) {
+		super(name);
+	}
 
 	public Card getCardPlayed() {
 		return cardPlayed;
 	}
 
-	public void setCardPlayed(Card cardPlayed) {
-		this.cardPlayed = cardPlayed;
-	}
-	
-	public boolean hasPlayed() {
-		return havePlayed;
-	}
+	// __________________METODI__________________
 
-	public void setHavePlayed(boolean havePlayed) {
-		this.havePlayed = havePlayed;
-	}	
-
-	//__________________METODI__________________
-	
-	
 	/**
-	 * Questo metodo serve nel caso in cui il giocatore umano
-	 * non faccia mosse, utilizzando la stessa logica di un BotPlayer.
+	 * Metodo che permette al bot di giocare una carta ed effettuare una presa.
+	 * 
 	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
 	 */
 	public ArrayList<Card> playCard(ArrayList<Card> cardsOnBoard) {
@@ -74,7 +61,6 @@ public class HumanPlayer extends Player {
 					if (s.getValue() > 3 && s.getValue() != 7 && s.getSuit() != Suit.DENARI) {
 
 						getCardsListTemp().add(s);
-						setCardPlayed(s);
 
 						return getCardsListTemp();
 					}
@@ -84,7 +70,6 @@ public class HumanPlayer extends Player {
 					if (t.getValue() != 7 && t.getSuit() != Suit.DENARI) {
 
 						getCardsListTemp().add(t);
-						setCardPlayed(t);
 						return getCardsListTemp();
 					}
 				}
@@ -96,14 +81,13 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-
 	/**
 	 * Metodo privato che permette al bot di effettuare una presa.
 	 * 
 	 * @param cardsOnBoard : ArrayList di carte presenti sul tavolo
 	 * @return un intero per usarlo nello switch della funzione playCard
 	 */
-	
+
 	private int makePresa(ArrayList<Card> cardsOnBoard) {
 
 		if (cardsOnBoard.isEmpty()) {
@@ -204,7 +188,7 @@ public class HumanPlayer extends Player {
 		}
 		return 0;
 	}
-
+	
 	private boolean verify(Card deck, ArrayList<Card> cardsOnBoard) {
 		for (Card table : cardsOnBoard) {
 
@@ -216,9 +200,10 @@ public class HumanPlayer extends Player {
 		
 		return true;
 	}
+
 	@Override
 	public TypePlayer typePlayer() {
 		// TODO Auto-generated method stub
-		return TypePlayer.HUMANPLAYER;
+		return TypePlayer.BOTPLAYER;
 	}
 }

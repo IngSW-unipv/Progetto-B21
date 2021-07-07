@@ -1,11 +1,11 @@
-package it.unipv.ingsw.client.model.multiplayer.client;
+package it.unipv.ingsw.client.controller.multiplayer;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import it.unipv.ingsw.client.model.game.cards.Card;
-import it.unipv.ingsw.client.model.game.player.team.Team;
+import it.unipv.ingsw.client.model.card.Card;
+import it.unipv.ingsw.client.model.player.Team;
 
 public interface RemoteClientInterface extends Remote{
 	public String getPlayerName() throws RemoteException;
