@@ -148,7 +148,8 @@ public class Client implements RemoteClientInterface {
 
 	@SuppressWarnings("unchecked")
 	public void setCardsOnBoard(ArrayList<Card> cards) {
-		controller.cardsOnBoardCreator(cards, 80, 78);
+		if (cards.size() != 0)
+			controller.cardsOnBoardCreator(cards, 80, 78);
 		controller.getGui().getGame().getGameAdvisor().setForeground(Color.BLACK);
 		board.removeAll(cards);
 		for (Card s : board) {
@@ -206,9 +207,6 @@ public class Client implements RemoteClientInterface {
 		board.clear();
 		if (teams != null)
 			controller.gameRecap(teams);
-		try {
-			wait(10000);
-		} catch (Exception e ) {}
 	}
 
 	@Override
