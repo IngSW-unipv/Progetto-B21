@@ -149,15 +149,12 @@ public class Main {
 	
 	@SuppressWarnings("deprecation")
 	public void closeThreads() {
-		
+		try {
 		for(Thread s : threads) {			
 			s.stop();
 		}
-		
-		try {
-			((MultiplayerThread) playerThread).stop();
 		} catch (Exception e) {
-			// TODO: handle exception
+			((MultiplayerThread) playerThread).stop();
 		}
 	}
 }
