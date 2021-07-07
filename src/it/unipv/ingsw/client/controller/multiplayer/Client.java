@@ -174,11 +174,6 @@ public class Client implements RemoteClientInterface {
 	public synchronized void play() {
 		thread.setSeconds(20);
 		turn = true;
-		try {
-			thread.resume();
-		} catch (Exception e) {
-		}
-		
 	}
 
 	@Override

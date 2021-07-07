@@ -217,7 +217,8 @@ public class MultiplayerGame extends Thread{
 		if (board.size() == 0) {
 			for (Handler p : players) {
 				if (p.getTurnIndex() == (turn % 4)) {
-					teams.get(p.getTeamIndex()).scopa();;
+					teams.get(p.getTeamIndex()).scopa();
+					break;
 				}
 			}
 		}
