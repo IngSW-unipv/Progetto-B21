@@ -30,7 +30,7 @@ public class EntraButton extends JButton {
 		this.buffer = loader.uploadImage("/it/unipv/ingsw/client/images/entra.png");
 		ImageIcon crea = new ImageIcon(buffer);
 		setIcon(crea);
-		setBounds(505, 189, 60, 20);
+		setBounds(450, 190, 60, 20);
 		setOpaque(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
